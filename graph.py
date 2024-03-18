@@ -24,28 +24,39 @@ def graphs():
     for date in dates:
         plots.append(create_plots_for_date(date, categories))
     
+    plots_html = ''.join(plots)
     return render_template('graphs.html', plots=plots)
 
 def create_plots_for_date(date, categories):
     date_data = data.get(date, {})
-    figs = []
+    plots = []
 
     for category in categories:
         fig = create_plot(date_data, category)
-        figs.append(fig.to_html(full_html=False, include_plotlyjs=False))
+        plots.append(fig.to_html(full_html=False, include_plotlyjs=False))
     
-    return figs
+    return ''.join(plots)
 
-def create_plot(date_data, category):
+
+def create_plot(date_data, category: str):
     fig = go.Figure()
 
     for retro, stats in date_data.items():
-        heights = [int(stat.split()[0]) for stat in stats if category in stat]
-        fig.add_trace(go.Scatter(x=list(date_data.keys()), y=heights, mode='lines+markers', name=retro))
+        heights = [int(stat.split()[0]) for stat in stats if isinstance(stat, str) and category in stat]
+        if heights:  # Vérifier si la liste heights n'est pas vide
+            fig.add_trace(go.Scatter(x=list(date_data.keys()), y=heights, mode='lines+markers', name=retro, marker=dict(size=10)))
 
-    fig.update_layout(title=f'Counts of {category}', xaxis_title='Date', yaxis_title='Counts')
+    fig.update_layout(
+        title=f'{category.capitalize()}', 
+        xaxis_title='Date', 
+        yaxis_title='Counts',
+        plot_bgcolor='rgba(50,50,50,50)',
+        paper_bgcolor='rgba(50,50,50,50)',
+        font=dict(color='white')
+    )
 
     return fig
+
 
 
 @app.route('/favicon.ico')
