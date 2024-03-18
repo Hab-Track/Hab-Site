@@ -14,27 +14,36 @@ with open("track_stats.json", "r") as f:
 def home():
     return render_template('home.html')
 
+
 @app.route('/graphs')
 def graphs():
     plots = []
     categories = ['badges', 'furnis', 'clothes', 'effects']
+    dates = list(data.keys())
     
-    for category in categories:
-        fig = create_plot(category)
-        plots.append(fig.to_html(full_html=False, include_plotlyjs=False))
+    for date in dates:
+        plots.append(create_plots_for_date(date, categories))
     
     return render_template('graphs.html', plots=plots)
 
-def create_plot(category):
+def create_plots_for_date(date, categories):
+    date_data = data.get(date, {})
+    figs = []
+
+    for category in categories:
+        fig = create_plot(date_data, category)
+        figs.append(fig.to_html(full_html=False, include_plotlyjs=False))
+    
+    return figs
+
+def create_plot(date_data, category):
     fig = go.Figure()
 
-    for retro, stats in data["2024-03-18"].items():
-        heights = [int(stat.split()[0]) for stat in stats]
-        fig.add_trace(go.Scatter(x=list(data.keys()), y=heights, mode='lines+markers', name=retro))
+    for retro, stats in date_data.items():
+        heights = [int(stat.split()[0]) for stat in stats if category in stat]
+        fig.add_trace(go.Scatter(x=list(date_data.keys()), y=heights, mode='lines+markers', name=retro))
 
-    fig.update_layout(title=f'Counts of {category}',
-                      xaxis_title='Date',
-                      yaxis_title='Counts')
+    fig.update_layout(title=f'Counts of {category}', xaxis_title='Date', yaxis_title='Counts')
 
     return fig
 
