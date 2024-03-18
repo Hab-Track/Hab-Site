@@ -1,8 +1,14 @@
-from flask import Flask, render_template
-import plotly.graph_objs as go
+import os
 import json
+import argparse
+import plotly.graph_objs as go
+from flask import Flask, render_template, send_from_directory
 
 app = Flask(__name__)
+
+with open("track_stats.json", "r") as f:
+    data = json.load(f)
+    
 
 @app.route('/')
 def home():
@@ -32,8 +38,23 @@ def create_plot(category):
 
     return fig
 
-if __name__ == '__main__':
-    with open("log/track_stats.json", "r") as f:
-        data = json.load(f)
 
-    app.run(debug=True)
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'img'), 'H.ico', mimetype='image/vnd.microsoft.icon')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Run Flask application.')
+    parser.add_argument('--debug', action='store_true', help='Run in debug mode')
+    args = parser.parse_args()
+    
+    if args.debug:
+        app.run(debug=True)
+    else:
+        app.run(host='0.0.0.0', port=80)
+
+    if args.debug:
+        app.run(debug=True)
+    else:
+        app.run(host='0.0.0.0', port=80)
