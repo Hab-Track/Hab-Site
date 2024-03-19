@@ -2,14 +2,14 @@
     "version": 2,
     "builds": [
         {
-            "src": "graph.py",
+            "src": "main.py",
             "use": "@vercel/python"
         }
     ],
     "routes": [
         {
             "src": "(.*)",
-            "dest": "graph.py"
+            "dest": "main.py"
         }
     ]
   }
