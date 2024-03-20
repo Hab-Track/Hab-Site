@@ -10,7 +10,7 @@ def create_plot_for_category(data, category):
                 retros_data[retro] = {'dates': [], 'heights': []}
             heights = []
             for stat in stats:
-                if category in stat:  # Vérifier si la catégorie est présente dans le stat
+                if category in stat:
                     heights.append(int(stat.split()[0]))
             retros_data[retro]['dates'].append(date)
             retros_data[retro]['heights'].append(heights[0] if heights else None)
@@ -19,7 +19,7 @@ def create_plot_for_category(data, category):
         fig.add_trace(go.Scatter(x=retro_data['dates'], y=retro_data['heights'], mode='lines+markers', name=retro, marker=dict(size=10)))
     
     fig.update_layout(
-        title=f'{category.capitalize()} Stats', 
+        title=f'{category.capitalize()}', 
         xaxis_title='Date', 
         yaxis_title='Total',
         plot_bgcolor='rgba(50,50,50,50)',
