@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='button.css') }}">
 </head>
 <body>
-    {% set page_title = "Home" %}
-    {% set button_text = "Graphs" %}
-    {% set button_link = "/graphs" %}
-    {% include 'button.html' %}
+    {% include 'default.html' %}
+    <a href="/graphs" class="button">Graphs</a>
+    <a href="/raw_stats" class="button">Raw stats</a>
+    <a href="https://discord.gg/4eWHHwmheq" target="_blank" class="button">Discord</a>
 </body>
 </html>
+

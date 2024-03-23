@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    {% set page_title = "Graphs" %}
-    {% set button_text = "Home" %}
-    {% set button_link = "/" %}
-    {% include 'button.html' %}
-
+    {% include 'default.html' %}
     <div id="plots">
         {% for plot in plots %}
             <div>{{ plot | safe }}</div>

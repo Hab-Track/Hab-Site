@@ -32,6 +32,11 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'img'), 'H.ico', mimetype='image/vnd.microsoft.icon')
 
 
+@app.route("/raw_stats")
+def raw_stats():
+    return data
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run Flask application.')
     parser.add_argument('--debug', action='store_true', help='Run in debug mode')
