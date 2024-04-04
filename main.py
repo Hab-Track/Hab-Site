@@ -37,9 +37,9 @@ def raw_stats():
     return data
 
 
-@app.route("/google55991758b301affd.html")
+@app.route("/google06cec27a8c7f7b33.html")
 def google():
-    return render_template('google55991758b301affd.html')
+    return render_template('google06cec27a8c7f7b33.html')
 
 
 if __name__ == '__main__':
