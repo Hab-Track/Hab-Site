@@ -37,6 +37,11 @@ def raw_stats():
     return data
 
 
+@app.route("/google06cec27a8c7f7b33.html")
+def google():
+    return render_template('google06cec27a8c7f7b33.html')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run Flask application.')
     parser.add_argument('--debug', action='store_true', help='Run in debug mode')
