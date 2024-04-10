@@ -47,6 +47,11 @@ def yandex():
     return render_template('yandex_060f2438c56f59b8.html')
 
 
+@app.route("/robots.txt")
+def robots():
+    return render_template('robots.txt')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run Flask application.')
     parser.add_argument('--debug', action='store_true', help='Run in debug mode')
