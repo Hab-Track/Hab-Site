@@ -2,13 +2,22 @@ import argparse
 import os
 import json
 from flask import Flask, render_template, send_from_directory
+from flask_sitemap import Sitemap
 from utils.plot_functions import create_plot_for_category
 
 app = Flask(__name__)
+ext = Sitemap(app=app)
 
 with open("track_stats.json", "r") as f:
     data = json.load(f)
-    
+
+
+@ext.register_generator
+def index():
+    yield 'home', {}, "", "", 1
+    yield 'graphs', {}, "", "daily", 0.8
+    yield 'raw_stats', {}, "", "daily", 0.2
+
 
 @app.route('/')
 def home():
@@ -50,11 +59,6 @@ def yandex():
 @app.route("/robots.txt")
 def robots():
     return render_template('robots.txt')
-
-
-@app.route("/sitemap.xml")
-def sitemap():
-    return render_template('sitemap.xml')
 
 
 if __name__ == '__main__':
