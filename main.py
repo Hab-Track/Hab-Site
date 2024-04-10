@@ -58,7 +58,7 @@ def yandex():
 
 @app.route("/robots.txt")
 def robots():
-    return render_template('robots.txt')
+    return send_from_directory(app.static_folder, 'robots.txt')
 
 
 if __name__ == '__main__':
