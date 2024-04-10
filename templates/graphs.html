@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    {% include 'default.html' %}
 </head>
 <body>
-    {% include 'default.html' %}
     <div id="plots">
         {% for plot in plots %}
             <div>{{ plot | safe }}</div>

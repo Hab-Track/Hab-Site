@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='button.css') }}">
+    {% include 'default.html' %}
 </head>
 <body>
-    {% include 'default.html' %}
     <a href="/graphs" class="button">Graphs</a>
     <a href="/raw_stats" class="button">Raw stats</a>
     <a href="https://discord.gg/4eWHHwmheq" target="_blank" class="button">Discord</a>
