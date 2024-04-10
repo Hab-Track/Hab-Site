@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+
+<url>
+  <loc>https://hab-track.vercel.app/</loc>
+  <lastmod>2024-04-10T21:53:01+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://hab-track.vercel.app/graphs</loc>
+  <lastmod>2024-04-10T21:53:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hab-track.vercel.app/raw_stats</loc>
+  <lastmod>2024-04-10T21:53:01+00:00</lastmod>
+  <priority>0.20</priority>
+</url>
+
+
+</urlset>

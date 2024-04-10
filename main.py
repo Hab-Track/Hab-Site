@@ -52,6 +52,11 @@ def robots():
     return render_template('robots.txt')
 
 
+@app.route("/sitemap.xml")
+def sitemap():
+    return render_template('sitemap.xml')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run Flask application.')
     parser.add_argument('--debug', action='store_true', help='Run in debug mode')
