@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: http://hab-track.vercel.app/sitemap.xml
