@@ -51,7 +51,7 @@ def google():
     return render_template('google06cec27a8c7f7b33.html')
 
 
-@app.route("/yandex_060f2438c56f59b8.html")
+@app.route("/yandex_67dde65cedc0b4cd.html")
 def yandex():
     return render_template('yandex_060f2438c56f59b8.html')
 
