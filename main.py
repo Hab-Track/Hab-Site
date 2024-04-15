@@ -53,7 +53,7 @@ def google():
 
 @app.route("/yandex_67dde65cedc0b4cd.html")
 def yandex():
-    return render_template('yandex_060f2438c56f59b8.html')
+    return render_template('yandex_67dde65cedc0b4cd.html')
 
 
 @app.route("/robots.txt")
