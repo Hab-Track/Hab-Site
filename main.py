@@ -1,8 +1,8 @@
 import argparse
 import os
 import json
-from flask import Flask, render_template, send_from_directory
 from flask_sitemap import Sitemap
+from flask import Flask, render_template, send_from_directory
 from utils.plot_functions import create_plot_for_category
 
 app = Flask(__name__)
@@ -59,6 +59,11 @@ def yandex():
 @app.route("/robots.txt")
 def robots():
     return send_from_directory(app.template_folder, 'robots.txt')
+
+
+@app.route("/img/<path:path>")
+def send_img(path):
+    return send_from_directory(os.path.join(app.root_path, 'img'), path)
 
 
 if __name__ == '__main__':
