@@ -61,6 +61,15 @@ def robots():
     return send_from_directory(app.template_folder, 'robots.txt')
 
 
+@app.route("/.well-known/<path:path>")
+def well_known(path):
+    chemin_fichier = os.path.join(app.root_path, '.well-known', path)
+    
+    with open(chemin_fichier, 'r') as f:
+        contenu = f.read()
+    return contenu, 200, {'Content-Type': 'text/plain'}
+
+
 @app.route("/img/<path:path>")
 def send_img(path):
     return send_from_directory(os.path.join(app.root_path, 'img'), path)
