@@ -46,6 +46,16 @@ def raw_stats():
     return data
 
 
+@app.route("/robots.txt")
+def robots():
+    return send_from_directory(app.template_folder, 'robots.txt')
+
+
+@app.route("/img/<path:path>")
+def send_img(path):
+    return send_from_directory(os.path.join(app.root_path, 'img'), path)
+
+
 @app.route("/google06cec27a8c7f7b33.html")
 def google():
     return render_template('google06cec27a8c7f7b33.html')
@@ -56,9 +66,9 @@ def yandex():
     return render_template('yandex_67dde65cedc0b4cd.html')
 
 
-@app.route("/robots.txt")
-def robots():
-    return send_from_directory(app.template_folder, 'robots.txt')
+@app.route("/ed949a7d7fc84afb88038376ff960d21.txt")
+def index_now():
+    return render_template('ed949a7d7fc84afb88038376ff960d21.txt')
 
 
 @app.route("/.well-known/<path:path>")
@@ -68,11 +78,6 @@ def well_known(path):
     with open(chemin_fichier, 'r') as f:
         contenu = f.read()
     return contenu, 200, {'Content-Type': 'text/plain'}
-
-
-@app.route("/img/<path:path>")
-def send_img(path):
-    return send_from_directory(os.path.join(app.root_path, 'img'), path)
 
 
 if __name__ == '__main__':
