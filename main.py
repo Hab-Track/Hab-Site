@@ -20,13 +20,8 @@ def create_app():
     return Starlette(routes=routes)
 
 
-# app = create_app()
+app = create_app()
 
 
-from fastapi.middleware.wsgi import WSGIMiddleware
-fastapi_app.mount("/", WSGIMiddleware(flask_app))
-app = fastapi_app
-
-
-# if __name__ == "__main__":
-#     uvicorn.run("main:app")
+if __name__ == "__main__":
+    uvicorn.run("main:app")
