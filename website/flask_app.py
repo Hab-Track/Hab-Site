@@ -34,11 +34,6 @@ def graphs():
     return render_template('graphs.html', plots=plots)
 
 
-@app.route('/api')
-def redirect_api():
-    return redirect('/api/')
-
-
 # Img stuff
 
 @app.route('/favicon.ico')

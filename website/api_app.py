@@ -1,7 +1,10 @@
 import json
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(
+    title="Hab Track - API",
+    version="0.1"
+)
 
 with open("track_stats.json", "r") as f:
     data = json.load(f)
