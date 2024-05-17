@@ -26,11 +26,6 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/api')
-def redirect_api():
-    return redirect('/api/')
-
-
 @app.route('/graphs')
 def graphs():
     categories = ['badges', 'furnis', 'clothes', 'effects']
@@ -39,6 +34,13 @@ def graphs():
     return render_template('graphs.html', plots=plots)
 
 
+@app.route('/api')
+def redirect_api():
+    return redirect('/api/')
+
+
+# Img stuff
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'img'), 'H.ico', mimetype='image/vnd.microsoft.icon')
@@ -46,7 +48,6 @@ def favicon():
 
 @app.route("/img/<path:path>")
 def send_img(path):
-    print(os.path.join(app.root_path, 'img'), path)
     return send_from_directory(os.path.join(app.root_path, 'img'), path)
 
 
