@@ -24,7 +24,7 @@ def home():
     return render_template('home.html')
 
 
-@app.route("test")
+@app.route("/test")
 def test():
     return 'hello ?'
 
