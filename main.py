@@ -26,14 +26,10 @@ def home():
 
 @app.route('/graphs')
 def graphs():
-    plots = []
     categories = ['badges', 'furnis', 'clothes', 'effects']
-    
-    for category in categories:
-        plots.append(create_plot_for_category(data, category))
-    
+    plots = [create_plot_for_category(data, category) for category in categories]
     plots_html = ''.join(plots)
-    return render_template('graphs.html', plots=plots)
+    return render_template('graphs.html', plots=plots_html)
 
 
 @app.route('/favicon.ico')
