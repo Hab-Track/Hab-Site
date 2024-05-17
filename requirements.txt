@@ -1,6 +1,6 @@
 Flask
 plotly
 flask-sitemap
-fastapi
-uvicorn
-starlette
+fastapi==0.100.0
+uvicorn==0.20.0
+starlette==0.27.0
