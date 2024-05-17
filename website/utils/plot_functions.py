@@ -8,10 +8,8 @@ def create_plot_for_category(data, category):
         for retro, stats in date_data.items():
             if retro not in retros_data:
                 retros_data[retro] = {'dates': [], 'heights': []}
-            heights = []
-            for stat in stats:
-                if category in stat:
-                    heights.append(int(stat.split()[0]))
+
+            heights = [int(stat.split()[0]) for stat in stats if category in stat]
             retros_data[retro]['dates'].append(date)
             retros_data[retro]['heights'].append(heights[0] if heights else None)
     
