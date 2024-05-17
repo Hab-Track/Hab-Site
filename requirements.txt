@@ -1,3 +1,5 @@
 Flask
 plotly
 flask-sitemap
+uvicorn
+starlette
