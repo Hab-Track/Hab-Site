@@ -28,5 +28,5 @@ fastapi_app.mount("/", WSGIMiddleware(flask_app))
 app = fastapi_app
 
 
-if __name__ == "__main__":
-    uvicorn.run("main:app")
+# if __name__ == "__main__":
+#     uvicorn.run("main:app")
