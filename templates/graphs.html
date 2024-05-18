@@ -12,9 +12,10 @@
 <body>
     <h1>Show graphs of statistics for Habbo retro</h1>
     <div id="plots">
-        {% for plot in plots %}
-            <div>{{ plot | safe }}</div>
+        {% for index, plot in indexed_plots %}
+            <div id="{{ categories[index] }}" class="plot-container" data-plot-name="{{ categories[index] }}">{{ plot | safe }}</div>
         {% endfor %}
     </div>
+    <script src="{{ url_for('static', filename='scroll.js') }}"></script>
 </body>
 </html>
