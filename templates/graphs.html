@@ -10,7 +10,7 @@
     {% include 'default.html' %}
 </head>
 <body>
-    <h1>Show graphs of statistics for Habbo retro</h1>
+    <h1>Show graphics of statistics for Habbo & Habbo retro</h1>
     <div id="plots">
         {% for index, plot in indexed_plots %}
             <div id="{{ categories[index] }}" class="plot-container" data-plot-name="{{ categories[index] }}">{{ plot | safe }}</div>

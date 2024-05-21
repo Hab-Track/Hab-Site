@@ -1,5 +1,11 @@
-# Hab-Site
+# Hab Track
 
-Website for the project [Hab Track](https://discord.gg/h4n2pGqevH)
+Track updates for any updates on Habbo & Habbo retro
 
-Show graphics of statistics from Habbo retro
+Join the [discord](https://discord.gg/h4n2pGqevH) to see all the news changes
+
+Track furnis, badges, clothes, effects and variables
+
+## Hab Site
+
+Show graphics of statistics from Habbo & Habbo retro
