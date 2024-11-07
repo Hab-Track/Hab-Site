@@ -2,7 +2,7 @@
 
 Track updates for any updates on Habbo & Habbo retro
 
-Join the [discord](https://discord.gg/h4n2pGqevH) to see all the news changes
+Join the [discord](https://discord.gg/7SvKF6wpss) to see all the news changes
 
 Track furnis, badges, clothes, effects and variables
 
