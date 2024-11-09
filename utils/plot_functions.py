@@ -15,8 +15,17 @@ def create_plot_for_category(data, category):
             retros_data[retro]['dates'].append(date)
             retros_data[retro]['heights'].append(heights[0] if heights else None)
     
-    for retro, retro_data in retros_data.items():
-        fig.add_trace(go.Scatter(x=retro_data['dates'], y=retro_data['heights'], mode='lines+markers', name=retro, marker=dict(size=10)))
+    sorted_retros = sorted(retros_data.keys())
+    
+    for retro in sorted_retros:
+        retro_data = retros_data[retro]
+        fig.add_trace(go.Scatter(
+            x=retro_data['dates'], 
+            y=retro_data['heights'], 
+            mode='lines+markers', 
+            name=retro, 
+            marker=dict(size=10)
+        ))
     
     fig.update_layout(
         title=f'{category.capitalize()}', 
