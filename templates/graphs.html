@@ -5,18 +5,28 @@
     <meta property="og:url" content="https://habtrack.vercel.app/graphs">
     <meta property="og:description" content="Graphs of stats for Hab Track">
     <meta property="og:image" content="https://hab-track.vercel.app/img/graphs.png">
-    
+
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        var graphsDataUrl = "{{ url_for('graphs_data') }}";
+    </script>
+
+    <script src="{{ url_for('static', filename='js/scroll.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/load_graphs.js') }}"></script>
     {% include 'default.html' %}
 </head>
 <body>
     <h1>Show graphics of statistics for Habbo & Habbo retro</h1>
-    <div id="plots">
-        {% for index, plot in indexed_plots %}
-        <div id="{{ categories[index] }}" class="plot-container" data-plot-name="{{ categories[index] }}">{{ plot | safe }}</div>
-        {% endfor %}
-    </div>
-    <script src="{{ url_for('static', filename='scroll.js') }}"></script>
+
+    <form id="activeRetroForm" method="get" action="{{ url_for('graphs') }}">
+        <label for="show_active_only">Show only active retros</label>
+        <input type="checkbox" id="show_active_only" name="show_active_only"
+               {% if show_active_only %}checked{% endif %} value="true">
+    </form>
+
+    <div id="plots"></div>
     
     <h2>The spike at 06/18/2024 in furnis represent the switch from ProductData to FurnitureData</h2>
     <style>
@@ -24,7 +34,11 @@
             text-align: center;
             margin-top: 0px;
             margin-bottom: 0px;
-         }
+        }
+
+        #activeRetroForm {
+            text-align: center;
+        }
     </style>
 </body>
 </html>

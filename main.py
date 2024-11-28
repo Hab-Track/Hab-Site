@@ -2,7 +2,7 @@ import argparse
 import os
 import json
 from flask_sitemap import Sitemap
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, request, jsonify
 from utils.plot_functions import create_plot_for_category
 
 app = Flask(__name__)
@@ -10,6 +10,22 @@ ext = Sitemap(app=app)
 
 with open("track_stats.json", "r") as f:
     data = json.load(f)
+
+cached_plots_all = {}
+cached_plots_active = {}
+categories = ['badges', 'furnis', 'clothes', 'effects']
+
+def generate_plots(active_only: False):
+    global cached_plots_all, cached_plots_active
+    
+    if active_only:
+        cached_plots_active = {category: create_plot_for_category(data, category, True) for category in categories}
+    else:
+        cached_plots_all = {category: create_plot_for_category(data, category, False) for category in categories}
+
+
+generate_plots(True)
+generate_plots(False)
 
 
 @ext.register_generator
@@ -24,13 +40,22 @@ def home():
     return render_template('home.html')
 
 
+@app.route('/graphs_data')
+def graphs_data():
+    show_active_only = request.args.get('show_active_only', 'false') == 'true'
+    return jsonify({'plots': cached_plots_active if show_active_only else cached_plots_all})
+
+
 @app.route('/graphs')
 def graphs():
-    categories = ['badges', 'furnis', 'clothes', 'effects']
-    plots = [create_plot_for_category(data, category) for category in categories]
-    indexed_plots = list(enumerate(plots))
+    show_active_only = False
+    if 'show_active_only' in request.args and request.args.get('show_active_only') == 'true':
+        show_active_only = True
+
+    plots = cached_plots_active if show_active_only else cached_plots_all
     
-    return render_template('graphs.html', indexed_plots=indexed_plots, categories=categories)
+    indexed_plots = list(enumerate(plots))
+    return render_template('graphs.html', indexed_plots=indexed_plots, categories=categories, show_active_only=show_active_only)
 
 
 @app.route('/favicon.ico')
@@ -40,7 +65,17 @@ def favicon():
 
 @app.route("/raw_stats")
 def raw_stats():
-    return data
+    return jsonify(data)
+
+
+### Useless shit
+
+
+@ext.register_generator
+def index():
+    yield 'home', {}, "", "", 1
+    yield 'graphs', {}, "", "daily", 0.8
+    yield 'raw_stats', {}, "", "daily", 0.2
 
 
 @app.route("/robots.txt")
@@ -81,8 +116,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run Flask application.')
     parser.add_argument('--debug', action='store_true', help='Run in debug mode')
     args = parser.parse_args()
-    
-    if args.debug:
-        app.run(debug=True)
-    else:
-        app.run(host='0.0.0.0', port=80)
+
+    app.run(debug=args.debug)

@@ -1,8 +1,9 @@
 import plotly.graph_objs as go
 
-def create_plot_for_category(data, category):
+def create_plot_for_category(data, category, show_active_only):
     fig = go.Figure()
     retros_data = {}
+    last_date = max(data.keys())
     
     for date, date_data in data.items():
         for retro, stats in date_data.items():
@@ -19,6 +20,10 @@ def create_plot_for_category(data, category):
     
     for retro in sorted_retros:
         retro_data = retros_data[retro]
+        
+        if show_active_only and last_date not in retro_data['dates']:
+            continue
+        
         fig.add_trace(go.Scatter(
             x=retro_data['dates'], 
             y=retro_data['heights'], 
