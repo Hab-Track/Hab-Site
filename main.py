@@ -11,28 +11,9 @@ ext = Sitemap(app=app)
 with open("track_stats.json", "r") as f:
     data = json.load(f)
 
-cached_plots_all = {}
-cached_plots_active = {}
 categories = ['badges', 'furnis', 'clothes', 'effects']
-
-def generate_plots(active_only: False):
-    global cached_plots_all, cached_plots_active
-    
-    if active_only:
-        cached_plots_active = {category: create_plot_for_category(data, category, True) for category in categories}
-    else:
-        cached_plots_all = {category: create_plot_for_category(data, category, False) for category in categories}
-
-
-generate_plots(True)
-generate_plots(False)
-
-
-@ext.register_generator
-def index():
-    yield 'home', {}, "", "", 1
-    yield 'graphs', {}, "", "daily", 0.8
-    yield 'raw_stats', {}, "", "daily", 0.2
+cached_plots_active = {category: create_plot_for_category(data, category, True) for category in categories}
+cached_plots_all = {category: create_plot_for_category(data, category, False) for category in categories}
 
 
 @app.route('/')
@@ -58,14 +39,14 @@ def graphs():
     return render_template('graphs.html', indexed_plots=indexed_plots, categories=categories, show_active_only=show_active_only)
 
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'img'), 'H.ico', mimetype='image/vnd.microsoft.icon')
-
-
 @app.route("/raw_stats")
 def raw_stats():
     return jsonify(data)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'img'), 'H.ico', mimetype='image/vnd.microsoft.icon')
 
 
 ### Useless shit
