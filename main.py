@@ -26,7 +26,7 @@ def graphs_data():
     show_active_only = request.args.get('show_active_only', 'false') == 'true'
     plots = cached_plots_active if show_active_only else cached_plots_all
 
-    return jsonify({'plots': list(plots.values())})
+    return jsonify({'categories': list(plots.keys()), 'plots': list(plots.values())})
 
 
 @app.route('/graphs')

@@ -13,12 +13,14 @@ function loadGraphs(scrollToCategory = true) {
         data: { show_active_only: showActiveOnly },
         success: function(data) {
             $('#plots').empty();
-            Object.keys(data.plots).forEach(function(category) {
-                $('#plots').append(
-                    '<div id="' + category + '" class="plot-container" data-plot-name="' + category + '">' + data.plots[category] + '</div>'
-                );
+            data.categories.forEach(function(category, index) {
+                if (data.plots[index]) {
+                    $('#plots').append(
+                        '<div id="' + category + '">' + data.plots[index] + '</div>'
+                    );
+                }
             });
-            
+
             document.querySelectorAll('.plot-container').forEach(function(element) {
                 const plotName = element.getAttribute('data-plot-name');
                 if (plotName) {
@@ -28,6 +30,8 @@ function loadGraphs(scrollToCategory = true) {
                     });
                 }
             });
+
+            window.dispatchEvent(new Event('resize'));
 
             if (scrollToCategory) {
                 const { hash } = window.location;
@@ -41,6 +45,7 @@ function loadGraphs(scrollToCategory = true) {
         }
     });
 }
+
 
 $(document).ready(function() {
     var showActiveOnly = new URLSearchParams(window.location.search).get('show_active_only') === 'true';
