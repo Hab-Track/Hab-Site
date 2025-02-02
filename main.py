@@ -49,9 +49,6 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'img'), 'H.ico', mimetype='image/vnd.microsoft.icon')
 
 
-### Useless shit
-
-
 @ext.register_generator
 def index():
     yield 'home', {}, "", "", 1
@@ -67,30 +64,6 @@ def robots():
 @app.route("/img/<path:path>")
 def send_img(path):
     return send_from_directory(os.path.join(app.root_path, 'img'), path)
-
-
-@app.route("/google06cec27a8c7f7b33.html")
-def google():
-    return render_template('google06cec27a8c7f7b33.html')
-
-
-@app.route("/yandex_67dde65cedc0b4cd.html")
-def yandex():
-    return render_template('yandex_67dde65cedc0b4cd.html')
-
-
-@app.route("/ed949a7d7fc84afb88038376ff960d21.txt")
-def index_now():
-    return render_template('ed949a7d7fc84afb88038376ff960d21.txt')
-
-
-@app.route("/.well-known/<path:path>")
-def well_known(path):
-    chemin_fichier = os.path.join(app.root_path, '.well-known', path)
-    
-    with open(chemin_fichier, 'r') as f:
-        contenu = f.read()
-    return contenu, 200, {'Content-Type': 'text/plain'}
 
 
 if __name__ == '__main__':
