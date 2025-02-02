@@ -24,14 +24,14 @@ def home():
 @app.route('/graphs_data')
 def graphs_data():
     show_active_only = request.args.get('show_active_only', 'false') == 'true'
-    return jsonify({'plots': cached_plots_active if show_active_only else cached_plots_all})
+    plots = cached_plots_active if show_active_only else cached_plots_all
+
+    return jsonify({'plots': list(plots.values())})
 
 
 @app.route('/graphs')
 def graphs():
-    show_active_only = request.args.get('show_active_only', 'false') == 'true'
-    plots = cached_plots_active if show_active_only else cached_plots_all
-    return render_template('graphs.html', categories=categories, plots=plots, show_active_only=show_active_only)
+    return render_template('graphs.html', categories=categories)
 
 
 @app.route("/raw_stats")
