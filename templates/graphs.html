@@ -28,8 +28,8 @@
     </form>
 
     <div id="plots">
-        {% for index, plot in indexed_plots %}
-            <div class="plot-placeholder" id="{{ categories[index] }}">Loading graph...</div>
+        {% for categorie in categories %}
+            <div class="plot-placeholder" id="{{ categorie }}">Loading graph...</div>
         {% endfor %}
     </div>
 
