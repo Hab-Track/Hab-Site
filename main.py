@@ -29,14 +29,9 @@ def graphs_data():
 
 @app.route('/graphs')
 def graphs():
-    show_active_only = False
-    if 'show_active_only' in request.args and request.args.get('show_active_only') == 'true':
-        show_active_only = True
-
+    show_active_only = request.args.get('show_active_only', 'false') == 'true'
     plots = cached_plots_active if show_active_only else cached_plots_all
-    
-    indexed_plots = list(enumerate(plots))
-    return render_template('graphs.html', indexed_plots=indexed_plots, categories=categories, show_active_only=show_active_only)
+    return render_template('graphs.html', categories=categories, plots=plots, show_active_only=show_active_only)
 
 
 @app.route("/raw_stats")
