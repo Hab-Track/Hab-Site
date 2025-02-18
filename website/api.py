@@ -28,7 +28,7 @@ def root():
     return RedirectResponse(url="docs")
 
 
-@app.get("/api/raw_stats", tags=["General"], response_model=Dict[str, Dict[str, List[str]]])
+@app.get("/raw_stats", tags=["General"], response_model=Dict[str, Dict[str, List[str]]])
 def get_raw_stats():
     """
     📊 Get all tracked statistics.
@@ -38,7 +38,7 @@ def get_raw_stats():
     return data
 
 
-@app.get("/api/latest_stats", tags=["General"], response_model=Dict[str, List[str]])
+@app.get("/latest_stats", tags=["General"], response_model=Dict[str, List[str]])
 def get_latest_stats():
     """
     🕒 Get the most recent statistics.
@@ -52,7 +52,7 @@ def get_latest_stats():
     return data[latest_date]
 
 
-@app.get("/api/date/{date}", tags=["By Date"], response_model=Dict[str, List[str]])
+@app.get("/date/{date}", tags=["By Date"], response_model=Dict[str, List[str]])
 def get_stats_by_date(date: str):
     """
     📅 Get statistics for a specific date.
@@ -66,7 +66,7 @@ def get_stats_by_date(date: str):
     return data[date]
 
 
-@app.get("/api/retro/{retro}", tags=["By Retro"], response_model=Dict[str, List[str]])
+@app.get("/retro/{retro}", tags=["By Retro"], response_model=Dict[str, List[str]])
 def get_stats_by_retro(retro: str):
     """
     🏨 Get statistics for a specific retro.
