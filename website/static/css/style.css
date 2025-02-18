@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #212121;
+    color: #eee;
+    margin: 0;
+    padding: 0;
+}
+
+#plots {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+h1 {
+    display: none;
+    visibility: hidden;
+}
+
+.plot-placeholder {
+    background-color: #50505050;
+    height: 450px;
+    text-align: center;
+    line-height: 450px;
+}
+
+h2, h3, #activeRetroForm {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 5px;
+}
+
+h4 {
+    margin-top: 15px;
+}
