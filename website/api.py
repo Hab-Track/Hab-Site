@@ -39,7 +39,7 @@ def get_latest_stats():
     return data[latest_date]
 
 
-@app.get("/api/active_retros", tags=["General"], response_model=Dict[str, Dict[str, List[str]]], description="Returns all data for active retros.")
+@app.get("/active_retros", tags=["General"], response_model=Dict[str, Dict[str, List[str]]], description="Returns all data for active retros.")
 def get_active_retros():
     active_retros = set(data[max(data)].keys())
     filtered_data = {
