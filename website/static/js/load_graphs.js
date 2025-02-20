@@ -6,19 +6,19 @@ function updateGraphs() {
     loadGraphs(false);
 }
 
+
 function loadGraphs(scrollToCategory = true) {
     var showActiveOnly = document.getElementById('show_active_only').checked;
     $.get({
         url: graphsDataUrl,
         data: { show_active_only: showActiveOnly },
         success: function(data) {
-            $('#plots').empty();
             data.categories.forEach(function(category, index) {
-                if (data.plots[index]) {
-                    $('#plots').append(
-                        '<div id="' + category + '">' + data.plots[index] + '</div>'
-                    );
-                }
+                graphData = JSON.parse(data.plots[index]);
+                var plotDiv = $('#' + category);
+                plotDiv.empty();
+                plotDiv.removeClass('plot-placeholder');
+                Plotly.react(category, graphData.data, graphData.layout, { responsive: true });
             });
 
             document.querySelectorAll('.plot-container').forEach(function(element) {
@@ -30,8 +30,6 @@ function loadGraphs(scrollToCategory = true) {
                     });
                 }
             });
-
-            window.dispatchEvent(new Event('resize'));
 
             if (scrollToCategory) {
                 const { hash } = window.location;

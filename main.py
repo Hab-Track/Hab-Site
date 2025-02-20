@@ -1,3 +1,4 @@
+import os
 import uvicorn
 from starlette.middleware.wsgi import WSGIMiddleware
 from starlette.applications import Starlette
@@ -16,4 +17,7 @@ routes = [
 app = Starlette(routes=routes)
 
 if __name__ == "__main__":
-    uvicorn.run("main:app")
+    if "--debug" in os.sys.argv:
+        uvicorn.run("main:app", reload=True)
+    else:
+        uvicorn.run("main:app")

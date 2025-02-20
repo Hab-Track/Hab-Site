@@ -29,9 +29,9 @@
 
     <div id="plots">
         {% for categorie in categories %}
-        <div class="plot-placeholder">Loading graph...</div>
+        <div id="{{ categorie }}" class="plot-placeholder">Loading graph...</div>
         {% endfor %}
-    </div>
+    </div>    
 
     <h2>The spike at 06/18/2024 in furnis represent the switch from ProductData to FurnitureData</h2>
 </body>

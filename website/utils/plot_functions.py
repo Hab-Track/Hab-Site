@@ -15,7 +15,9 @@ def create_plot_for_category(data, category, show_active_only):
             retros_data[retro]['dates'].append(date)
             retros_data[retro]['values'].append(value)
 
-    for retro in retros_data.keys():
+    sorted_retros = sorted(retros_data.keys())
+
+    for retro in sorted_retros:
         rd = retros_data[retro]
         if show_active_only and last_date not in rd['dates']:
             continue
@@ -35,7 +37,7 @@ def create_plot_for_category(data, category, show_active_only):
         yaxis_title='Count',
         font=dict(color='white'),
         plot_bgcolor='rgba(50,50,50,50)',
-        paper_bgcolor='rgba(50,50,50,50)',
+        paper_bgcolor='rgba(50,50,50,50)'
     )
     
-    return fig.to_html(full_html=False, include_plotlyjs=False)
+    return fig.to_json()
