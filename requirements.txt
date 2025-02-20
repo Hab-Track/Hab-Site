@@ -1,6 +1,7 @@
 Flask
-plotly
 flask-sitemap
+flask_caching
+plotly
 starlette
 fastapi
 uvicorn
