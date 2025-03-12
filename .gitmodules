@@ -1,4 +1,0 @@
-[submodule "stock_retro"]
-	path = stock_retro
-	url = https://github.com/Hab-Track/stock_retro
-	branch = master
