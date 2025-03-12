@@ -49,6 +49,7 @@ def graphs():
 def search():
     return render_template('search.html', retros=get_retros())
 
+
 @app.route('/search', methods=['POST'])
 def search_post():
     return process_search_query(
