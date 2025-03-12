@@ -127,7 +127,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const data = await response.json();
             loading.style.display = 'none';
-
+            
+            if (data.error) {
+                resultsContainer.innerHTML = `<div class="no-results error">${data.error}</div>`;
+                return;
+            }
+            if (data.warning) {
+                resultsContainer.innerHTML = `<div class="no-results warning">${data.warning}</div>`;
+                return;
+            }
             if (data.message) {
                 resultsContainer.innerHTML = `<div class="no-results">${data.message}</div>`;
                 return;

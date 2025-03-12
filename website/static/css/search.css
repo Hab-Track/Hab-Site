@@ -262,6 +262,14 @@ h4 {
     margin-bottom: 20px;
 }
 
+.no-results.error::before {
+    content: '❌';
+}
+
+.no-results.warning::before {
+    content: '⚠️';
+}
+
 .retro-section {
     padding: 10px;
 }

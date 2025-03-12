@@ -46,45 +46,41 @@ def search_assets(retro, asset_type, search_query):
 
 def process_search_query(search_query, selected_categories, selected_retros):
     if not search_query:
-        return jsonify({'error': 'No search query provided'})
+        return jsonify({'warning': 'No search query provided.'})
     
     start_time = time.time()
     search_results = {}
-    
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        tasks = [
-            executor.submit(search_assets, retro, category, search_query)
-            for retro in selected_retros
-            for category in selected_categories
-        ]
-
-        found_results = False
-        for future in as_completed(tasks):
-            retro, asset_type, result = future.result()
-            if result:
-                found_results = True
-                search_results.setdefault(retro, {})
+    try:
+        for retro in selected_retros:
+            for category in selected_categories:
+                retro, asset_type, result = search_assets(retro, category, search_query)
                 
-                category_names = {
-                    'badges': 'Badges',
-                    'furnis': 'Furniture',
-                    'clothes': 'Clothes',
-                    'effects': 'Effects'
-                }
-                search_results[retro][category_names[asset_type]] = {
-                    str(i): item for i, item in enumerate(result)
-                }
+                if result:
+                    found_results = True
+                    search_results.setdefault(retro, {})
+                    
+                    category_names = {
+                        'badges': 'Badges',
+                        'furnis': 'Furniture',
+                        'clothes': 'Clothes',
+                        'effects': 'Effects'
+                    }
+                    search_results[retro][category_names[asset_type]] = {
+                        str(i): item for i, item in enumerate(result)
+                    }
 
-    execution_time = round(time.time() - start_time, 2)
-    
-    if not found_results:
+        execution_time = round(time.time() - start_time, 2)
+        
+        if not search_results:
+            return jsonify({
+                'results': {},
+                'execution_time': execution_time,
+                'message': 'No results found for your search.'
+            })
+        
         return jsonify({
-            'results': {},
-            'execution_time': execution_time,
-            'message': 'No results found for your search.'
+            'results': search_results,
+            'execution_time': execution_time
         })
-    
-    return jsonify({
-        'results': search_results,
-        'execution_time': execution_time
-    })
+    except ValueError as e:
+        return jsonify({'error': str(e)})
