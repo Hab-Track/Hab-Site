@@ -5,6 +5,7 @@ from flask import Flask, render_template, send_from_directory, request, jsonify
 from flask_caching import Cache
 
 from .utils.plot_functions import create_plot_for_category
+from .utils.search import process_search_query, get_retros
 
 
 app = Flask(__name__)
@@ -42,6 +43,19 @@ def graphs_data():
 @cache.cached()
 def graphs():
     return render_template('graphs.html', categories=categories)
+
+
+@app.route('/search', methods=['GET'])
+def search():
+    return render_template('search.html', retros=get_retros())
+
+@app.route('/search', methods=['POST'])
+def search_post():
+    return process_search_query(
+        search_query=request.form.get('search', '').strip(),
+        selected_categories=request.form.getlist('categories'),
+        selected_retros=request.form.getlist('retros')
+    )
 
 
 @app.route('/favicon.ico')

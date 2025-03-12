@@ -1,0 +1,299 @@
+:root {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --accent-color: #2c2c2c;
+    --accent-hover: #3a3a3a;
+    --border-color: #333;
+    --input-bg: #2d2d2d;
+    --hover-color: #3d3d3d;
+    --selected-color: #404040;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+h4 {
+    text-align: center;
+    margin: 0 0 15px 0;
+    padding: 0 15px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 15px;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.filters {
+    background: var(--input-bg);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.category-filters {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding: 15px 0;
+}
+
+.category-filters label {
+    background: var(--accent-color);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.category-filters input:checked + span {
+    position: relative;
+    color: #fff;
+}
+
+.category-filters input:checked + span::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: #fff;
+}
+
+.retros-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-header {
+    padding: 12px 15px;
+    background: var(--accent-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.dropdown-header::after {
+    content: '▼';
+    position: absolute;
+    right: 15px;
+    font-size: 0.8em;
+    transition: transform 0.3s ease;
+}
+
+.dropdown-header.active::after {
+    transform: rotate(180deg);
+}
+
+.retros-list {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+    padding: 0;
+}
+
+.retros-list.show {
+    display: block;
+}
+
+.retros-list label {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    background: var(--accent-color);
+    border-radius: 6px;
+}
+
+.retros-list label:hover {
+    background: var(--hover-color);
+}
+
+.retros-list input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    margin-right: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.retros-list input[type="checkbox"]:checked {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+.retros-list input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+}
+
+.search-button {
+    display: block;
+    width: 200px;
+    margin: 30px auto;
+    padding: 15px 30px;
+    background: var(--accent-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.search-button:hover {
+    background: var(--accent-hover);
+    transform: scale(1.05);
+}
+
+#execution-time {
+    text-align: center;
+    margin-top: 20px;
+    color: #888;
+}
+
+/* Results styling */
+.no-results {
+    text-align: center;
+    padding: 40px;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-top: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.no-results::before {
+    content: '🔍';
+    display: block;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.retro-section {
+    padding: 10px;
+}
+
+.retro-name {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.result-category {
+    background: var(--accent-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+}
+
+.result-category h3 {
+    color: var(--text-color);
+    font-size: 1.3em;
+    margin: 0 0 15px 0;
+    text-align: center;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: var(--input-bg);
+    padding: 12px 15px;
+    margin: 8px 0;
+    border-radius: 6px;
+    transition: transform 0.2s ease;
+}
+
+.result-item img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    order: 2;
+}
+
+.result-item-text {
+    order: 1;
+}
+
+.result-category:has(h3:contains('Furniture')) img {
+    width: auto;
+    height: auto;
+    max-width: 64px;
+    max-height: 64px;
+}
+
+.image-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+.image-error {
+    display: none;
+    color: #888;
+    font-size: 0.8em;
+    text-align: center;
+    font-style: italic;
+}
