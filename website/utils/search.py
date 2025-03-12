@@ -23,7 +23,11 @@ def get_asset_url(conn, retro, asset_type):
 
 def search_assets(retro, asset_type, search_query):
     conn = get_db_connection()
-    
+
+    ALLOWED_ASSET_TYPES = ['badges', 'furnis', 'clothes', 'effects']
+    if asset_type not in ALLOWED_ASSET_TYPES:
+        raise ValueError("Invalid asset type provided.")
+
     query = f"SELECT name FROM {asset_type} WHERE retro = ? AND name LIKE ?"
     rows = conn.execute(query, (retro, f'%{search_query}%')).fetchall()
     
