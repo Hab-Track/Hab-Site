@@ -17,7 +17,7 @@ def get_retros():
     tables = ['badges', 'furnis', 'clothes', 'effects']
     
     for table in tables:
-        response = supabase.table(table).select("retro").distinct().execute()
+        response = supabase.table(table).select("retro").execute()
         for row in response.data:
             retros.add(row['retro'])
     
@@ -37,16 +37,8 @@ def search_database(selected_categories, selected_retros, search_query):
         if category not in ALLOWED_ASSET_TYPES:
             raise ValueError("Invalid asset type provided.")
         
-        # query = f"""
-        #     SELECT retro, name 
-        #     FROM {category} 
-        #     WHERE retro IN ({','.join('?' * len(selected_retros))})
-        #     AND name LIKE ?
-        # """
-        # params = selected_retros + [f'%{search_query}%']
-        # rows = conn.execute(query, params).fetchall()
-        response = supabase.table(selected_categories).select("name").eq('retro', retro).like("name", f"%{search_query}%").execute()
-        rows = response.data
+        query = supabase.table(category).select("retro, name").in_("retro", selected_retros).like("name", search_query).execute()
+        rows = query.data
         
         for row in rows:
             retro = row['retro']
