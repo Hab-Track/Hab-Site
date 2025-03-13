@@ -5,3 +5,4 @@ plotly
 starlette
 fastapi
 uvicorn
+supabase
