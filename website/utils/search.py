@@ -15,12 +15,11 @@ supabase: Client = create_client(url, key)
 
 def get_retros():
     retros = set()
-    tables = ['badges', 'furnis', 'clothes', 'effects']
+    table = "retro_urls"
     
-    for table in tables:
-        response = supabase.table(table).select("retro").execute()
-        for row in response.data:
-            retros.add(row['retro'])
+    response = supabase.table(table).select("retro").execute()
+    for row in response.data:
+        retros.add(row['retro'])
     
     return list(retros)
 
