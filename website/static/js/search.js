@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const loading = document.getElementById('loading');
         const resultsContainer = document.getElementById('results-container');
         const executionTime = document.getElementById('execution-time');
+        const disablePreviews = document.getElementById('disable-previews').checked;
 
         loading.style.display = 'block';
         resultsContainer.innerHTML = '';
@@ -156,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             ${title ? `<div class="item-title">${title}</div>` : ''}
                                             ${description ? `<div class="item-description">${description}</div>` : ''}
                                         </div>
-                                        ${imageUrl ? `
+                                        ${!disablePreviews && imageUrl ? `
                                             <img src="${imageUrl}" 
                                                 alt="${value}" 
                                                 data-original-url="${imageUrl}"
@@ -171,32 +172,29 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             resultsContainer.innerHTML = html;
-            if (data.execution_time) {
-                executionTime.innerHTML = `Search completed in ${data.execution_time} seconds`;
-                resultsContainer.appendChild(executionTime);
-            }
 
-            const images = resultsContainer.querySelectorAll('.result-image');
-            for (const img of images) {
-                const originalUrl = img.getAttribute('data-original-url');
-                if (originalUrl && originalUrl.endsWith('.nitro')) {
-                    try {
-                        const pngUrl = await processNitroFile(originalUrl);
-                        if (pngUrl) {
-                            img.src = pngUrl;
-                        } else {
+            if (!disablePreviews) {
+                const images = resultsContainer.querySelectorAll('.result-image');
+                for (const img of images) {
+                    const originalUrl = img.getAttribute('data-original-url');
+                    if (originalUrl && originalUrl.endsWith('.nitro')) {
+                        try {
+                            const pngUrl = await processNitroFile(originalUrl);
+                            if (pngUrl) {
+                                img.src = pngUrl;
+                            } else {
+                                img.style.display = 'none';
+                            }
+                        } catch (error) {
+                            console.error('Error processing image:', error);
                             img.style.display = 'none';
                         }
-                    } catch (error) {
-                        console.error('Error processing image:', error);
-                        img.style.display = 'none';
                     }
+                    
+                    img.onerror = function() {
+                        this.style.display = 'none';
+                    };
                 }
-                
-                // Add error handler for each image
-                img.onerror = function() {
-                    this.style.display = 'none';
-                };
             }
         } catch (error) {
             loading.style.display = 'none';
