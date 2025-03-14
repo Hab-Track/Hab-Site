@@ -52,10 +52,16 @@ def search():
 
 @app.route('/search', methods=['POST'])
 def search_post():
+    search_query = request.form.get('search', '')
+    selected_categories = request.form.getlist('categories')
+    selected_retros = request.form.getlist('retros')
+    search_in = request.form.getlist('search_in')
+    
     return process_search_query(
-        search_query=request.form.get('search', '').strip(),
-        selected_categories=request.form.getlist('categories'),
-        selected_retros=request.form.getlist('retros')
+        search_query,
+        selected_categories,
+        selected_retros,
+        search_in
     )
 
 
