@@ -149,10 +149,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         ${Object.entries(retroData).map(([category, items]) => `
                             <div class="result-category">
                                 <h3>${category}</h3>
-                                ${Object.entries(items).map(([key, [value, imageUrl]]) => `
+                                ${Object.entries(items).map(([key, [value, imageUrl, title, description]]) => `
                                     <div class="result-item">
                                         <div class="result-item-text">
-                                            <strong>${key}</strong>: ${value}
+                                            <strong>${value}</strong>
+                                            ${title ? `<div class="item-title">${title}</div>` : ''}
+                                            ${description ? `<div class="item-description">${description}</div>` : ''}
                                         </div>
                                         ${imageUrl ? `
                                             <img src="${imageUrl}" 

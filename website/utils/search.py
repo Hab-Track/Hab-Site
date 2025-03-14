@@ -37,12 +37,17 @@ def search_database(selected_categories, selected_retros, search_query):
         if category not in ALLOWED_ASSET_TYPES:
             raise ValueError("Invalid asset type provided.")
         
-        query = supabase.table(category).select("retro, name").in_("retro", selected_retros).like("name", search_query).execute()
+        if category in ['badges', 'furnis']:
+            query = supabase.table(category).select("retro, name, title, description").in_("retro", selected_retros).like("name", search_query).execute()
+        else:
+            query = supabase.table(category).select("retro, name").in_("retro", selected_retros).like("name", search_query).execute()
         rows = query.data
         
         for row in rows:
             retro = row['retro']
             name = row['name']
+            title = row.get('title', '')
+            description = row.get('description', '')
             base_url = urls.get((retro, category))
             
             if base_url:
@@ -57,7 +62,7 @@ def search_database(selected_categories, selected_retros, search_query):
                 
                 search_results[retro].setdefault(category_name, {})
                 index = len(search_results[retro][category_name])
-                search_results[retro][category_name][str(index)] = (name, f"{base_url}{name}{extension}")
+                search_results[retro][category_name][str(index)] = (name, f"{base_url}{name}{extension}", title, description)
     
     return search_results
 

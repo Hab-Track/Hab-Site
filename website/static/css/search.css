@@ -299,25 +299,42 @@ h4 {
 
 .result-item {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 15px;
     background: var(--input-bg);
     padding: 12px 15px;
     margin: 8px 0;
     border-radius: 6px;
-    transition: transform 0.2s ease;
-}
-
-.result-item img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-    order: 2;
 }
 
 .result-item-text {
-    order: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+}
+
+.result-item-text strong {
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+.item-title {
+    color: #cccccc;
+    font-size: 0.9em;
+}
+
+.item-description {
+    color: #999999;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.result-item img {
+    width: 50px;
+    height: 50px;
+    align-self: end;
 }
 
 .result-category:has(h3:contains('Furniture')) img {
