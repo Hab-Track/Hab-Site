@@ -102,6 +102,15 @@ h4 {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 15px;
+}
+
+.search-filters label {
+    background: var(--accent-color);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
     padding: 15px 0;
 }
 
