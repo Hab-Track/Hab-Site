@@ -120,6 +120,10 @@ def process_search_query(search_query, selected_categories, selected_retros, sea
         search_results = search_database(selected_categories, selected_retros, search_query, search_in)
     except ValueError as e:
         return jsonify({'error': str(e)})
+    except Exception as e:
+        print(search_query, selected_categories, selected_retros, search_in)
+        print(e)
+        return jsonify({"error": "An unknown error occurs, please try again later"})
         
     execution_time = round(time.time() - start_time, 2)
     
