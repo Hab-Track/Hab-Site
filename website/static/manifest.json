@@ -1,0 +1,16 @@
+{
+  "name": "Hab Track",
+  "short_name": "HabTrack",
+  "description": "Track and analyze Habbo assets with Hab Track.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/img/H.ico",
+      "sizes": "100x105",
+      "type": "image/png"
+    }
+  ]
+}
