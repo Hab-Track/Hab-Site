@@ -19,6 +19,8 @@
 </head>
 
 <body>
+    <h1><a href="/">Hab Search</a></h1>
+
     <form id="activeRetroForm" method="get" action="{{ url_for('graphs') }}">
         <label for="show_active_only">Show only active retros</label>
         <input type="checkbox" id="show_active_only" name="show_active_only" {% if show_active_only %}checked{% endif %}
