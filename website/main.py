@@ -85,3 +85,13 @@ def robots():
 @app.route("/img/<path:path>")
 def send_img(path):
     return send_from_directory(os.path.join(app.root_path, 'img'), path)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html', error="Page not found"), 404
+
+
+@app.errorhandler(500)
+def server_error(e):
+    return render_template('error.html', error="Internal server error"), 500

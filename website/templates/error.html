@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+</head>
+<body>
+    <div class="error-container">
+        <h2>An error as occur</h2>
+        <p>{{ error }}</p>
+        <a href="{{ url_for('home') }}">Return home</a>
+    </div>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 25px;
+            background-color: #1a1a1a;
+            color: #eee;
+            line-height: 1.6;
+        }
+        h2, h3 {
+            color: #ffffff;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 0.5rem;
+        }
+        a {
+            color: #64b5f6;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #90caf9;
+            text-decoration: underline;
+        }
+    </style>
+</body>
+</html>
