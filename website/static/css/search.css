@@ -61,13 +61,14 @@ h4 {
 }
 
 .category-filters {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 15px;
     padding: 15px 0;
 }
 
 .category-filters label {
+    flex: 1;
     background: var(--accent-color);
     padding: 12px;
     border-radius: 8px;
@@ -93,19 +94,20 @@ h4 {
 }
 
 .search-filters {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 15px;
     padding: 15px 0;
 }
 
 .options-filters {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 15px;
 }
 
 .search-filters label {
+    flex: 1;
     background: var(--accent-color);
     padding: 12px;
     border-radius: 8px;
@@ -116,6 +118,7 @@ h4 {
 }
 
 .options-filters label {
+    flex: 1;
     background: var(--accent-color);
     padding: 12px;
     border-radius: 8px;
