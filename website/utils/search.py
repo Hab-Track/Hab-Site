@@ -2,12 +2,14 @@ import time
 import os
 from flask import jsonify
 from supabase import create_client, Client
+from dotenv import load_dotenv
 
 
 DB_PATH = "retro_data.db"
 ALLOWED_ASSET_TYPES = ['badges', 'furnis', 'clothes', 'effects']
 ALLOWED_SEARCH_TYPES = ['name', 'title', 'description']
 
+load_dotenv()
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
 supabase: Client = create_client(url, key)

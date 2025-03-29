@@ -141,6 +141,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 resultsContainer.innerHTML = `<div class="no-results">${data.message}</div>`;
                 return;
             }
+            if (data.execution_time) {
+                executionTime.innerHTML = `Search completed in ${data.execution_time} seconds`;
+            }
 
             let html = '';
             for (const [retro, retroData] of Object.entries(data.results)) {
