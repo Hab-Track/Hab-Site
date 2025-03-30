@@ -12,5 +12,17 @@
       "sizes": "100x105",
       "type": "image/png"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Graphs",
+      "short_name": "Graphs",
+      "url": "/graphs"
+    },
+    {
+      "name": "Search",
+      "short_name": "Search",
+      "url": "/search"
+    }
   ]
 }
