@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    {% include 'default.html' %}
+    
     <meta property="og:title" content="Hab Track - Graphs">
     <meta property="og:url" content="https://habtrack.vercel.app/graphs">
     <meta property="og:description" content="Graphs of stats for Hab Track">
@@ -15,7 +17,6 @@
     </script>
 
     <script src="{{ url_for('static', filename='js/load_graphs.js') }}"></script>
-    {% include 'default.html' %}
 </head>
 
 <body>
