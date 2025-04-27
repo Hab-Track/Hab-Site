@@ -1,5 +1,6 @@
 import os
 import json
+import markdown
 from flask_sitemap import Sitemap
 from flask import Flask, render_template, send_from_directory, request, jsonify
 from flask_caching import Cache
@@ -63,6 +64,16 @@ def search_post():
         selected_retros,
         search_in
     )
+
+
+@app.route('/about')
+def about():
+    with open("website/content/about.md", 'r', encoding='utf-8') as f:
+        md_content = f.read()
+    
+    html_content = markdown.markdown(md_content)
+    
+    return render_template('markdown_page.html', content=html_content)
 
 
 @app.route('/favicon.ico')

@@ -1,0 +1,155 @@
+:root {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --accent-color: #2c2c2c;
+    --accent-hover: #3a3a3a;
+    --border-color: #333;
+    --input-bg: #2d2d2d;
+    --hover-color: #3d3d3d;
+    --selected-color: #404040;
+    --link-color: #4a9eff;
+    --link-hover: #6fb5ff;
+    --code-bg: #2a2a2a;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Sidebar / Table of Contents */
+.sidebar {
+    width: 250px;
+    position: sticky;
+    top: 20px;
+    height: calc(100vh - 40px);
+    padding-right: 20px;
+    overflow-y: auto;
+    border-right: 1px solid var(--border-color);
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.toc ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.toc ul ul {
+    padding-left: 20px;
+}
+
+.toc li {
+    margin-bottom: 10px;
+}
+
+.toc a {
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.toc a:hover {
+    background-color: var(--hover-color);
+    color: var(--link-hover);
+}
+
+/* Main content */
+.content {
+    flex: 1;
+    padding-left: 30px;
+}
+
+.markdown-body h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.markdown-body h2 {
+    font-size: 1.8em;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.markdown-body h3 {
+    font-size: 1.4em;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.markdown-body p {
+    margin-bottom: 20px;
+}
+
+.markdown-body a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.markdown-body a:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+}
+
+.markdown-body ul, .markdown-body ol {
+    padding-left: 25px;
+    margin-bottom: 20px;
+}
+
+.markdown-body li {
+    margin-bottom: 8px;
+}
+
+.markdown-body code {
+    background-color: var(--code-bg);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+.markdown-body pre {
+    background-color: var(--code-bg);
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.markdown-body pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+.markdown-body blockquote {
+    border-left: 4px solid var(--accent-hover);
+    padding-left: 15px;
+    margin-left: 0;
+    color: #aaa;
+}
+
+h2, h3 {
+    text-align: left;
+}
