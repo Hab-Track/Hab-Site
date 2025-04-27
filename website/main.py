@@ -73,7 +73,7 @@ def about():
     
     html_content = markdown.markdown(md_content)
     
-    return render_template('markdown_page.html', content=html_content)
+    return render_template('markdown_page.html', content=html_content, url='/about', description='About the Hab Track project')
 
 
 @app.route('/favicon.ico')
