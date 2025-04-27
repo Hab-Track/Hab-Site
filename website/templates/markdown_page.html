@@ -63,7 +63,11 @@
             });
             
             toc.appendChild(tocList);
+        
+        document.querySelectorAll('.markdown-body a').forEach(link => {
+            link.setAttribute('target', '_blank');
         });
+    });
     </script>
 </body>
 
