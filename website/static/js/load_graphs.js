@@ -6,7 +6,6 @@ function updateGraphs() {
     loadGraphs(false);
 }
 
-
 function loadGraphs(scrollToCategory = true) {
     var showActiveOnly = document.getElementById('show_active_only').checked;
     $.get({
@@ -28,16 +27,10 @@ function loadGraphs(scrollToCategory = true) {
                 
                 plotDiv.classList.remove('plot-placeholder');
                 Plotly.newPlot(category, graphData.data, graphData.layout, { responsive: true });
-            });
-
-            document.querySelectorAll('.plot-container').forEach(function(element) {
-                const plotName = element.getAttribute('data-plot-name');
-                if (plotName) {
-                    const hashName = plotName.toLowerCase().replace(/\s/g, '-');
-                    element.addEventListener('click', function() {
-                        history.pushState(null, null, '#' + hashName);
-                    });
-                }
+                
+                plotDiv.addEventListener('click', function() {
+                    history.pushState(null, null, '#' + category);
+                });
             });
 
             if (scrollToCategory) {
@@ -53,7 +46,6 @@ function loadGraphs(scrollToCategory = true) {
     });
 }
 
-
 $(document).ready(function() {
     var showActiveOnly = new URLSearchParams(window.location.search).get('show_active_only') === 'true';
     $('#show_active_only').prop('checked', showActiveOnly);
@@ -61,5 +53,11 @@ $(document).ready(function() {
 
     $('#show_active_only').change(function() {
         updateGraphs();
+    });
+    
+    window.addEventListener('popstate', function(event) {
+        var showActiveOnly = new URLSearchParams(window.location.search).get('show_active_only') === 'true';
+        $('#show_active_only').prop('checked', showActiveOnly);
+        loadGraphs();
     });
 });
