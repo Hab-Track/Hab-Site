@@ -7,9 +7,26 @@
 <meta name="theme-color" content="#212121">
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/topbar.css') }}">
 <link rel="icon" href="/img/H.ico">
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 
+<div class="topbar">
+    <a href="/" class="site-title">Hab Track</a>
+    
+    {% if request.path == '/graphs' %}
+    <form id="activeRetroForm" method="get" action="{{ url_for('graphs') }}" class="active-retro-form">
+        <label for="show_active_only">Show only active retros</label>
+        <input type="checkbox" id="show_active_only" name="show_active_only" {% if show_active_only %}checked{% endif %} value="true" onchange="this.form.submit()">
+    </form>
+    {% endif %}
+    
+    <div class="nav-buttons">
+        <a href="https://discord.gg/7SvKF6wpss" target="_blank" class="nav-button">Discord</a>
+        <a href="/api/docs" target="_blank" class="nav-button">API</a>
+        <a href="/about" class="nav-button">About</a>
+    </div>
+</div>
 
 <!-- Vercel web analytics -->
 <script>

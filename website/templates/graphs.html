@@ -20,12 +20,6 @@
 </head>
 
 <body>
-    <form id="activeRetroForm" method="get" action="{{ url_for('graphs') }}">
-        <label for="show_active_only">Show only active retros</label>
-        <input type="checkbox" id="show_active_only" name="show_active_only" {% if show_active_only %}checked{% endif %}
-            value="true">
-    </form>
-
     <div id="plots">
         {% for categorie in categories %}
         <div id="{{ categorie }}" class="plot-placeholder">Loading graph...</div>
@@ -34,5 +28,11 @@
 
     <h2>The spike at 06/18/2024 in furnis represent the switch from ProductData to FurnitureData</h2>
 </body>
+
+<style>
+    body {
+        padding-top: 65px;
+    }
+</style>
 
 </html>

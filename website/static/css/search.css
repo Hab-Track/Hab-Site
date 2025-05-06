@@ -21,6 +21,7 @@ body {
     min-height: 100vh;
     overflow-y: auto;
     box-sizing: border-box;
+    padding-top: 75px;
 }
 
 .container {

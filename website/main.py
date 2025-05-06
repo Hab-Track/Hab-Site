@@ -3,7 +3,6 @@ import json
 import markdown
 from flask_sitemap import Sitemap
 from flask import Flask, render_template, send_from_directory, request, jsonify
-from flask_caching import Cache
 
 from .utils.plot_functions import create_plot_for_category
 from .utils.search import process_search_query, get_retros
@@ -14,7 +13,6 @@ ext = Sitemap(app=app)
 
 app.config['CACHE_TYPE'] = 'simple'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 3600
-cache = Cache(app)
 
 
 with open("track_stats.json", "r") as f:
@@ -31,9 +29,7 @@ def home():
 
 
 @app.route('/graphs_data')
-@cache.cached()
 def graphs_data():
-    print('Generating')
     show_active_only = request.args.get('show_active_only', 'false') == 'true'
     plots = cached_plots_active if show_active_only else cached_plots_all
 
@@ -41,7 +37,6 @@ def graphs_data():
 
 
 @app.route('/graphs')
-@cache.cached()
 def graphs():
     return render_template('graphs.html', categories=categories)
 

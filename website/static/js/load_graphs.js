@@ -2,7 +2,7 @@ function updateGraphs() {
     var showActiveOnly = document.getElementById('show_active_only').checked;
     var newUrl = new URL(window.location.href);
     newUrl.searchParams.set('show_active_only', showActiveOnly ? 'true' : 'false');
-    window.history.pushState({}, '', newUrl);
+    // window.history.pushState({}, '', newUrl);
     loadGraphs(false);
 }
 
