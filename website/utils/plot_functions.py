@@ -36,8 +36,8 @@ def create_plot_for_category(data, category, show_active_only):
         xaxis_title='Date',
         yaxis_title='Count',
         font=dict(color='white'),
-        plot_bgcolor='rgba(50,50,50,50)',
-        paper_bgcolor='rgba(50,50,50,50)'
+        plot_bgcolor='#1a1a1a',
+        paper_bgcolor='#1a1a1a'
     )
     
     return fig.to_json()
