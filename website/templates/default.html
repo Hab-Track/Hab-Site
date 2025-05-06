@@ -12,12 +12,22 @@
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 
 <div class="topbar">
-    <a href="/" class="site-title">Hab Track</a>
+    <div style="display: flex; align-items: center;">
+        <a href="/" class="site-title">Hab Track</a>
+        {% if request.path == '/graphs' %}
+        <div class="info-button" id="info-button" style="margin-left: 15px;">
+            <span>ℹ</span>
+            <div class="info-tooltip">The spike at 06/18/2024 in furnis represent the switch from ProductData to FurnitureData</div>
+        </div>
+        {% endif %}
+    </div>
     
     {% if request.path == '/graphs' %}
     <form id="activeRetroForm" method="get" action="{{ url_for('graphs') }}" class="active-retro-form">
-        <label for="show_active_only">Show only active retros</label>
-        <input type="checkbox" id="show_active_only" name="show_active_only" {% if show_active_only %}checked{% endif %} value="true">
+        <label>
+            <span>Show only active retros</span>
+            <input type="checkbox" id="show_active_only" name="show_active_only" {% if show_active_only %}checked{% endif %} value="true">
+        </label>
     </form>
     {% endif %}
     
@@ -27,7 +37,6 @@
         <a href="/about" class="nav-button">About</a>
     </div>
 </div>
-
 <!-- Vercel web analytics -->
 <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
