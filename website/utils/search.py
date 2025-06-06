@@ -33,20 +33,26 @@ def get_retro_urls(selected_categories, selected_retros):
 
 def fetch_data(category, search_in, selected_retros, search_query):
     res = []
-    if category in ["badges", "furnis"]:
-        if 'name' in search_in:
-            query = supabase.table(category).select("retro, name, title, description").in_("retro", selected_retros).like("name", search_query).execute()
-            res.append(query.data)
-        if 'title' in search_in:
-            query = supabase.table(category).select("retro, name, title, description").in_("retro", selected_retros).like("title", search_query).execute()
-            res.append(query.data)
-        if 'description' in search_in:
-            query = supabase.table(category).select("retro, name, title, description").in_("retro", selected_retros).like("description", search_query).execute()
-            res.append(query.data)
-    else:
-        query = supabase.table(category).select("retro, name").in_("retro", selected_retros).like("name", search_query).execute()
-        res.append(query.data)
-    
+    for retro in selected_retros:
+        for search_type in search_in:
+            try:
+                if category in ["badges", "furnis"]:
+                    query = supabase.table(category)\
+                        .select("retro, name, title, description")\
+                        .eq("retro", retro)\
+                        .fts(search_type, search_query)\
+                        .execute()
+                else:
+                    query = supabase.table(category)\
+                        .select("retro, name")\
+                        .eq("retro", retro)\
+                        .fts(search_type, search_query)\
+                        .execute()
+                res.append(query.data)
+            except Exception as e:
+                print(f"Timeout for {retro=}, {search_type=} — {e}")
+                continue
+
     return res
 
 def search_database(selected_categories, selected_retros, search_query, search_in=None):
@@ -84,7 +90,6 @@ def search_database(selected_categories, selected_retros, search_query, search_i
                         'name': name
                     }
         
-        # Construire les résultats pour cette catégorie
         for (retro, name), data in processed_items.items():
             base_url = urls.get((retro, category))
             if base_url:
