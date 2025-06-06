@@ -60,17 +60,17 @@ async function processNitroFile(url) {
     return null;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const dropdownHeader = document.querySelector('.dropdown-header');
     const retrosList = document.querySelector('.retros-list');
     const selectAllCheckbox = document.getElementById('select-all-retros');
     const retroCheckboxes = document.querySelectorAll('input[name="retros"]');
     const retroSearchInput = document.getElementById('retro-search-input');
 
-    retroSearchInput.addEventListener('input', function(e) {
+    retroSearchInput.addEventListener('input', function (e) {
         const searchValue = e.target.value.toLowerCase();
         const retroLabels = document.querySelectorAll('.retros-list label:not(:first-child)');
-        
+
         retroLabels.forEach(label => {
             const text = label.textContent.toLowerCase();
             label.style.display = text.includes(searchValue) ? 'flex' : 'none';
@@ -109,8 +109,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     updateSelectedCount();
 
-    document.getElementById('searchForm').addEventListener('submit', async function(e) {
+    document.getElementById('searchForm').addEventListener('submit', async function (e) {
         e.preventDefault();
+
         const loading = document.getElementById('loading');
         const resultsContainer = document.getElementById('results-container');
         const executionTime = document.getElementById('execution-time');
@@ -120,88 +121,122 @@ document.addEventListener('DOMContentLoaded', function() {
         resultsContainer.innerHTML = '';
         executionTime.innerHTML = '';
 
-        try {
-            const response = await fetch('/search', {
-                method: 'POST',
-                body: new FormData(this)
-            });
+        const formData = new FormData(this);
+        const searchQuery = formData.get('search');
+        const selectedCategories = formData.getAll('categories');
+        const searchIn = formData.getAll('search_in');
+        const selectedRetros = formData.getAll('retros');
 
-            const data = await response.json();
+        if (!searchQuery || selectedRetros.length === 0) {
             loading.style.display = 'none';
-            
-            if (data.error) {
-                resultsContainer.innerHTML = `<div class="no-results error">${data.error}</div>`;
-                return;
-            }
-            if (data.warning) {
-                resultsContainer.innerHTML = `<div class="no-results warning">${data.warning}</div>`;
-                return;
-            }
-            if (data.message) {
-                resultsContainer.innerHTML = `<div class="no-results">${data.message}</div>`;
-                return;
-            }
-            if (data.execution_time) {
-                executionTime.innerHTML = `Search completed in ${data.execution_time} seconds`;
-            }
+            resultsContainer.innerHTML = `<div class="no-results warning">Please enter a search and select at least one retro.</div>`;
+            return;
+        }
 
-            let html = '';
-            for (const [retro, retroData] of Object.entries(data.results)) {
-                html += `
-                    <div class="retro-section">
-                        <h2 class="retro-name">${retro}</h2>
-                        ${Object.entries(retroData).map(([category, items]) => `
-                            <div class="result-category">
-                                <h3>${category}</h3>
-                                ${Object.entries(items).map(([key, [value, imageUrl, title, description]]) => `
-                                    <div class="result-item">
-                                        <div class="result-item-text">
-                                            <strong>${value}</strong>
-                                            ${title ? `<div class="item-title">${title}</div>` : ''}
-                                            ${description ? `<div class="item-description">${description}</div>` : ''}
-                                        </div>
-                                        ${!disablePreviews && imageUrl ? `
-                                            <img src="${imageUrl}" 
-                                                alt="${value}" 
-                                                data-original-url="${imageUrl}"
-                                                class="result-image">
-                                        ` : ''}
-                                    </div>
-                                `).join('')}
+        let mergedResults = {};
+        let totalExecutionTime = 0;
+
+        for (const retro of selectedRetros) {
+            const fd = new FormData();
+            fd.append('search', searchQuery);
+            for (const cat of selectedCategories) fd.append('categories', cat);
+            fd.append('retros', retro);
+            for (const sIn of searchIn) fd.append('search_in', sIn);
+
+            try {
+                const response = await fetch('/search', { method: 'POST', body: fd });
+                const data = await response.json();
+
+                if (data.error || data.warning) {
+                    loading.style.display = 'none';
+                    resultsContainer.innerHTML = `<div class="no-results error">${data.error || data.warning}</div>`;
+                    break;
+                }
+
+                totalExecutionTime += data.execution_time || 0;
+
+                if (data.results) {
+                    for (const [r, categories] of Object.entries(data.results)) {
+                        if (!mergedResults[r]) mergedResults[r] = {};
+                        for (const [cat, items] of Object.entries(categories)) {
+                            if (!mergedResults[r][cat]) mergedResults[r][cat] = {};
+                            Object.assign(mergedResults[r][cat], items);
+                        }
+                    }
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                resultsContainer.innerHTML = `<div class="no-results error">Network or server error occurred.</div>`;
+                console.error(`Error fetching results for retro ${retro}:`, error);
+                break;
+            }
+        }
+
+        loading.style.display = 'none';
+
+        if (Object.keys(mergedResults).length === 0) {
+            if (!resultsContainer.querySelector('.error')) {
+                resultsContainer.innerHTML = `<div class="no-results">No results found for your search.</div>`;
+                executionTime.innerHTML = '';
+            }
+            return;
+        }
+
+        executionTime.innerHTML = `Search completed in ${totalExecutionTime.toFixed(2)} seconds`;
+
+        let html = '';
+        for (const [retro, retroData] of Object.entries(mergedResults)) {
+            html += `
+            <div class="retro-section">
+                <h2 class="retro-name">${retro}</h2>
+                ${Object.entries(retroData).map(([category, items]) => `
+                    <div class="result-category">
+                        <h3>${category}</h3>
+                        ${Object.entries(items).map(([key, [value, imageUrl, title, description]]) => `
+                            <div class="result-item">
+                                <div class="result-item-text">
+                                    <strong>${value}</strong>
+                                    ${title ? `<div class="item-title">${title}</div>` : ''}
+                                    ${description ? `<div class="item-description">${description}</div>` : ''}
+                                </div>
+                                ${!disablePreviews && imageUrl ? `
+                                    <img src="${imageUrl}" 
+                                        alt="${value}" 
+                                        data-original-url="${imageUrl}"
+                                        class="result-image">
+                                ` : ''}
                             </div>
                         `).join('')}
                     </div>
-                `;
-            }
+                `).join('')}
+            </div>
+        `;
+        }
 
-            resultsContainer.innerHTML = html;
+        resultsContainer.innerHTML = html;
 
-            if (!disablePreviews) {
-                const images = resultsContainer.querySelectorAll('.result-image');
-                for (const img of images) {
-                    const originalUrl = img.getAttribute('data-original-url');
-                    if (originalUrl && originalUrl.endsWith('.nitro')) {
-                        try {
-                            const pngUrl = await processNitroFile(originalUrl);
-                            if (pngUrl) {
-                                img.src = pngUrl;
-                            } else {
-                                img.style.display = 'none';
-                            }
-                        } catch (error) {
-                            console.error('Error processing image:', error);
+        if (!disablePreviews) {
+            const images = resultsContainer.querySelectorAll('.result-image');
+            for (const img of images) {
+                const originalUrl = img.getAttribute('data-original-url');
+                if (originalUrl && originalUrl.endsWith('.nitro')) {
+                    try {
+                        const pngUrl = await processNitroFile(originalUrl);
+                        if (pngUrl) {
+                            img.src = pngUrl;
+                        } else {
                             img.style.display = 'none';
                         }
+                    } catch (error) {
+                        console.error('Error processing image:', error);
+                        img.style.display = 'none';
                     }
-                    
-                    img.onerror = function() {
-                        this.style.display = 'none';
-                    };
                 }
+
+                img.onerror = function () {
+                    this.style.display = 'none';
+                };
             }
-        } catch (error) {
-            loading.style.display = 'none';
-            console.error('Error:', error);
         }
     });
 });
