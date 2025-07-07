@@ -28,7 +28,7 @@ def create_plot_for_category(data, category, show_active_only):
             mode='lines+markers',
             name=retro,
             marker=dict(size=8),
-            line=dict(width=2),
+            line=dict(shape="hv", width=2),
             connectgaps=True
         ))
 
