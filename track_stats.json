@@ -16393,12 +16393,6 @@
       "4255 clothes",
       "457 effects"
     ],
-    "habbo.com": [
-      "11798 badges",
-      "16247 furnis",
-      "9566 clothes",
-      "240 effects"
-    ],
     "habbo.gd": [
       "4773 clothes",
       "530 effects",
@@ -16437,6 +16431,74 @@
     ]
   },
   "2025-07-14": {
+    "habblet.city": [
+      "10493 badges",
+      "33920 furnis",
+      "4255 clothes",
+      "457 effects"
+    ],
+    "habbo.gd": [
+      "4773 clothes",
+      "530 effects",
+      "13153 badges",
+      "29142 furnis"
+    ],
+    "habbo.st": [
+      "24125 badges",
+      "31557 furnis",
+      "4221 clothes",
+      "378 effects"
+    ],
+    "habbocity.me": [
+      "26922 badges",
+      "47275 furnis",
+      "2019 clothes",
+      "518 effects"
+    ],
+    "habboon.pw": [
+      "13121 badges",
+      "17354 furnis",
+      "2749 clothes",
+      "241 effects"
+    ],
+    "habland.com.tr": [
+      "10643 badges",
+      "36274 furnis",
+      "1731 clothes",
+      "239 effects"
+    ],
+    "habplace.se": [
+      "10796 badges",
+      "19272 furnis",
+      "2566 clothes",
+      "237 effects"
+    ],
+    "habtime.org": [
+      "10643 badges",
+      "30093 furnis",
+      "5863 clothes",
+      "908 effects"
+    ],
+    "hubba.cc": [
+      "12605 badges",
+      "27335 furnis",
+      "2951 clothes",
+      "216 effects"
+    ],
+    "ironhotel.org": [
+      "21023 badges",
+      "33443 furnis",
+      "4174 clothes",
+      "468 effects"
+    ],
+    "leet.city": [
+      "7063 badges",
+      "39835 furnis",
+      "4255 clothes",
+      "465 effects"
+    ]
+  },
+  "2025-07-15": {
     "anubisrp.com": [
       "11349 badges",
       "16417 furnis",
@@ -16481,6 +16543,12 @@
       "5203 clothes",
       "494 effects"
     ],
+    "habbo.com": [
+      "11798 badges",
+      "16247 furnis",
+      "9566 clothes",
+      "240 effects"
+    ],
     "habbo.gd": [
       "4773 clothes",
       "530 effects",
@@ -16494,8 +16562,8 @@
       "378 effects"
     ],
     "habbocity.me": [
-      "26922 badges",
-      "47275 furnis",
+      "26929 badges",
+      "47276 furnis",
       "2019 clothes",
       "518 effects"
     ],
@@ -16542,8 +16610,8 @@
       "239 effects"
     ],
     "habplace.se": [
-      "10796 badges",
-      "19272 furnis",
+      "10798 badges",
+      "19274 furnis",
       "2566 clothes",
       "237 effects"
     ],
@@ -16581,7 +16649,7 @@
       "464 effects"
     ],
     "ironhotel.org": [
-      "21023 badges",
+      "21027 badges",
       "33443 furnis",
       "4174 clothes",
       "468 effects"
@@ -16593,7 +16661,7 @@
       "465 effects"
     ],
     "leethotel.biz": [
-      "9335 badges",
+      "9354 badges",
       "36823 furnis",
       "4255 clothes",
       "292 effects"
