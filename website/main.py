@@ -2,7 +2,7 @@ import os
 import json
 import markdown
 from flask_sitemap import Sitemap
-from flask import Flask, render_template, send_from_directory, request, jsonify
+from flask import Flask, render_template, send_from_directory, request, jsonify, redirect
 
 from .utils.plot_functions import create_plot_for_category
 from .utils.search import process_search_query, get_retros
@@ -14,6 +14,7 @@ ext = Sitemap(app=app)
 app.config['CACHE_TYPE'] = 'simple'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 3600
 
+discord_server = "https://discord.gg/7SvKF6wpss"
 
 with open("track_stats.json", "r") as f:
     data = json.load(f)
@@ -26,6 +27,11 @@ cached_plots_all = {category: create_plot_for_category(data, category, False) fo
 @app.route('/')
 def home():
     return render_template('home.html')
+
+
+@app.route('/discord')
+def discord():
+    return redirect(discord_server)
 
 
 @app.route('/graphs_data')

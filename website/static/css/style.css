@@ -49,3 +49,8 @@ h2, h3 {
 h4 {
     margin-top: 15px;
 }
+
+a {
+    color: #1e90ff;
+    text-decoration: none;
+}
