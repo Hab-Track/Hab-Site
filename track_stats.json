@@ -18941,6 +18941,37 @@
     ]
   },
   "2025-09-23": {
+    "habblet.city": [
+      "34248 furnis"
+    ],
+    "habblive.in": [
+      "43451 badges"
+    ],
+    "habbo.com": [
+      "11939 badges",
+      "9831 clothes"
+    ],
+    "habbocity.fr": [
+      "27353 badges",
+      "2215 clothes"
+    ],
+    "habbos.tv": [
+      "7036 clothes"
+    ],
+    "habcrush.pw": [
+      "10795 badges"
+    ],
+    "habhub.net": [
+      "10865 badges"
+    ],
+    "habplace.se": [
+      "20082 furnis"
+    ],
+    "hartico.tv": [
+      "13212 badges"
+    ]
+  },
+  "2025-09-24": {
     "anubisrp.com": [
       "11349 badges",
       "16752 furnis",
@@ -18968,19 +18999,19 @@
       "659 effects"
     ],
     "habbix.me": [
-      "10341 badges",
+      "10344 badges",
       "42071 furnis",
       "3545 clothes",
       "497 effects"
     ],
     "habblet.city": [
-      "10666 badges",
-      "34248 furnis",
+      "10696 badges",
+      "34250 furnis",
       "4407 clothes",
       "457 effects"
     ],
     "habblive.in": [
-      "43451 badges",
+      "43454 badges",
       "51645 furnis",
       "5240 clothes",
       "494 effects"
@@ -19001,7 +19032,7 @@
       "4773 clothes",
       "530 effects",
       "13153 badges",
-      "31818 furnis"
+      "31820 furnis"
     ],
     "habbo.st": [
       "24382 badges",
@@ -19010,7 +19041,7 @@
       "378 effects"
     ],
     "habbocity.fr": [
-      "27353 badges",
+      "27357 badges",
       "48689 furnis",
       "2215 clothes",
       "520 effects"
@@ -19022,7 +19053,7 @@
       "536 effects"
     ],
     "habboon.pw": [
-      "13217 badges",
+      "13220 badges",
       "17507 furnis",
       "2801 clothes",
       "242 effects"
@@ -19030,7 +19061,7 @@
     "habbos.tv": [
       "71880 badges",
       "55171 furnis",
-      "7036 clothes",
+      "7047 clothes",
       "909 effects"
     ],
     "habbosk.us": [
@@ -19053,7 +19084,7 @@
     ],
     "habcrush.pw": [
       "10795 badges",
-      "30199 furnis",
+      "30200 furnis",
       "5004 clothes",
       "203 effects"
     ],
@@ -19071,7 +19102,7 @@
     ],
     "habplace.se": [
       "10845 badges",
-      "20082 furnis",
+      "20086 furnis",
       "2609 clothes",
       "237 effects"
     ],
@@ -19132,7 +19163,7 @@
       "465 effects"
     ],
     "leethotel.biz": [
-      "9574 badges",
+      "9582 badges",
       "37173 furnis",
       "4332 clothes",
       "292 effects"
@@ -19174,7 +19205,7 @@
       "477 effects"
     ],
     "xkekos.tv": [
-      "57208 furnis"
+      "57362 furnis"
     ]
   }
 }
