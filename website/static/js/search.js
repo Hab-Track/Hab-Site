@@ -203,6 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     <img src="${imageUrl}" 
                                         alt="${value}" 
                                         data-original-url="${imageUrl}"
+                                        loading="lazy"
                                         class="result-image">
                                 ` : ''}
                             </div>
@@ -217,25 +218,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!disablePreviews) {
             const images = resultsContainer.querySelectorAll('.result-image');
-            for (const img of images) {
-                const originalUrl = img.getAttribute('data-original-url');
-                if (originalUrl && originalUrl.endsWith('.nitro')) {
-                    try {
-                        const pngUrl = await processNitroFile(originalUrl);
-                        if (pngUrl) {
-                            img.src = pngUrl;
-                        } else {
-                            img.style.display = 'none';
+            const imageObserver = new IntersectionObserver(async (entries, observer) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const originalUrl = img.getAttribute('data-original-url');
+                        
+                        if (originalUrl && originalUrl.endsWith('.nitro')) {
+                            try {
+                                const pngUrl = await processNitroFile(originalUrl);
+                                if (pngUrl) {
+                                    img.src = pngUrl;
+                                } else {
+                                    img.style.display = 'none';
+                                }
+                            } catch (error) {
+                                console.error('Error processing image:', error);
+                                img.style.display = 'none';
+                            }
                         }
-                    } catch (error) {
-                        console.error('Error processing image:', error);
-                        img.style.display = 'none';
+
+                        img.onerror = function () {
+                            this.style.display = 'none';
+                        };
+                        
+                        observer.unobserve(img);
                     }
                 }
+            }, {
+                rootMargin: '50px 0px',
+                threshold: 0.1
+            });
 
-                img.onerror = function () {
-                    this.style.display = 'none';
-                };
+            for (const img of images) {
+                imageObserver.observe(img);
             }
         }
     });
