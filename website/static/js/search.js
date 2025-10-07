@@ -137,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let totalExecutionTime = 0;
 
         for (const retro of selectedRetros) {
+            executionTime.innerHTML = 'Searching retro ' + (selectedRetros.indexOf(retro) + 1) + ' of ' + selectedRetros.length;
             const fd = new FormData();
             fd.append('search', searchQuery);
             for (const cat of selectedCategories) fd.append('categories', cat);
