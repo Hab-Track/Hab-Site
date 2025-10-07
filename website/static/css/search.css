@@ -404,6 +404,8 @@ h4 {
     width: 50px;
     height: 50px;
     align-self: end;
+    object-fit: cover;
+    cursor: pointer;
 }
 
 .result-category:has(h3:contains('Furniture')) img {
