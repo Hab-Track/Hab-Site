@@ -201,11 +201,13 @@ document.addEventListener('DOMContentLoaded', function () {
                                     ${description ? `<div class="item-description">${description}</div>` : ''}
                                 </div>
                                 ${!disablePreviews && imageUrl ? `
-                                    <img src="${imageUrl}" 
-                                        alt="${value}" 
-                                        data-original-url="${imageUrl}"
-                                        loading="lazy"
-                                        class="result-image">
+                                    <a target="_blank" href="${imageUrl}">
+                                        <img src="${imageUrl}" 
+                                            alt="${value}" 
+                                            data-original-url="${imageUrl}"
+                                            loading="lazy"
+                                            class="result-image">
+                                    </a>
                                 ` : ''}
                             </div>
                         `).join('')}
