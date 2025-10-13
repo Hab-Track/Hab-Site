@@ -1,62 +1,58 @@
 import time
-import os
 from flask import jsonify
-from supabase import create_client, Client
-from dotenv import load_dotenv
+from utils.db import conn
 
 
-DB_PATH = "retro_data.db"
 ALLOWED_ASSET_TYPES = ['badges', 'furnis', 'clothes', 'effects']
 ALLOWED_SEARCH_TYPES = ['name', 'title', 'description']
 
-load_dotenv()
-url: str = os.environ.get("SUPABASE_URL")
-key: str = os.environ.get("SUPABASE_KEY")
-supabase: Client = create_client(url, key)
-
 
 def get_retros():
-    retros = set()
-    table = "retro_urls"
-    
-    response = supabase.table(table).select("retro").execute()
-    for row in response.data:
-        retros.add(row['retro'])
-    
-    return list(retros)
+    with conn.cursor() as cur:
+        cur.execute("SELECT DISTINCT retro FROM retro_urls;")
+        return [r["retro"] for r in cur.fetchall()]
 
 
 def get_retro_urls(selected_categories, selected_retros):
-    supabase_query = supabase.table("retro_urls").select("retro, type, url").in_("retro", selected_retros).in_("type", selected_categories).execute()
-    return {(row['retro'], row['type']): row['url'] for row in supabase_query.data}
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT retro, type, url
+            FROM retro_urls
+            WHERE retro = ANY(%s) AND type = ANY(%s)
+        """, (selected_retros, selected_categories))
+        return {(r["retro"], r["type"]): r["url"] for r in cur.fetchall()}
 
 
 def fetch_data(category, search_in, selected_retros, search_query):
     res = []
-    for retro in selected_retros:
-        for search_type in search_in:
-            try:
-                if category in ["badges", "furnis"]:
-                    query = supabase.table(category)\
-                        .select("retro, name, title, description")\
-                        .eq("retro", retro)\
-                        .fts(search_type, search_query)\
-                        .execute()
-                else:
-                    query = supabase.table(category)\
-                        .select("retro, name")\
-                        .eq("retro", retro)\
-                        .fts(search_type, search_query)\
-                        .execute()
-                res.append(query.data)
-            except Exception as e:
-                print(f"Timeout for {retro=}, {search_type=} — {e}")
-                continue
-
+    with conn.cursor() as cur:
+        for retro in selected_retros:
+            for search_type in search_in:
+                if category not in ALLOWED_ASSET_TYPES:
+                    continue
+                try:
+                    if category in ["badges", "furnis"]:
+                        cur.execute(f"""
+                            SELECT retro, name, title, description
+                            FROM {category}
+                            WHERE retro = %s
+                            AND {search_type} ILIKE %s
+                        """, (retro, f"%{search_query}%"))
+                    else:
+                        cur.execute(f"""
+                            SELECT retro, name
+                            FROM {category}
+                            WHERE retro = %s
+                            AND {search_type} ILIKE %s
+                        """, (retro, f"%{search_query}%"))
+                    res.append(cur.fetchall())
+                except Exception as e:
+                    print(f"Error for {retro=}, {search_type=}: {e}")
     return res
 
+
 def search_database(selected_categories, selected_retros, search_query, search_in=None):
-    if not any(search_in in ALLOWED_SEARCH_TYPES for search_in in search_in):
+    if not any(s in ALLOWED_SEARCH_TYPES for s in search_in):
         raise ValueError("Invalid search type provided.")
     
     urls = get_retro_urls(selected_categories, selected_retros)
@@ -67,7 +63,6 @@ def search_database(selected_categories, selected_retros, search_query, search_i
             raise ValueError("Invalid asset type provided.")
         
         res_query = fetch_data(category, search_in, selected_retros, search_query)
-        
         processed_items = {}
         
         for rows in res_query:
@@ -114,7 +109,7 @@ def search_database(selected_categories, selected_retros, search_query, search_i
     return search_results
 
 
-def process_search_query(search_query, selected_categories, selected_retros, search_in):
+def process_search_query(search_query, selected_categories, selected_retros, search_in) -> jsonify:
     if not search_query:
         return jsonify({'warning': 'No search query provided.'})
     
