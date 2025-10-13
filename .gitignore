@@ -2,5 +2,3 @@ __pycache__
 .vscode/
 .vercel/
 .env
-
-temp/
