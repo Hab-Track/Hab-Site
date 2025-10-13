@@ -11,9 +11,6 @@ DB_NAME = "mydb"
 DB_HOST = "localhost"
 DB_PORT = 5432
 
-from utils.cloudflared import install_and_start
-install_and_start()
-
 try:
     conn = psycopg2.connect(
         host=DB_HOST,
@@ -21,8 +18,7 @@ try:
         user=DB_USER,
         password=DB_PASS,
         dbname=DB_NAME,
-        cursor_factory=RealDictCursor,
-        connect_timeout=10
+        cursor_factory=RealDictCursor
     )
     conn.autocommit = True
     print("Connected to the database")
