@@ -19911,6 +19911,58 @@
     ]
   },
   "2025-10-18": {
+    "habbix.me": [
+      "10416 badges",
+      "42111 furnis"
+    ],
+    "habblive.in": [
+      "43758 badges",
+      "51940 furnis"
+    ],
+    "habbo.cm": [
+      "8312 badges"
+    ],
+    "habbo.com": [
+      "11970 badges",
+      "16607 furnis"
+    ],
+    "habbocity.fr": [
+      "27479 badges",
+      "49512 furnis"
+    ],
+    "habboz.ws": [
+      "11637 badges"
+    ],
+    "habbzhotel.it": [
+      "17782 furnis"
+    ],
+    "habcrush.pw": [
+      "30574 furnis"
+    ],
+    "habverse.net": [
+      "27136 badges",
+      "38451 furnis"
+    ],
+    "hartico.tv": [
+      "13443 badges",
+      "51460 furnis"
+    ],
+    "ironhotel.org": [
+      "21697 badges",
+      "34521 furnis",
+      "4351 clothes"
+    ],
+    "leethotel.biz": [
+      "37292 furnis"
+    ],
+    "webbohotel.it": [
+      "13507 badges"
+    ],
+    "wibbo.org": [
+      "19649 badges"
+    ]
+  },
+  "2025-10-19": {
     "anubisrp.com": [
       "11349 badges",
       "16893 furnis",
@@ -19919,8 +19971,14 @@
     ],
     "atlantaserver.me": [
       "12663 badges",
-      "5599 clothes",
+      "5600 clothes",
       "484 effects"
+    ],
+    "bobba.li": [
+      "10989 badges",
+      "32504 furnis",
+      "4951 clothes",
+      "531 effects"
     ],
     "fantasy.lu": [
       "23305 furnis"
@@ -19938,8 +19996,8 @@
       "659 effects"
     ],
     "habbix.me": [
-      "10416 badges",
-      "42111 furnis",
+      "10417 badges",
+      "42563 furnis",
       "3545 clothes",
       "497 effects"
     ],
@@ -19950,7 +20008,7 @@
       "458 effects"
     ],
     "habblive.in": [
-      "43758 badges",
+      "43761 badges",
       "51940 furnis",
       "5240 clothes",
       "494 effects"
@@ -19986,7 +20044,7 @@
       "378 effects"
     ],
     "habbocity.fr": [
-      "27479 badges",
+      "27482 badges",
       "49512 furnis",
       "2238 clothes",
       "521 effects"
@@ -19998,10 +20056,16 @@
       "536 effects"
     ],
     "habboon.pw": [
-      "13251 badges",
+      "13259 badges",
       "17507 furnis",
       "2801 clothes",
       "242 effects"
+    ],
+    "habborp.city": [
+      "11616 badges",
+      "31664 furnis",
+      "4407 clothes",
+      "325 effects"
     ],
     "habbos.tv": [
       "71880 badges",
@@ -20017,7 +20081,7 @@
     ],
     "habbox.co": [
       "9616 badges",
-      "68765 furnis",
+      "68846 furnis",
       "4879 clothes",
       "535 effects"
     ],
@@ -20035,7 +20099,7 @@
     ],
     "habcrush.pw": [
       "10811 badges",
-      "30574 furnis",
+      "30582 furnis",
       "5113 clothes",
       "203 effects"
     ],
@@ -20064,13 +20128,13 @@
       "909 effects"
     ],
     "habverse.net": [
-      "27136 badges",
-      "38451 furnis",
+      "27138 badges",
+      "38471 furnis",
       "7045 clothes",
       "947 effects"
     ],
     "haddoz.net": [
-      "28058 furnis"
+      "28118 furnis"
     ],
     "harbi.pw": [
       "11560 badges",
@@ -20079,7 +20143,7 @@
       "203 effects"
     ],
     "hartico.tv": [
-      "13443 badges",
+      "13450 badges",
       "51460 furnis",
       "7118 clothes",
       "903 effects"
@@ -20097,13 +20161,13 @@
     ],
     "hubba.cc": [
       "12672 badges",
-      "27785 furnis",
+      "27845 furnis",
       "2951 clothes",
       "216 effects"
     ],
     "ironhotel.org": [
-      "21697 badges",
-      "34521 furnis",
+      "21703 badges",
+      "34562 furnis",
       "4351 clothes",
       "468 effects"
     ],
@@ -20115,7 +20179,7 @@
     ],
     "leethotel.biz": [
       "9644 badges",
-      "37292 furnis",
+      "37293 furnis",
       "4332 clothes",
       "292 effects"
     ],
@@ -20149,6 +20213,12 @@
       "4221 clothes",
       "537 effects"
     ],
+    "wabbo.fr": [
+      "5599 badges",
+      "53370 furnis",
+      "6391 clothes",
+      "533 effects"
+    ],
     "webbohotel.it": [
       "13507 badges",
       "44393 furnis",
@@ -20162,7 +20232,7 @@
       "477 effects"
     ],
     "xkekos.tv": [
-      "57362 furnis"
+      "58945 furnis"
     ]
   }
 }
