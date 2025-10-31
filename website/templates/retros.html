@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'default.html' %}
+    <meta property="og:title" content="Hab Track - Retros">
+    <meta property="og:url" content="https://habtrack.vercel.app/retros">
+    <meta property="og:description" content="Browse all tracked Habbo retros">
+    <meta property="og:image" content="https://hab-track.vercel.app/img/banner.png">
+
+    <link rel="stylesheet" href="/static/css/retros.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="retros-header">
+            <h1>Habbo Retros Directory</h1>
+            <p>Browse all tracked retros and their current status</p>
+        </div>
+
+        <div class="search-section">
+            <div class="search-input-container">
+                <input type="text" id="retro-search" class="search-input" placeholder="Search retros...">
+                <div class="search-icon">🔍</div>
+            </div>
+            <div class="search-stats">
+                <span id="active-count">{{ retro_info|length }}</span> active retros
+                <span class="separator">•</span>
+                <span id="inactive-count">{{ retro_status|length }}</span> inactive retros
+            </div>
+        </div>
+
+        <div class="retros-content">
+            <div class="retros-section">
+                <div class="section-header">
+                    <h2>
+                        <span class="status-indicator active"></span>
+                        Active Retros
+                    </h2>
+                    <span class="section-count" id="active-visible-count">{{ retro_info|length }}</span>
+                </div>
+                
+                <div class="retros-grid" id="active-retros">
+                    {% for retro_name, retro_data in retro_info.items()|sort %}
+                    <div class="retro-card active" data-name="{{ retro_name.lower() }}">
+                        <div class="retro-header">
+                            <h3 class="retro-name">{{ retro_name }}</h3>
+                            <div class="retro-status">
+                                <span class="status-badge active">Active</span>
+                            </div>
+                        </div>
+                        
+                        <div class="retro-info">
+                            <div class="retro-links">
+                                {% if retro_data.retro_info %}
+                                    {% if retro_data.retro_info.site %}
+                                    <a href="{{ retro_data.retro_info.site }}" target="_blank" class="retro-link site">
+                                        <span class="link-icon">🌐</span>
+                                        Retro Site
+                                    </a>
+                                    {% endif %}
+                                    
+                                    {% if retro_data.retro_info.discord %}
+                                    <a href="{{ retro_data.retro_info.discord }}" target="_blank" class="retro-link discord">
+                                        <span class="link-icon">💬</span>
+                                        Retro Discord
+                                    </a>
+                                    {% endif %}
+                                {% endif %}
+                                
+                                <a href="https://discord.com/channels/1088116219984478228/{{ retro_data.channel_id }}" target="_blank" class="retro-link forum">
+                                    <span class="link-icon">📋</span>
+                                    Hab Track Forum
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="retros-section">
+                <div class="section-header">
+                    <h2>
+                        <span class="status-indicator inactive"></span>
+                        Inactive Retros
+                    </h2>
+                    <span class="section-count" id="inactive-visible-count">{{ retro_status|length }}</span>
+                </div>
+                
+                <div class="retros-grid" id="inactive-retros">
+                    {% for retro_name, status_data in retro_status.items()|sort %}
+                    <div class="retro-card inactive" data-name="{{ retro_name.lower() }}">
+                        <div class="retro-header">
+                            <h3 class="retro-name">{{ retro_name }}</h3>
+                            <div class="retro-status">
+                                <span class="status-badge {{ status_data.status.lower() }}">{{ status_data.status }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="retro-info">
+                            <div class="retro-meta">
+                                <span class="meta-item">
+                                    <span class="meta-label">Date:</span>
+                                    <span class="meta-value">{{ status_data.date }}</span>
+                                </span>
+                                
+                                {% if status_data.detail %}
+                                <span class="meta-item">
+                                    <span class="meta-label">Detail:</span>
+                                    <span class="meta-value">{{ status_data.detail }}</span>
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="no-results" id="no-results" style="display: none;">
+            <div class="no-results-icon">🔍</div>
+            <h3>No retros found</h3>
+            <p>Can't find the retro you're looking for?</p>
+            <p>Please let us know the retro name and we'll add it to our tracking list!</p>
+            <a href="/discord" target="_blank" class="button">
+                <span>💬</span>
+                Contact us on Discord
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('retro-search');
+            const activeRetros = document.querySelectorAll('#active-retros .retro-card');
+            const inactiveRetros = document.querySelectorAll('#inactive-retros .retro-card');
+            const noResults = document.getElementById('no-results');
+            const activeVisibleCount = document.getElementById('active-visible-count');
+            const inactiveVisibleCount = document.getElementById('inactive-visible-count');
+            const retrosContent = document.querySelector('.retros-content');
+
+            function updateCounts() {
+                const visibleActive = document.querySelectorAll('#active-retros .retro-card:not([style*="display: none"])').length;
+                const visibleInactive = document.querySelectorAll('#inactive-retros .retro-card:not([style*="display: none"])').length;
+                
+                activeVisibleCount.textContent = visibleActive;
+                inactiveVisibleCount.textContent = visibleInactive;
+                
+                const hasResults = visibleActive > 0 || visibleInactive > 0;
+                noResults.style.display = hasResults ? 'none' : 'block';
+                retrosContent.style.display = hasResults ? 'block' : 'none';
+            }
+
+            function filterRetros(searchTerm) {
+                const term = searchTerm.toLowerCase().trim();
+                
+                [...activeRetros, ...inactiveRetros].forEach(card => {
+                    const retroName = card.dataset.name;
+                    const isVisible = retroName.includes(term);
+                    card.style.display = isVisible ? 'block' : 'none';
+                });
+                
+                updateCounts();
+            }
+
+            searchInput.addEventListener('input', function() {
+                filterRetros(this.value);
+            });
+
+            updateCounts();
+        });
+    </script>
+</body>
+
+</html>

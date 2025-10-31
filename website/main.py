@@ -67,6 +67,17 @@ def search_post():
     )
 
 
+@app.route('/retros')
+def retros():
+    with open("datas/retro_info.json", "r", encoding='utf-8') as f:
+        retro_info = json.load(f)
+    
+    with open("datas/retro_status.json", "r", encoding='utf-8') as f:
+        retro_status = json.load(f)
+    
+    return render_template('retros.html', retro_info=retro_info, retro_status=retro_status)
+
+
 @app.route('/about')
 def about():
     with open("website/content/about.md", 'r', encoding='utf-8') as f:
@@ -86,6 +97,8 @@ def favicon():
 def index():
     yield 'home', {}, "", "", 1
     yield 'graphs', {}, "", "daily", 0.8
+    yield 'search', {}, "", "daily", 0.6
+    yield 'retros', {}, "", "daily", 0.4
     yield 'raw_stats', {}, "", "daily", 0.2
 
 
