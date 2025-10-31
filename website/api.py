@@ -12,7 +12,7 @@ app = FastAPI(
     },
 )
 
-with open("track_stats.json", "r") as f:
+with open("datas/track_stats.json", "r") as f:
     data = json.load(f)
 
 

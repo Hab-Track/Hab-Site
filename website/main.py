@@ -16,7 +16,7 @@ app.config['CACHE_DEFAULT_TIMEOUT'] = 3600
 
 discord_server = "https://discord.gg/7SvKF6wpss"
 
-with open("track_stats.json", "r") as f:
+with open("datas/track_stats.json", "r") as f:
     data = json.load(f)
 
 categories = ['badges', 'furnis', 'clothes', 'effects']
