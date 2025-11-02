@@ -4,6 +4,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+from .utils.fecth_data import fetch_data
+
 app = FastAPI(
     title="Hab Track - API",
     license_info={
@@ -12,8 +14,8 @@ app = FastAPI(
     },
 )
 
-with open("datas/track_stats.json", "r") as f:
-    data = json.load(f)
+
+data = fetch_data("track_stats.json")
 
 
 app.add_middleware(

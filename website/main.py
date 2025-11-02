@@ -6,6 +6,7 @@ from flask import Flask, render_template, send_from_directory, request, jsonify,
 
 from .utils.plot_functions import create_plot_for_category
 from .utils.search import process_search_query, get_retros
+from .utils.fecth_data import fetch_data
 
 
 app = Flask(__name__)
@@ -16,8 +17,9 @@ app.config['CACHE_DEFAULT_TIMEOUT'] = 3600
 
 discord_server = "https://discord.gg/7SvKF6wpss"
 
-with open("datas/track_stats.json", "r") as f:
-    data = json.load(f)
+data = fetch_data("track_stats.json")
+retro_info = fetch_data("retro_info.json")
+retro_status = fetch_data("retro_status.json")
 
 categories = ['badges', 'furnis', 'clothes', 'effects']
 cached_plots_active = {category: create_plot_for_category(data, category, True) for category in categories}
@@ -69,12 +71,6 @@ def search_post():
 
 @app.route('/retros')
 def retros():
-    with open("datas/retro_info.json", "r", encoding='utf-8') as f:
-        retro_info = json.load(f)
-    
-    with open("datas/retro_status.json", "r", encoding='utf-8') as f:
-        retro_status = json.load(f)
-    
     return render_template('retros.html', retro_info=retro_info, retro_status=retro_status)
 
 
