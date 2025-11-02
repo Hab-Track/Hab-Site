@@ -1,5 +1,4 @@
 import os
-import json
 import markdown
 from flask_sitemap import Sitemap
 from flask import Flask, render_template, send_from_directory, request, jsonify, redirect
@@ -11,9 +10,6 @@ from .utils.fecth_data import fetch_data
 
 app = Flask(__name__)
 ext = Sitemap(app=app)
-
-app.config['CACHE_TYPE'] = 'simple'
-app.config['CACHE_DEFAULT_TIMEOUT'] = 3600
 
 discord_server = "https://discord.gg/7SvKF6wpss"
 
