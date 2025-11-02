@@ -8,3 +8,4 @@ uvicorn
 supabase
 python-dotenv
 markdown
+requests
