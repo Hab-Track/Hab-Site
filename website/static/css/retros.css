@@ -25,6 +25,7 @@ body {
     padding-top: 100px;
     background: var(--background-dark);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: unset;
 }
 
 .container {
