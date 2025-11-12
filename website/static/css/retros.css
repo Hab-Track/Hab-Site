@@ -215,8 +215,9 @@ body {
 }
 
 .retro-header {
-    display: flex;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 1rem;
     gap: 1rem;
@@ -228,11 +229,12 @@ body {
     color: var(--text-primary);
     margin: 0;
     word-break: break-word;
-    flex: 1;
+    grid-column: 2;
 }
 
 .retro-status {
-    flex-shrink: 0;
+    grid-column: 3;
+    justify-self: end;
 }
 
 .status-badge {
