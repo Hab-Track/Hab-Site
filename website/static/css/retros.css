@@ -122,6 +122,7 @@ body {
     border-radius: 16px;
     overflow: hidden;
     box-shadow: var(--shadow-md);
+    margin: 30px 0;
 }
 
 .section-header {
