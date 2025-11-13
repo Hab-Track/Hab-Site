@@ -250,7 +250,6 @@
     flex-wrap: wrap;
     justify-content: center;
 }
-
 .retro-link {
     display: flex;
     align-items: center;
@@ -266,6 +265,12 @@
     transition: all 0.3s ease;
 }
 
+.link-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
 .retro-link:hover {
     border-color: var(--primary-color);
     color: var(--primary-color);
@@ -277,9 +282,17 @@
     color: var(--accent-color);
 }
 
+.retro-link.site:hover .link-icon {
+    stroke: var(--accent-color);
+}
+
 .retro-link.discord:hover {
     border-color: #5865f2;
     color: #5865f2;
+}
+
+.retro-link.discord:hover .link-icon {
+    fill: #5865f2;
 }
 
 .retro-link.forum:hover {
@@ -287,8 +300,8 @@
     color: var(--primary-color);
 }
 
-.link-icon {
-    font-size: 1rem;
+.retro-link.forum:hover .link-icon {
+    stroke: var(--primary-color);
 }
 
 .retro-meta {
