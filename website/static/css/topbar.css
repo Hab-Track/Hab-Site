@@ -246,12 +246,15 @@
         justify-content: center;
     }
 
-    .nav-button span {
-        display: none;
-    }
-
     .active-retro-form {
         position: static;
         transform: none;
+    }
+}
+
+
+@media (max-width: 1200px) {
+    .nav-button span {
+        display: none;
     }
 }

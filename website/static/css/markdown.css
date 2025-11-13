@@ -145,3 +145,22 @@ section, header, [id] {
 h2, h3 {
     text-align: left;
 }
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: initial;
+        height: auto;
+        width: 100%;
+        padding: 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .content {
+        padding-left: 0;
+    }
+}
