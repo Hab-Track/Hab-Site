@@ -5,6 +5,7 @@
 <meta name="description" content="Track updates for Habbo & Habbo retros"/>
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#212121">
+<link rel="prefetch" href="{{ url_for('static', filename='logo.gif') }}" as="image" type="image/gif">
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/topbar.css') }}">
@@ -15,7 +16,12 @@
     <div class="topbar-container">
         <div class="topbar-left">
             <a href="/" class="site-title">
-                <img src="/img/H.ico" alt="Hab Track Logo" class="site-logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Hab Track Logo" class="site-logo">
+                <style>
+                    .site-title:hover .site-logo {
+                        content:url({{ url_for('static', filename='logo.gif') }})
+                    }
+                </style>
                 <span class="site-title-gradient">Hab Track</span>
             </a>
             {% if request.path == '/graphs' %}
