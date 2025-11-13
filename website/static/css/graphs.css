@@ -1,0 +1,10 @@
+#plots {
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.plot-placeholder {
+	height: 450px;
+	text-align: center;
+	line-height: 450px;
+}
