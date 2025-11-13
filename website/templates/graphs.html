@@ -9,6 +9,8 @@
     <meta property="og:description" content="Graphs of stats for Hab Track">
     <meta property="og:image" content="https://hab-track.vercel.app/img/graphs.png">
 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/graphs.css') }}">
+
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -26,11 +28,4 @@
         {% endfor %}
     </div>
 </body>
-
-<style>
-    body {
-        padding-top: 65px;
-    }
-</style>
-
 </html>

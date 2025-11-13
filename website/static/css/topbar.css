@@ -181,7 +181,7 @@
     height: 18px;
     border-radius: 50%;
     background: var(--text-secondary);
-    top: 2px;
+    top: 3px;
     left: 2px;
     transition: all 0.3s ease;
 }

@@ -32,18 +32,6 @@ body {
     flex-direction: column;
 }
 
-#plots {
-    max-width: 100%;
-    overflow: hidden;
-}
-
-.plot-placeholder {
-    background-color: #1a1a1a;
-    height: 450px;
-    text-align: center;
-    line-height: 450px;
-}
-
 h2, h3 {
     text-align: center;
     margin-top: 0px;
