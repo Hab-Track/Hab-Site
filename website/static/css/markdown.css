@@ -2,39 +2,30 @@
     --bg-color: #1a1a1a;
     --text-color: #ffffff;
     --accent-color: #2c2c2c;
-    --accent-hover: #3a3a3a;
+    --accent-hover: #3a3a3a80;
     --border-color: #333;
     --input-bg: #2d2d2d;
-    --hover-color: #3d3d3d;
+    --hover-color: #3d3d3d80;
     --selected-color: #404040;
     --link-color: #4a9eff;
     --link-hover: #6fb5ff;
     --code-bg: #2a2a2a;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-    padding-top: 75px;
+section, header, [id] {
+    scroll-margin-top: 80px;
 }
 
 .container {
     display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    line-height: 1.6;
 }
 
 /* Sidebar / Table of Contents */
 .sidebar {
     width: 250px;
     position: sticky;
-    top: 20px;
-    height: calc(100vh - 40px);
+    top: 100px;
+    height: calc(100vh - 120px);
     padding-right: 20px;
     overflow-y: auto;
     border-right: 1px solid var(--border-color);
