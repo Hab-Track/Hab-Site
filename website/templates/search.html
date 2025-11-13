@@ -9,81 +9,84 @@
     <meta property="og:image" content="https://hab-track.vercel.app/img/search.png">
 
     <title>Hab Search</title>
-    <link rel="stylesheet" href="/static/css/search.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/search.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
-    <script src="/static/js/search.js"></script>
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
 </head>
 
 <body>
     <div class="container">
         <form id="searchForm" method="POST">
-            <input type="text" class="search-input" name="search" placeholder="Search...">
-
-            <div class="filters">
-                <h4>Categories:</h4>
-                <div class="category-filters">
-                    {% for category in [('badges', 'Badges'), ('furnis', 'Furniture'), ('clothes', 'Clothes'),
-                    ('effects', 'Effects')] %}
-                    <label>
-                        <input type="checkbox" name="categories" value="{{ category[0] }}" checked
-                            style="display: none;">
-                        <span>{{ category[1] }}</span>
-                    </label>
-                    {% endfor %}
-                </div>
+            <div class="search-bar">
+                <input type="text" class="search-input" name="search" placeholder="Search...">
+                <button type="button" class="search-button" id="abort-search">Abort</button>
+                <button type="submit" class="search-button">Search</button>
             </div>
 
             <div class="filters">
-                <h4>Search in:</h4>
-                <div class="search-filters">
-                    <label>
-                        <input type="checkbox" name="search_in" value="name" checked style="display: none;">
-                        <span>Classname</span>
-                    </label>
-                    <label>
-                        <input type="checkbox" name="search_in" value="title" checked style="display: none;">
-                        <span>Name</span>
-                    </label>
-                    <label>
-                        <input type="checkbox" name="search_in" value="description" checked style="display: none;">
-                        <span>Description</span>
-                    </label>
+                <div class="filter">
+                    <h4>Categories:</h4>
+                    <div class="category-filters">
+                        {% for category in [('badges', 'Badges'), ('furnis', 'Furniture'), ('clothes', 'Clothes'),
+                        ('effects', 'Effects')] %}
+                        <label>
+                            <input type="checkbox" name="categories" value="{{ category[0] }}" checked
+                                style="display: none;">
+                            <span>{{ category[1] }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
 
-            <div class="filters">
-                <h4>Retros:</h4>
-                <div class="retros-dropdown">
-                    <div class="dropdown-header">Select Retros (<span id="selected-count">0</span>)</div>
-                    <div class="retros-list">
-                        <div class="retro-search">
-                            <input type="text" placeholder="Search retros..." id="retro-search-input">
-                        </div>
-                        <div class="retros-list-content">
-                            <label><input type="checkbox" id="select-all-retros" checked> Select All</label>
-                            {% for hotel in retros %}
-                            <label>
-                                <input type="checkbox" name="retros" value="{{ hotel }}" checked>
-                                {{ hotel }}
-                            </label>
-                            {% endfor %}
+                <div class="filter">
+                    <h4>Search in:</h4>
+                    <div class="search-filters">
+                        <label>
+                            <input type="checkbox" name="search_in" value="name" checked style="display: none;">
+                            <span>Classname</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="search_in" value="title" checked style="display: none;">
+                            <span>Name</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="search_in" value="description" checked style="display: none;">
+                            <span>Description</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter">
+                    <h4>Retros:</h4>
+                    <div class="retros-dropdown">
+                        <div class="dropdown-header">Select Retros (<span id="selected-count">0</span>)</div>
+                        <div class="retros-list">
+                            <div class="retro-search">
+                                <input type="text" placeholder="Search retros..." id="retro-search-input">
+                            </div>
+                            <div class="retros-list-content">
+                                <label><input type="checkbox" id="select-all-retros" checked> Select All</label>
+                                {% for hotel in retros %}
+                                <label>
+                                    <input type="checkbox" name="retros" value="{{ hotel }}" checked>
+                                    {{ hotel }}
+                                </label>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="filters">
-                <h4>Options:</h4>
-                <div class="options-filters">
-                    <label>
-                        <input type="checkbox" id="disable-previews" style="display: none;">
-                        <span>Disable Previews</span>
-                    </label>
+                <div class="filter">
+                    <h4>Options:</h4>
+                    <div class="options-filters">
+                        <label>
+                            <input type="checkbox" id="disable-previews" style="display: none;">
+                            <span>Disable Previews</span>
+                        </label>
+                    </div>
                 </div>
             </div>
-
-            <button type="submit" class="search-button">Search</button>
-            <button type="button" class="search-button" id="abort-search">Abort</button>
         </form>
 
         <div class="loading" id="loading"></div>
