@@ -29,7 +29,8 @@ def create_plot_for_category(data, category, show_active_only):
             name=retro,
             marker=dict(size=8),
             line=dict(shape="hv", width=2),
-            connectgaps=True
+            connectgaps=True,
+            hovertemplate='<b>%{fullData.name}</b><br>Date: %{x}<br>Count: %{y}<extra></extra>'
         ))
 
     fig.update_layout(
@@ -38,7 +39,13 @@ def create_plot_for_category(data, category, show_active_only):
         yaxis_title='Count',
         font=dict(color='white'),
         plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
+        paper_bgcolor='rgba(0,0,0,0)',
+        hoverlabel=dict(
+            bgcolor='#2c2c2c',
+            font_size=16,
+            font_family='Segoe UI',
+            font_color='white'
+        )
     )
     
     return fig.to_json()
