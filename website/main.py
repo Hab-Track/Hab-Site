@@ -4,7 +4,7 @@ from flask_sitemap import Sitemap
 from flask import Flask, render_template, send_from_directory, request, jsonify, redirect
 
 from .utils.plot_functions import create_plot_for_category
-from .utils.search import process_search_query, get_retros
+from .utils.search import process_search_query, get_retros, check_api_availability
 from .utils.fecth_data import fetch_data
 
 
@@ -47,7 +47,12 @@ def graphs():
 
 @app.route('/search', methods=['GET'])
 def search():
-    return render_template('search.html', retros=get_retros())
+    is_available, error_msg = check_api_availability()
+    
+    if not is_available:
+        return render_template('search.html', retros=[], api_error=error_msg)
+    
+    return render_template('search.html', retros=get_retros(), api_error=None)
 
 
 @app.route('/search', methods=['POST'])

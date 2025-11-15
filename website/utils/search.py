@@ -7,6 +7,17 @@ from dotenv import load_dotenv
 load_dotenv()
 API_BASE = os.environ.get("API_URL")
 
+def check_api_availability():
+    if not API_BASE:
+        return False, "API URL is not configured."
+    
+    try:
+        resp = requests.get(f"{API_BASE}/", timeout=5)
+        return True, None
+    except requests.RequestException as e:
+        print(f"API is not accessible: {e}")
+        return False, f"API is not accessible"
+
 def process_search_query(search_query, selected_categories, selected_retros, search_in):
     if not search_query:
         return jsonify({'warning': 'No search query provided.'})

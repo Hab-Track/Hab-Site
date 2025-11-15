@@ -11,11 +11,20 @@
     <title>Hab Search</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/search.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+    {% if not api_error %}
     <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+    {% endif %}
 </head>
 
 <body>
     <div class="container">
+        {% if api_error %}
+        <div class="no-results error" style="margin-top: 50px; padding: 20px; text-align: center;">
+            <h2>Search Unavailable</h2>
+            <p>{{ api_error }}</p>
+            <p>Please try again later or contact the administrator.</p>
+        </div>
+        {% else %}
         <form id="searchForm" method="POST">
             <div class="search-bar">
                 <input type="text" class="search-input" name="search" placeholder="Search...">
@@ -92,6 +101,7 @@
         <div class="loading" id="loading"></div>
         <div id="execution-time"></div>
         <div id="results-container"></div>
+        {% endif %}
     </div>
 </body>
 
