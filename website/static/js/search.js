@@ -147,12 +147,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!searchQuery || selectedRetros.length === 0) {
             loading.style.display = 'none';
+            abortButton.style.display = 'none';
             resultsContainer.innerHTML = `<div class="no-results warning">Please enter a search and select at least one retro.</div>`;
             return;
         }
-
-        let mergedResults = {};
-        let totalExecutionTime = 0;
 
         const imageObserver = new IntersectionObserver(async (entries, observer) => {
             for (const entry of entries) {
@@ -186,130 +184,101 @@ document.addEventListener('DOMContentLoaded', function () {
             threshold: 0.1
         });
 
-        for (const retro of selectedRetros) {
-            executionTime.innerHTML = 'Searching retro ' + (selectedRetros.indexOf(retro) + 1) + ' of ' + selectedRetros.length;
-            const fd = new FormData();
-            fd.append('search', searchQuery);
-            for (const cat of selectedCategories) fd.append('categories', cat);
-            fd.append('retros', retro);
-            for (const sIn of searchIn) fd.append('search_in', sIn);
+        executionTime.innerHTML = 'Searching...';
 
-            if (isAborting) {
-                break;
+        try {
+            currentController = new AbortController();
+            const response = await fetch('/search', {
+                method: 'POST',
+                body: formData,
+                signal: currentController.signal
+            });
+            const data = await response.json();
+
+            loading.style.display = 'none';
+            abortButton.style.display = 'none';
+
+            if (data.error || data.warning) {
+                resultsContainer.innerHTML = `<div class="no-results error">${data.error || data.warning}</div>`;
+                executionTime.innerHTML = '';
+                return;
             }
 
-            try {
-                currentController = new AbortController();
-                const response = await fetch('/search', {
-                    method: 'POST',
-                    body: fd,
-                    signal: currentController.signal
-                });
-                const data = await response.json();
+            if (!data.results || Object.keys(data.results).length === 0) {
+                resultsContainer.innerHTML = `<div class="no-results">No results found for your search.</div>`;
+                executionTime.innerHTML = '';
+                return;
+            }
 
-                if (data.error || data.warning) {
-                    loading.style.display = 'none';
-                    abortButton.style.display = 'none';
-                    resultsContainer.innerHTML = `<div class="no-results error">${data.error || data.warning}</div>`;
-                    break;
-                }
+            for (const [retro, categories] of Object.entries(data.results)) {
+                const retroSection = document.createElement('div');
+                retroSection.className = 'retro-section';
+                retroSection.setAttribute('data-retro', retro);
+                retroSection.innerHTML = `<h2 class="retro-name">${retro}</h2>`;
+                resultsContainer.appendChild(retroSection);
 
-                totalExecutionTime += data.execution_time || 0;
+                for (const [cat, items] of Object.entries(categories)) {
+                    const categorySection = document.createElement('div');
+                    categorySection.className = 'result-category';
+                    categorySection.setAttribute('data-category', cat);
+                    categorySection.innerHTML = `<h3>${cat}</h3>`;
+                    retroSection.appendChild(categorySection);
 
-                if (data.results) {
-                    for (const [r, categories] of Object.entries(data.results)) {
-                        if (!mergedResults[r]) mergedResults[r] = {};
-                        for (const [cat, items] of Object.entries(categories)) {
-                            if (!mergedResults[r][cat]) mergedResults[r][cat] = {};
-                            Object.assign(mergedResults[r][cat], items);
+                    const itemsContainer = document.createElement('div');
+                    itemsContainer.className = 'items-container';
 
-                            let retroSection = document.querySelector(`.retro-section[data-retro="${r}"]`);
-                            if (!retroSection) {
-                                retroSection = document.createElement('div');
-                                retroSection.className = 'retro-section';
-                                retroSection.setAttribute('data-retro', r);
-                                retroSection.innerHTML = `<h2 class="retro-name">${r}</h2>`;
-                                resultsContainer.appendChild(retroSection);
-                            }
+                    Object.entries(items).forEach(([key, [value, imageUrl, title, description]]) => {
+                        const itemHtml = `
+                            <div class="result-item" data-key="${key}">
+                                <div class="result-item-text">
+                                    <strong>${value}</strong>
+                                    ${title ? `<div class="item-title">${title}</div>` : ''}
+                                    ${description ? `<div class="item-description">${description}</div>` : ''}
+                                </div>
+                                ${!disablePreviews && imageUrl ? `
+                                    <a target="_blank" href="${imageUrl}">
+                                        <img src="${imageUrl}" 
+                                            alt="${value}" 
+                                            data-original-url="${imageUrl}"
+                                            loading="lazy"
+                                            class="result-image">
+                                    </a>
+                                ` : ''}
+                            </div>
+                        `;
+                        itemsContainer.insertAdjacentHTML('beforeend', itemHtml);
+                    });
 
-                            let categorySection = retroSection.querySelector(`.result-category[data-category="${cat}"]`);
-                            if (!categorySection) {
-                                categorySection = document.createElement('div');
-                                categorySection.className = 'result-category';
-                                categorySection.setAttribute('data-category', cat);
-                                categorySection.innerHTML = `<h3>${cat}</h3>`;
-                                retroSection.appendChild(categorySection);
-                            }
-
-                            const itemsContainer = document.createElement('div');
-                            Object.entries(items).forEach(([key, [value, imageUrl, title, description]]) => {
-                                const itemHtml = `
-                                    <div class="result-item" data-key="${key}">
-                                        <div class="result-item-text">
-                                            <strong>${value}</strong>
-                                            ${title ? `<div class="item-title">${title}</div>` : ''}
-                                            ${description ? `<div class="item-description">${description}</div>` : ''}
-                                        </div>
-                                        ${!disablePreviews && imageUrl ? `
-                                            <a target="_blank" href="${imageUrl}">
-                                                <img src="${imageUrl}" 
-                                                    alt="${value}" 
-                                                    data-original-url="${imageUrl}"
-                                                    loading="lazy"
-                                                    class="result-image">
-                                            </a>
-                                        ` : ''}
-                                    </div>
-                                `;
-                                itemsContainer.insertAdjacentHTML('beforeend', itemHtml);
-                            });
-
-                            // Substituir apenas os itens desta categoria
-                            const existingItems = categorySection.querySelector('.items-container');
+                    const existingItems = categorySection.querySelector('.items-container');
                             if (existingItems) {
                                 existingItems.remove();
                             }
                             itemsContainer.className = 'items-container';
-                            categorySection.appendChild(itemsContainer);
+                    categorySection.appendChild(itemsContainer);
 
-                            // Configurar o observador de imagens para os novos resultados
-                            if (!disablePreviews) {
-                                const images = itemsContainer.querySelectorAll('.result-image');
-                                for (const img of images) {
-                                    imageObserver.observe(img);
-                                }
-                            }
+                    if (!disablePreviews) {
+                        const images = itemsContainer.querySelectorAll('.result-image');
+                        for (const img of images) {
+                            imageObserver.observe(img);
                         }
                     }
                 }
-
-            } catch (error) {
-                loading.style.display = 'none';
-                if (error.name === 'AbortError') {
-                    if (!resultsContainer.querySelector('.abort-message')) {
-                        resultsContainer.insertAdjacentHTML('beforeend',
-                            `<div class="no-results warning abort-message">Search aborted by user.</div>`
-                        );
-                    }
-                } else {
-                    resultsContainer.innerHTML = `<div class="no-results error">Network or server error occurred.</div>`;
-                    console.error(`Error fetching results for retro ${retro}:`, error);
-                }
-                break;
             }
-        }
 
-        loading.style.display = 'none';
-        abortButton.style.display = 'none';
+            executionTime.innerHTML = `Search completed in ${data.execution_time.toFixed(2)} seconds`;
 
-        if (Object.keys(mergedResults).length === 0) {
-            if (!resultsContainer.querySelector('.error')) {
-                resultsContainer.innerHTML = `<div class="no-results">No results found for your search.</div>`;
+        } catch (error) {
+            loading.style.display = 'none';
+            abortButton.style.display = 'none';
+            
+            if (error.name === 'AbortError') {
+                resultsContainer.innerHTML = `<div class="no-results warning">Search aborted by user.</div>`;
                 executionTime.innerHTML = '';
+            } else {
+                resultsContainer.innerHTML = `<div class="no-results error">Network or server error occurred.</div>`;
+                executionTime.innerHTML = '';
+                console.error('Error fetching results:', error);
             }
-            return;
         }
-
-        executionTime.innerHTML = `Search completed in ${totalExecutionTime.toFixed(2)} seconds`;
     });
 });
