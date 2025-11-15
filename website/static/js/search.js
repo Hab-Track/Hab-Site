@@ -210,62 +210,99 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            const fragment = document.createDocumentFragment();
+
             for (const [retro, categories] of Object.entries(data.results)) {
+                const totalRetroItems = Object.values(categories).reduce((sum, items) => sum + Object.keys(items).length, 0);
+                
                 const retroSection = document.createElement('div');
                 retroSection.className = 'retro-section';
                 retroSection.setAttribute('data-retro', retro);
-                retroSection.innerHTML = `<h2 class="retro-name">${retro}</h2>`;
-                resultsContainer.appendChild(retroSection);
+                
+                const retroHeader = document.createElement('h2');
+                retroHeader.className = 'retro-name collapsible';
+                retroHeader.setAttribute('data-collapsed', 'false');
+                retroHeader.style.cursor = 'pointer';
+                retroHeader.innerHTML = `${retro} <span class="item-count">(${totalRetroItems} assets)</span>`;
+                retroSection.appendChild(retroHeader);
+
+                const retroContent = document.createElement('div');
+                retroContent.className = 'retro-content';
+                retroSection.appendChild(retroContent);
 
                 for (const [cat, items] of Object.entries(categories)) {
+                    const itemCount = Object.keys(items).length;
+                    
                     const categorySection = document.createElement('div');
                     categorySection.className = 'result-category';
                     categorySection.setAttribute('data-category', cat);
-                    categorySection.innerHTML = `<h3>${cat}</h3>`;
-                    retroSection.appendChild(categorySection);
+                    
+                    const categoryHeader = document.createElement('h3');
+                    categoryHeader.className = 'collapsible';
+                    categoryHeader.setAttribute('data-collapsed', 'false');
+                    categoryHeader.style.cursor = 'pointer';
+                    categoryHeader.innerHTML = `${cat} <span class="item-count">(${itemCount})</span>`;
+                    categorySection.appendChild(categoryHeader);
 
                     const itemsContainer = document.createElement('div');
                     itemsContainer.className = 'items-container';
 
-                    Object.entries(items).forEach(([key, [value, imageUrl, title, description]]) => {
-                        const itemHtml = `
-                            <div class="result-item" data-key="${key}">
-                                <div class="result-item-text">
-                                    <strong>${value}</strong>
-                                    ${title ? `<div class="item-title">${title}</div>` : ''}
-                                    ${description ? `<div class="item-description">${description}</div>` : ''}
-                                </div>
-                                ${!disablePreviews && imageUrl ? `
-                                    <a target="_blank" href="${imageUrl}">
-                                        <img src="${imageUrl}" 
-                                            alt="${value}" 
-                                            data-original-url="${imageUrl}"
-                                            loading="lazy"
-                                            class="result-image">
-                                    </a>
-                                ` : ''}
+                    const itemsHTML = Object.entries(items).map(([key, [value, imageUrl, title, description]]) => `
+                        <div class="result-item" data-key="${key}">
+                            <div class="result-item-text">
+                                <strong>${value}</strong>
+                                ${title ? `<div class="item-title">${title}</div>` : ''}
+                                ${description ? `<div class="item-description">${description}</div>` : ''}
                             </div>
-                        `;
-                        itemsContainer.insertAdjacentHTML('beforeend', itemHtml);
-                    });
-
-                    const existingItems = categorySection.querySelector('.items-container');
-                            if (existingItems) {
-                                existingItems.remove();
-                            }
-                            itemsContainer.className = 'items-container';
+                            ${!disablePreviews && imageUrl ? `
+                                <a target="_blank" href="${imageUrl}">
+                                    <img src="${imageUrl}" 
+                                        alt="${value}" 
+                                        data-original-url="${imageUrl}"
+                                        loading="lazy"
+                                        class="result-image">
+                                </a>
+                            ` : ''}
+                        </div>
+                    `).join('');
+                    
+                    itemsContainer.innerHTML = itemsHTML;
                     categorySection.appendChild(itemsContainer);
+                    retroContent.appendChild(categorySection);
 
-                    if (!disablePreviews) {
-                        const images = itemsContainer.querySelectorAll('.result-image');
-                        for (const img of images) {
-                            imageObserver.observe(img);
+                    categoryHeader.addEventListener('click', function() {
+                        const isCollapsed = this.getAttribute('data-collapsed') === 'true';
+                        
+                        if (isCollapsed) {
+                            this.setAttribute('data-collapsed', 'false');
+                            itemsContainer.classList.remove('collapsed');
+                            if (!disablePreviews) {
+                                const images = itemsContainer.querySelectorAll('.result-image');
+                                images.forEach(img => imageObserver.observe(img));
+                            }
+                        } else {
+                            itemsContainer.classList.add('collapsed');
+                            this.setAttribute('data-collapsed', 'true');
                         }
-                    }
+                    });
                 }
+                
+                retroHeader.addEventListener('click', function() {
+                    const isCollapsed = this.getAttribute('data-collapsed') === 'true';
+                    this.setAttribute('data-collapsed', !isCollapsed);
+                    retroContent.style.display = isCollapsed ? 'block' : 'none';
+                });
+                
+                fragment.appendChild(retroSection);
             }
 
-            executionTime.innerHTML = `Search completed in ${data.execution_time.toFixed(2)} seconds`;
+            resultsContainer.appendChild(fragment);
+
+            const totalItems = Object.values(data.results).reduce((sum, categories) => 
+                sum + Object.values(categories).reduce((catSum, items) => catSum + Object.keys(items).length, 0), 0
+            );
+
+            executionTime.innerHTML = `Search completed in ${data.execution_time.toFixed(2)} seconds - ${totalItems} assets found`;
 
         } catch (error) {
             loading.style.display = 'none';
