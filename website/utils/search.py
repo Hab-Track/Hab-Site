@@ -52,7 +52,7 @@ def process_search_query(search_query, selected_categories, selected_retros, sea
 
 def get_retros():
     try:
-        resp = requests.get(f"{API_BASE}/retros/", timeout=5)
+        resp = requests.get(f"{API_BASE}/retros/?debugtime", timeout=5)
         resp.raise_for_status()
         data = resp.json()
         return data.get("retros", [])
