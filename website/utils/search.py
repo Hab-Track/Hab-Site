@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 API_BASE = os.environ.get("API_URL")
+CLIENT_ID = os.environ.get("CLIENT_ID")
+CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
 
 def check_api_availability():
     if not API_BASE:
@@ -52,7 +54,11 @@ def process_search_query(search_query, selected_categories, selected_retros, sea
 
 def get_retros():
     try:
-        resp = requests.get(f"{API_BASE}/retros/", timeout=5)
+        headers = {
+            "CF-Access-Client-Id": CLIENT_ID,
+            "CF-Access-Client-Secret": CLIENT_SECRET
+        }
+        resp = requests.get(f"{API_BASE}/retros/", timeout=5, headers=headers)
         resp.raise_for_status()
         data = resp.json()
         return data.get("retros", [])
