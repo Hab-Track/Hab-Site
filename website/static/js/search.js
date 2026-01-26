@@ -66,6 +66,93 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectAllCheckbox = document.getElementById('select-all-retros');
     const retroCheckboxes = document.querySelectorAll('input[name="retros"]');
     const retroSearchInput = document.getElementById('retro-search-input');
+    const searchInput = document.querySelector('input[name="search"]');
+    const categoryCheckboxes = document.querySelectorAll('input[name="categories"]');
+    const searchInCheckboxes = document.querySelectorAll('input[name="search_in"]');
+    const disablePreviewsCheckbox = document.getElementById('disable-previews');
+
+    function loadFromQueryParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        const searchQuery = urlParams.get('search');
+        if (searchQuery) {
+            searchInput.value = searchQuery;
+        }
+        
+        const categories = urlParams.getAll('categories');
+        if (categories.length > 0) {
+            categoryCheckboxes.forEach(cb => {
+                cb.checked = categories.includes(cb.value);
+            });
+        }
+        
+        const searchIn = urlParams.getAll('search_in');
+        if (searchIn.length > 0) {
+            searchInCheckboxes.forEach(cb => {
+                cb.checked = searchIn.includes(cb.value);
+            });
+        }
+        
+        const allRetros = urlParams.get('all_retros');
+        if (allRetros === 'true') {
+            retroCheckboxes.forEach(cb => cb.checked = true);
+            selectAllCheckbox.checked = true;
+        } else {
+            const retros = urlParams.getAll('retros');
+            if (retros.length > 0) {
+                retroCheckboxes.forEach(cb => {
+                    cb.checked = retros.includes(cb.value);
+                });
+            }
+        }
+        updateSelectedCount();
+        
+        const disablePreviews = urlParams.get('disable_previews');
+        if (disablePreviews === 'true' && disablePreviewsCheckbox) {
+            disablePreviewsCheckbox.checked = true;
+        }
+    }
+
+    function updateQueryParams() {
+        const params = new URLSearchParams();
+        
+        if (searchInput.value) {
+            params.set('search', searchInput.value);
+        }
+        
+        categoryCheckboxes.forEach(cb => {
+            if (cb.checked) {
+                params.append('categories', cb.value);
+            }
+        });
+        
+        searchInCheckboxes.forEach(cb => {
+            if (cb.checked) {
+                params.append('search_in', cb.value);
+            }
+        });
+        
+        // Optimiser les retros : si tous sont sélectionnés, utiliser all_retros=true
+        const allRetrosChecked = [...retroCheckboxes].every(cb => cb.checked);
+        if (allRetrosChecked) {
+            params.set('all_retros', 'true');
+        } else {
+            retroCheckboxes.forEach(cb => {
+                if (cb.checked) {
+                    params.append('retros', cb.value);
+                }
+            });
+        }
+        
+        if (disablePreviewsCheckbox && disablePreviewsCheckbox.checked) {
+            params.set('disable_previews', 'true');
+        }
+        
+        const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
+    }
+
+    loadFromQueryParams();
 
     retroSearchInput.addEventListener('input', function (e) {
         const searchValue = e.target.value.toLowerCase();
@@ -133,6 +220,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const disablePreviews = document.getElementById('disable-previews').checked;
 
         isAborting = false;
+
+        updateQueryParams();
 
         loading.style.display = 'block';
         abortButton.style.display = 'block';
