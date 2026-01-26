@@ -298,6 +298,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             resultsContainer.appendChild(fragment);
 
+            if (!disablePreviews) {
+                const allImages = resultsContainer.querySelectorAll('.result-image');
+                allImages.forEach(img => imageObserver.observe(img));
+            }
+
             const totalItems = Object.values(data.results).reduce((sum, categories) => 
                 sum + Object.values(categories).reduce((catSum, items) => catSum + Object.keys(items).length, 0), 0
             );
