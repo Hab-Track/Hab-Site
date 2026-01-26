@@ -412,10 +412,38 @@ h4 {
 }
 
 .items-container {
-    max-height: 5000px;
     overflow: visible;
     opacity: 1;
     transition: max-height 0.25s ease-in;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
+    gap: 1.25rem;
+    justify-content: center;
+}
+
+.items-container.items-few {
+    display: flex;
+    flex-direction: column;
+}
+
+.items-container.items-few .result-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+}
+
+.items-container.items-few .result-item-text {
+    align-items: flex-start;
+}
+
+.items-container.items-few .result-item img {
+    order: 1;
+    width: 50px;
+    height: 50px;
 }
 
 .items-container.collapsed {
@@ -426,34 +454,36 @@ h4 {
 
 .result-item {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
     background: var(--background-hover);
     border: 1px solid var(--border-color);
-    padding: 1rem;
-    margin: 0.75rem 0;
-    border-radius: 8px;
+    padding: 1.25rem;
+    margin: 0;
+    border-radius: 12px;
     transition: all 0.3s ease;
+    text-align: center;
 }
 
 .result-item:hover {
     border-color: var(--primary-color);
-    transform: translateX(4px);
 }
 
 .result-item-text {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    align-items: flex-start;
+    align-items: center;
     flex: 1;
+    width: 100%;
 }
 
 .result-item-text strong {
     font-size: 1rem;
     color: var(--text-primary);
     font-weight: 600;
+    word-break: break-word;
 }
 
 .item-title {
@@ -468,12 +498,12 @@ h4 {
 }
 
 .result-item img {
-    width: 50px;
-    height: 50px;
-    align-self: center;
+    width: 64px;
+    height: 64px;
     object-fit: contain;
     cursor: pointer;
     transition: transform 0.3s ease;
+    order: -1;
 }
 
 .result-item img:hover {

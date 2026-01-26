@@ -331,6 +331,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const itemsContainer = document.createElement('div');
                     itemsContainer.className = 'items-container';
+                    
+                    if (itemCount <= 4) {
+                        itemsContainer.classList.add('items-few');
+                    }
 
                     const itemsHTML = Object.entries(items).map(([key, [value, imageUrl, title, description]]) => `
                         <div class="result-item" data-key="${key}">
