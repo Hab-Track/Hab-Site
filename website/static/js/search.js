@@ -248,6 +248,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             const pngUrl = await processNitroFile(originalUrl);
                             if (pngUrl) {
                                 img.src = pngUrl;
+                                const parentLink = img.closest('a');
+                                if (parentLink) {
+                                    parentLink.href = pngUrl;
+                                }
                             } else {
                                 img.style.display = 'none';
                             }
