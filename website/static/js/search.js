@@ -132,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
         
-        // Optimiser les retros : si tous sont sélectionnés, utiliser all_retros=true
         const allRetrosChecked = [...retroCheckboxes].every(cb => cb.checked);
         if (allRetrosChecked) {
             params.set('all_retros', 'true');
@@ -198,7 +197,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const abortButton = document.getElementById('abort-search');
     abortButton.style.display = 'none';
-    let isAborting = false;
     let currentController = null;
 
     abortButton.addEventListener('click', () => {
@@ -230,8 +228,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const formData = new FormData(this);
         const searchQuery = formData.get('search');
-        const selectedCategories = formData.getAll('categories');
-        const searchIn = formData.getAll('search_in');
         const selectedRetros = formData.getAll('retros');
 
         if (!searchQuery || selectedRetros.length === 0) {
