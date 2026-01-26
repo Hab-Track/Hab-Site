@@ -413,7 +413,7 @@ h4 {
 
 .items-container {
     max-height: 5000px;
-    overflow: hidden;
+    overflow: visible;
     opacity: 1;
     transition: max-height 0.25s ease-in;
 }
