@@ -1,5 +1,4 @@
-import json
-from typing import Dict, List
+from typing import Dict, List, Any
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,9 +13,9 @@ app = FastAPI(
     },
 )
 
-
 data = fetch_data("track_stats.json")
-
+retro_info = fetch_data("retro_info.json")
+retro_status = fetch_data("retro_status.json")
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,46 +23,77 @@ app.add_middleware(
     allow_methods=["GET"]
 )
 
-
 @app.get("/", include_in_schema=False)
 def root():
     return RedirectResponse(url="docs")
 
 
-@app.get("/raw_stats", tags=["General"], response_model=Dict[str, Dict[str, List[str]]], description="Returns all tracked statistics.")
+### Stats
+
+@app.get("/stats", tags=["Statistics"], response_model=Dict[str, Dict[str, List[str]]])
 def get_raw_stats():
     return data
 
-
-@app.get("/latest_stats", tags=["General"], response_model=Dict[str, List[str]])
+@app.get("/stats/last", tags=["Statistics"], response_model=Dict[str, List[str]])
 def get_latest_stats():
     latest_date = max(data.keys())
     return data[latest_date]
 
-
-@app.get("/active_retros", tags=["General"], response_model=Dict[str, Dict[str, List[str]]], description="Returns all data for active retros.")
+@app.get("/stats/active_retros", tags=["Statistics"], response_model=Dict[str, Dict[str, List[str]]])
 def get_active_retros():
     active_retros = set(data[max(data)].keys())
     filtered_data = {
         date: {retro: stats for retro, stats in retros.items() if retro in active_retros}
         for date, retros in data.items()
     }
-
     return filtered_data
 
-
-@app.get("/date/{date}", tags=["By Date"], response_model=Dict[str, List[str]], description="Get statistics for a specific date. Use this format: YYYY-MM-DD")
+@app.get("/stats/date/{date}", tags=["Statistics"])
 def get_stats_by_date(date: str):
     if date not in data:
-        raise HTTPException(status_code=404, detail="Date not found. Use this format: YYYY-MM-DD")
-    
+        raise HTTPException(status_code=404, detail="Date not found. Use format YYYY-MM-DD")
     return data[date]
 
-
-@app.get("/retro/{retro}", tags=["By Retro"], response_model=Dict[str, List[str]], description="Get statistics for a specific retro.")
+@app.get("/stats/{retro}", tags=["Statistics"])
 def get_stats_by_retro(retro: str):
     retro_data = {date: stats[retro] for date, stats in data.items() if retro in stats}
     if not retro_data:
         raise HTTPException(status_code=404, detail="Retro not found")
-
     return retro_data
+
+
+### Info
+
+@app.get("/retros/info", tags=["Retro Info"], response_model=Dict[str, Dict[str, Any]])
+def get_all_retro_info():
+    return retro_info
+
+@app.get("/retros/info/{retro}", tags=["Retro Info"], response_model=Dict[str, Any])
+def get_retro_info_by_name(retro: str):
+    if retro not in retro_info:
+        raise HTTPException(status_code=404, detail="Retro not found")
+    return retro_info[retro]
+
+
+### Status
+
+@app.get("/retros/status", tags=["Retro Status"], response_model=Dict[str, Dict[str, Any]])
+def get_all_retro_status():
+    return retro_status
+
+@app.get("/retros/status/{retro}", tags=["Retro Status"], response_model=Dict[str, Any])
+def get_retro_status_by_name(retro: str):
+    if retro not in retro_status:
+        raise HTTPException(status_code=404, detail="Retro not found")
+    return retro_status[retro]
+
+
+### Utils
+
+@app.get("/retros", tags=["Utility"], response_model=List[str])
+def all_retros():
+    return sorted(set(data[max(data)].keys()))
+
+@app.get("/stats/dates", tags=["Utility"], response_model=List[str])
+def all_dates():
+    return sorted(data.keys())
