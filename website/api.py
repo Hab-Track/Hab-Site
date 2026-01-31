@@ -13,15 +13,35 @@ app = FastAPI(
     },
 )
 
-data = fetch_data("track_stats.json")
-retro_info = fetch_data("retro_info.json")
-retro_status = fetch_data("retro_status.json")
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["GET"]
 )
+
+
+def create_latest_stats(data: Dict) -> Dict[str, List[str]]:
+    latest_stats = {}
+    sorted_dates = sorted(data.keys(), reverse=True)
+    
+    all_retros = set()
+    for date_stats in data.values():
+        all_retros.update(date_stats.keys())
+    
+    for retro in all_retros:
+        for date in sorted_dates:
+            if retro in data[date]:
+                latest_stats[retro] = data[date][retro]
+                break
+    
+    return latest_stats
+
+
+data = fetch_data("track_stats.json")
+retro_info = fetch_data("retro_info.json")
+retro_status = fetch_data("retro_status.json")
+latest_stats = create_latest_stats(data)
+
 
 @app.get("/", include_in_schema=False)
 def root():
@@ -60,6 +80,10 @@ def get_stats_by_retro(retro: str):
     if not retro_data:
         raise HTTPException(status_code=404, detail="Retro not found")
     return retro_data
+
+@app.get("/stats/retros/latest", tags=["Statistics"], response_model=Dict[str, List[str]])
+def get_latest_retro_stats():
+    return latest_stats
 
 
 ### Info

@@ -20,6 +20,11 @@ class TestStatsEndpoints:
         assert response.status_code == 200
         assert isinstance(response.json(), dict)
 
+    def test_get_latest_retro_stats(self):
+        response = client.get("/stats/retros/latest")
+        assert response.status_code == 200
+        assert isinstance(response.json(), dict)
+
     def test_get_active_retros(self):
         response = client.get("/stats/active_retros")
         assert response.status_code == 200
