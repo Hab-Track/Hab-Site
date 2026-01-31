@@ -54,7 +54,7 @@ def get_stats_by_date(date: str):
         raise HTTPException(status_code=404, detail="Date not found. Use format YYYY-MM-DD")
     return data[date]
 
-@app.get("/stats/{retro}", tags=["Statistics"])
+@app.get("/stats/retro/{retro}", tags=["Statistics"])
 def get_stats_by_retro(retro: str):
     retro_data = {date: stats[retro] for date, stats in data.items() if retro in stats}
     if not retro_data:

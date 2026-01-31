@@ -46,12 +46,12 @@ class TestStatsEndpoints:
         
         if retros:
             valid_retro = retros[0]
-            response = client.get(f"/stats/{valid_retro}")
+            response = client.get(f"/stats/retro/{valid_retro}")
             assert response.status_code == 200
             assert isinstance(response.json(), dict)
 
     def test_get_stats_by_invalid_retro(self):
-        response = client.get("/stats/invalid_retro_xyz")
+        response = client.get("/stats/retro/invalid_retro_xyz")
         assert response.status_code == 404
         assert "Retro not found" in response.json()["detail"]
 
@@ -110,10 +110,10 @@ class TestUtilityEndpoints:
 
     def test_get_all_dates(self):
         response = client.get("/stats/dates")
-        if response.status_code == 200:
-            data = response.json()
-            assert isinstance(data, list)
-            assert data == sorted(data)
+        assert response.status_code == 200
+        data = response.json()
+        assert isinstance(data, list)
+        assert data == sorted(data)
 
 
 class TestRootEndpoint:
