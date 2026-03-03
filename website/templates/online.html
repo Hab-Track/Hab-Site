@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'default.html' %}
+    
+    <meta property="og:title" content="Hab Track - Online Stats">
+    <meta property="og:url" content="https://habtrack.vercel.app/online">
+    <meta property="og:description" content="Live online player statistics">
+    <meta property="og:image" content="https://hab-track.vercel.app/img/graphs.png">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/online.css') }}">
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <script>
+        var onlineStatsUrl = "{{ online_api_url }}";
+    </script>
+
+    <script src="{{ url_for('static', filename='js/online.js') }}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>Online Statistics</h1>
+            <p>Real-time player counts across tracked retros</p>
+        </div>
+        
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="label">Total Players Online</div>
+                <div class="value" id="total-online">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Active Retros</div>
+                <div class="value" id="retro-count">-</div>
+            </div>
+        </div>
+
+        <div class="retros-list" id="retros-list">
+        </div>
+
+        <div class="graph-section">
+            <div id="online-graph" class="plot-placeholder">Loading graph...</div>
+        </div>
+    </div>
+</body>
+</html>

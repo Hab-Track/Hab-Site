@@ -2,6 +2,7 @@ import os
 import markdown
 from flask_sitemap import Sitemap
 from flask import Flask, render_template, send_from_directory, request, jsonify, redirect
+from dotenv import load_dotenv
 
 from .utils.plot_functions import create_plot_for_category
 from .utils.search import process_search_query, get_retros, check_api_availability
@@ -20,6 +21,9 @@ retro_status = fetch_data("retro_status.json")
 categories = ['badges', 'furnis', 'clothes', 'effects']
 cached_plots_active = {category: create_plot_for_category(data, category, True) for category in categories}
 cached_plots_all = {category: create_plot_for_category(data, category, False) for category in categories}
+
+load_dotenv()
+API_BASE = os.environ.get("API_URL")
 
 
 @app.route('/')
@@ -75,6 +79,12 @@ def retros():
     return render_template('retros.html', retro_info=retro_info, retro_status=retro_status)
 
 
+@app.route('/online')
+def online():
+    online_api_url = f"{API_BASE}/online-stats"
+    return render_template('online.html', online_api_url=online_api_url)
+
+
 @app.route('/about')
 def about():
     with open("website/content/about.md", 'r', encoding='utf-8') as f:
@@ -94,6 +104,7 @@ def favicon():
 def index():
     yield 'home', {}, "", "", 1
     yield 'graphs', {}, "", "daily", 0.8
+    yield 'online', {}, "", "daily", 0.7
     yield 'search', {}, "", "daily", 0.6
     yield 'retros', {}, "", "daily", 0.4
     yield 'raw_stats', {}, "", "daily", 0.2
