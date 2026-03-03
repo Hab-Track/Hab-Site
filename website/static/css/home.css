@@ -121,21 +121,23 @@ body::after {
 }
 
 .home-buttons {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	display: flex;
+	flex-wrap: wrap;
 	gap: 1rem;
-	max-width: 500px;
+	max-width: 800px;
 	width: 100%;
 	margin-top: 0;
+	justify-content: center;
 }
 
 .button {
 	box-sizing: border-box;
-	width: 100%;
+	width: calc(33.333% - 0.75rem);
+	min-width: 200px;
 	height: auto;
-	min-height: 80px;
+	min-height: 120px;
 	margin: 0;
-	padding: 1.25rem;
+	padding: 1.5rem 1rem;
 	text-align: center;
 	line-height: 1.5;
 	background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
@@ -158,6 +160,12 @@ body::after {
 	box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.1), 0 2px 4px -1px rgba(99, 102, 241, 0.06);
 }
 
+/* Remove grid positioning */
+.button:nth-child(4),
+.button:nth-child(5) {
+	grid-column: auto;
+}
+
 .button svg {
 	width: 48px;
 	height: 48px;
@@ -169,15 +177,19 @@ body::after {
 }
 
 .button:nth-child(2) {
-	animation-delay: 0.3s;
+	animation-delay: 0.25s;
 }
 
 .button:nth-child(3) {
-	animation-delay: 0.4s;
+	animation-delay: 0.3s;
 }
 
 .button:nth-child(4) {
-	animation-delay: 0.5s;
+	animation-delay: 0.35s;
+}
+
+.button:nth-child(5) {
+	animation-delay: 0.4s;
 }
 
 .button::before {
@@ -228,8 +240,15 @@ body::after {
 		font-size: 1rem;
 	}
 
-	.home-buttons {
-		grid-template-columns: 1fr;
+	.button {
+		width: calc(50% - 0.5rem);
+		min-width: 150px;
+	}
+}
+
+@media (max-width: 480px) {
+	.button {
+		width: 100%;
 		max-width: 400px;
 	}
 }
