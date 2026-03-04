@@ -128,6 +128,7 @@ function createGraph() {
         font: { color: 'white' },
         plot_bgcolor: 'rgba(0,0,0,0)',
         paper_bgcolor: 'rgba(0,0,0,0)',
+        hovermode: 'closest',
         hoverlabel: {
             bgcolor: '#000000',
             font: {
