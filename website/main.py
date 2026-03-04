@@ -1,5 +1,6 @@
 import os
 import markdown
+import requests
 from flask_sitemap import Sitemap
 from flask import Flask, render_template, send_from_directory, request, jsonify, redirect
 from dotenv import load_dotenv
@@ -82,7 +83,9 @@ def retros():
 @app.route('/online')
 def online():
     online_api_url = f"{API_BASE}/online-stats"
-    return render_template('online.html', online_api_url=online_api_url)
+    total_url = f"{API_BASE}/online-total"
+    count = requests.get(total_url)
+    return render_template('online.html', online_api_url=online_api_url, online_count=count)
 
 
 @app.route('/about')

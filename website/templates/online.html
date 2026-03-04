@@ -6,7 +6,7 @@
     
     <meta property="og:title" content="Hab Track - Online Stats">
     <meta property="og:url" content="https://habtrack.vercel.app/online">
-    <meta property="og:description" content="Live online player statistics">
+    <meta property="og:description" content="Live online player statistics ({{ online_count | default('N/A') }} online)">
     <meta property="og:image" content="https://hab-track.vercel.app/img/graphs.png">
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/online.css') }}">
