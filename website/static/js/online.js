@@ -1,4 +1,5 @@
 let onlineData = [];
+let retroInfo = {};
 
 async function loadOnlineStats() {
     try {
@@ -7,6 +8,7 @@ async function loadOnlineStats() {
         
         if (result.data && result.data.length > 0) {
             onlineData = result.data;
+            retroInfo = result.retro_info || {};
             updateStats();
             updateRetrosList();
             createGraph();
@@ -58,11 +60,16 @@ function updateRetrosList() {
     
     sortedRetros.forEach(([name, value]) => {
         const count = typeof value === 'number' ? value : value.avg || 0;
+        const info = retroInfo[name] || {};
+        const website = `https://${name}`;
+        const viaRadio = info.via_radio === true;
+        const radioIcon = viaRadio ? '<span class="radio-badge" title="Tracked via radio">📻</span>' : '';
+        
         html += `
-            <div class="retro-item">
-                <span class="name">${name}</span>
+            <a href="${website}" target="_blank" class="retro-item" rel="noopener noreferrer">
+                <span class="name">${name} ${radioIcon}</span>
                 <span class="count">${count}</span>
-            </div>
+            </a>
         `;
     });
     
