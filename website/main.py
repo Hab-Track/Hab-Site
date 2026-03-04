@@ -4,6 +4,7 @@ import requests
 from flask_sitemap import Sitemap
 from flask import Flask, render_template, send_from_directory, request, jsonify, redirect
 from dotenv import load_dotenv
+from datetime import datetime
 
 from .utils.plot_functions import create_plot_for_category
 from .utils.search import process_search_query, get_retros, check_api_availability
@@ -105,12 +106,14 @@ def favicon():
 
 @ext.register_generator
 def index():
-    yield 'home', {}, "", "", 1
-    yield 'graphs', {}, "", "daily", 0.8
-    yield 'online', {}, "", "daily", 0.7
-    yield 'search', {}, "", "daily", 0.6
-    yield 'retros', {}, "", "daily", 0.4
-    yield 'raw_stats', {}, "", "daily", 0.2
+    today = datetime.utcnow().date().isoformat()
+    
+    yield 'home', {}, today, 'daily', 1.0
+    yield 'graphs', {}, today, 'daily', 0.9
+    yield 'search', {}, today, 'daily', 0.8
+    yield 'retros', {}, today, 'weekly', 0.7
+    yield 'online', {}, today, 'hourly', 0.9
+    yield 'about', {}, today, 'monthly', 0.5
 
 
 @app.route("/robots.txt")
