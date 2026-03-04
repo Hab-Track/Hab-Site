@@ -84,7 +84,7 @@ def retros():
 def online():
     online_api_url = f"{API_BASE}/online-stats"
     total_url = f"{API_BASE}/online-total"
-    count = requests.get(total_url)
+    count = requests.get(total_url).content
     return render_template('online.html', online_api_url=online_api_url, online_count=count)
 
 
