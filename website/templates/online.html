@@ -27,18 +27,38 @@
             <p>Real-time player counts across tracked retros</p>
         </div>
         
-        <div class="stats-cards">
+        <div class="stats-cards-primary">
             <div class="stat-card">
                 <div class="label">Total Players Online</div>
                 <div class="value" id="total-online">-</div>
             </div>
             <div class="stat-card">
-                <div class="label">Active Retros</div>
+                <div class="label">Tracked Retros</div>
                 <div class="value" id="retro-count">-</div>
             </div>
         </div>
 
-        <div class="retros-list" id="retros-list">
+        <div class="stats-cards-secondary">
+            <div class="stat-card">
+                <div class="label">All-Time Peak</div>
+                <div class="value" id="all-time-peak">-</div>
+                <div class="sub-label" id="all-time-peak-date">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">24h Peak</div>
+                <div class="value" id="peak-24h">-</div>
+                <div class="sub-label" id="peak-24h-time">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">24h Average</div>
+                <div class="value" id="avg-24h">-</div>
+            </div>
+        </div>
+
+        <div class="retro-stats-section">
+            <h3>Retro Statistics (24h)</h3>
+            <div class="retro-stats-grid" id="retro-stats-grid">
+            </div>
         </div>
 
         <div class="graph-section">

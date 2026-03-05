@@ -18,11 +18,39 @@
     font-size: 1.1rem;
 }
 
-.stats-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+.stats-cards-primary {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.stats-cards-secondary {
+    display: flex;
+    justify-content: center;
     gap: 1.5rem;
     margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.stats-cards-primary .stat-card,
+.stats-cards-secondary .stat-card {
+    flex: 0 1 auto;
+    min-width: 200px;
+}
+
+.stats-cards-secondary .stat-card {
+    padding: 1.5rem;
+    min-width: 180px;
+}
+
+.stats-cards-secondary .stat-card .value {
+    font-size: 2.25rem;
+}
+
+.stats-cards-secondary .stat-card .label {
+    font-size: 0.8rem;
 }
 
 .stat-card {
@@ -56,62 +84,10 @@
     line-height: 1;
 }
 
-.retros-list {
-    background: var(--background-card);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.retros-list h3 {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    color: var(--text-primary);
-    text-align: center;
-}
-
-.retro-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-}
-
-.retro-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1rem;
-    background: var(--background-dark);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    min-width: 200px;
-    flex: 0 1 auto;
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-}
-
-.retro-item:hover {
-    border-color: var(--primary-color);
-    transform: translateX(4px);
-    background: var(--background-hover);
-}
-
-.retro-item .name {
-    color: var(--text-primary);
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.retro-item .count {
-    color: var(--primary-color);
-    font-weight: 700;
-    font-size: 1.125rem;
+.stat-card .sub-label {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
 }
 
 .radio-badge {
@@ -128,13 +104,113 @@
     min-height: 500px;
 }
 
+.retro-stats-section {
+    background: var(--background-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.retro-stats-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.retro-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.retro-stat-card {
+    background: var(--background-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+}
+
+.retro-stat-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+.retro-stat-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.retro-stat-name {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.retro-stat-name:hover {
+    color: var(--primary-color);
+}
+
+.retro-current-count {
+    color: var(--primary-color);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.retro-stat-values {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.retro-stat-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: center;
+    text-align: center;
+}
+
+.retro-stat-label {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.retro-stat-value {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.retro-stat-time {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+}
+
 #online-graph {
     min-height: 450px;
 }
 
 .plot-placeholder {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 1rem;
     color: var(--text-muted);
     font-size: 1.125rem;
 }
@@ -146,5 +222,9 @@
     
     .stat-card .value {
         font-size: 2.5rem;
+    }
+    
+    .retro-stats-grid {
+        grid-template-columns: 1fr;
     }
 }
