@@ -60,16 +60,19 @@ function updateStats() {
     document.getElementById('all-time-peak-date').textContent = formatDate(allTimePeakDate);
     
     const now = new Date(latest.timestamp);
-    const last24h = onlineData.filter(entry => {
+    const todayMidnight = new Date(now);
+    todayMidnight.setHours(0, 0, 0, 0);
+    
+    const todayData = onlineData.filter(entry => {
         const entryDate = new Date(entry.timestamp);
-        return (now - entryDate) <= 24 * 60 * 60 * 1000;
+        return entryDate >= todayMidnight;
     });
     
     let peak24h = 0;
     let peak24hTime = '';
     let sum24h = 0;
     
-    last24h.forEach(entry => {
+    todayData.forEach(entry => {
         const retros = entry.retros || {};
         const total = Object.values(retros).reduce((sum, count) => {
             const val = typeof count === 'number' ? count : (count.avg || 0);
@@ -84,13 +87,13 @@ function updateStats() {
         }
     });
     
-    const avg24h = last24h.length > 0 ? Math.round(sum24h / last24h.length) : 0;
+    const avg24h = todayData.length > 0 ? Math.round(sum24h / todayData.length) : 0;
     
     document.getElementById('peak-24h').textContent = peak24h;
     document.getElementById('peak-24h-time').textContent = formatTime(peak24hTime);
     document.getElementById('avg-24h').textContent = avg24h;
     
-    updateRetroStatsGrid(last24h);
+    updateRetroStatsGrid(todayData);
 }
 
 function formatDate(timestamp) {
@@ -105,15 +108,15 @@ function formatTime(timestamp) {
     return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 }
 
-function updateRetroStatsGrid(last24h) {
-    if (last24h.length === 0) return;
+function updateRetroStatsGrid(todayData) {
+    if (todayData.length === 0) return;
     
     const latest = onlineData[onlineData.length - 1];
     const currentRetros = latest.retros || {};
     
     const retroStats = {};
     
-    last24h.forEach(entry => {
+    todayData.forEach(entry => {
         const retros = entry.retros || {};
         Object.entries(retros).forEach(([name, value]) => {
             if (!retroStats[name]) {
