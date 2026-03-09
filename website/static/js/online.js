@@ -114,6 +114,20 @@ function updateRetroStatsGrid(todayData) {
     const latest = onlineData[onlineData.length - 1];
     const currentRetros = latest.retros || {};
     
+    const allTimePeaks = {};
+    onlineData.forEach(entry => {
+        const retros = entry.retros || {};
+        Object.entries(retros).forEach(([name, value]) => {
+            const count = typeof value === 'number' ? value : value.avg || 0;
+            if (!allTimePeaks[name] || count > allTimePeaks[name].peak) {
+                allTimePeaks[name] = {
+                    peak: count,
+                    peakTime: entry.timestamp
+                };
+            }
+        });
+    });
+    
     const retroStats = {};
     
     todayData.forEach(entry => {
@@ -141,13 +155,16 @@ function updateRetroStatsGrid(todayData) {
         const avg = stats.values.reduce((a, b) => a + b, 0) / stats.values.length;
         const currentValue = currentRetros[name];
         const currentCount = typeof currentValue === 'number' ? currentValue : (currentValue?.avg || 0);
+        const allTimePeak = allTimePeaks[name] || { peak: 0, peakTime: '' };
         
         return {
             name,
             current: currentCount,
             avg: Math.round(avg),
             peak: stats.peak,
-            peakTime: stats.peakTime
+            peakTime: stats.peakTime,
+            allTimePeak: allTimePeak.peak,
+            allTimePeakTime: allTimePeak.peakTime
         };
     }).sort((a, b) => b.peak - a.peak);
     
@@ -169,6 +186,11 @@ function updateRetroStatsGrid(todayData) {
                     <span class="retro-current-count">${retro.current} online</span>
                 </div>
                 <div class="retro-stat-values">
+                    <div class="retro-stat-item">
+                        <span class="retro-stat-label">All-Time Peak</span>
+                        <span class="retro-stat-value">${retro.allTimePeak}</span>
+                        <span class="retro-stat-time">${formatDate(retro.allTimePeakTime)}</span>
+                    </div>
                     <div class="retro-stat-item">
                         <span class="retro-stat-label">24h Peak</span>
                         <span class="retro-stat-value">${retro.peak}</span>
