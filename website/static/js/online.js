@@ -187,7 +187,7 @@ function updateRetroStatsGrid(todayData) {
                 </div>
                 <div class="retro-stat-values">
                     <div class="retro-stat-item">
-                        <span class="retro-stat-label">All-Time Peak</span>
+                        <span class="retro-stat-label">AT Peak</span>
                         <span class="retro-stat-value">${retro.allTimePeak}</span>
                         <span class="retro-stat-time">${formatDate(retro.allTimePeakTime)}</span>
                     </div>
