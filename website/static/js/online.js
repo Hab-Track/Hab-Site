@@ -208,10 +208,6 @@ function updateRetroStatsGrid(todayData) {
     grid.innerHTML = html;
 }
 
-function updateRetrosList() {
-    // Function removed - no longer needed
-}
-
 function createGraph() {
     const traces = {};
     
@@ -255,14 +251,12 @@ function createGraph() {
             }
         },
         xaxis: {
-            title: isMobile ? '' : 'Time',
             color: 'white',
             gridcolor: 'rgba(255, 255, 255, 0.1)',
             tickfont: { size: isMobile ? 10 : 14 },
             tickangle: isMobile ? -45 : 0
         },
         yaxis: {
-            title: isMobile ? '' : 'Players',
             color: 'white',
             gridcolor: 'rgba(255, 255, 255, 0.1)',
             tickfont: { size: isMobile ? 10 : 14 }
@@ -290,6 +284,18 @@ function createGraph() {
             bordercolor: 'rgba(255, 255, 255, 0.2)',
             borderwidth: 1
         },
+        annotations: [
+            {
+                x: 0.5,
+                y: isMobile ? -0.6 : -0.3,
+                xref: 'paper',
+                yref: 'paper',
+                yanchor: 'bottom',
+                text: 'Double click on a retro to isolate it',
+                showarrow: false,
+                font: { color: 'white', size: isMobile ? 10 : 12 }
+            }
+        ],
         height: isMobile ? 400 : 450,
         margin: { 
             t: isMobile ? 40 : 60, 
@@ -323,7 +329,7 @@ function createGraph() {
             if (onlineData.length > 0) {
                 createGraph();
             }
-        }, 10);
+        }, 100);
     });
 }
 

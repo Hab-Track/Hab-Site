@@ -100,8 +100,6 @@
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 1.5rem;
-    margin-bottom: 3rem;
-    min-height: 500px;
 }
 
 .retro-stats-section {
@@ -202,10 +200,6 @@
 .retro-stat-time {
     color: var(--text-muted);
     font-size: 0.7rem;
-}
-
-#online-graph {
-    min-height: 450px;
 }
 
 .plot-placeholder {
