@@ -255,44 +255,35 @@ function updateRetroStatsGrid(todayData) {
 }
 
 function createGraph(dataToPlot = null) {
-    const traces = {};
+    const traces = new Map();
     const filteredData = dataToPlot || timeFilter?.getFilteredData() || onlineData;
 
-    filteredData.forEach(entry => {
+    for (const entry of filteredData) {
         const timestamp = entry.timestamp;
         const retros = entry.retros || {};
 
-        Object.entries(retros).forEach(([retroName, value]) => {
-            if (!traces[retroName]) {
-                traces[retroName] = {
+        for (const [retroName, value] of Object.entries(retros)) {
+            if (!traces.has(retroName)) {
+                const color = getRetroColor(retroName);
+                traces.set(retroName, {
                     x: [],
                     y: [],
                     name: retroName,
                     mode: 'lines+markers',
                     type: 'scatter',
-                    line: {
-                        width: 2,
-                        color: getRetroColor(retroName)
-                    },
-                    marker: {
-                        size: 5,
-                        color: getRetroColor(retroName)
-                    },
+                    line: { width: 2, color },
+                    marker: { size: 5, color },
                     hovertemplate: '<b>%{fullData.name}</b><br>Players: %{y}<br>%{x}<extra></extra>'
-                };
+                });
             }
 
-            traces[retroName].x.push(timestamp);
+            const trace = traces.get(retroName);
+            trace.x.push(timestamp);
+            trace.y.push(typeof value === 'number' ? value : (value.avg || 0));
+        }
+    }
 
-            if (typeof value === 'number') {
-                traces[retroName].y.push(value);
-            } else if (typeof value === 'object' && value.avg) {
-                traces[retroName].y.push(value.avg);
-            }
-        });
-    });
-
-    const plotData = Object.values(traces);
+    const plotData = Array.from(traces.values());
     const isMobile = window.innerWidth <= 768;
 
     const layout = {
@@ -372,10 +363,14 @@ function createGraph(dataToPlot = null) {
     };
 
     const plotDiv = document.getElementById('online-graph');
-    plotDiv.innerHTML = '';
-    Plotly.newPlot('online-graph', plotData, layout, config);
-
-    plotDiv.classList.add('graph-loaded');
+    
+    if (plotDiv.classList.contains('graph-loaded')) {
+        Plotly.react('online-graph', plotData, layout, config);
+    } else {
+        plotDiv.innerHTML = '';
+        Plotly.newPlot('online-graph', plotData, layout, config);
+        plotDiv.classList.add('graph-loaded');
+    }
 }
 
 function setupResizeHandler() {
