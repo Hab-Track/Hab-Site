@@ -1,16 +1,46 @@
 let onlineData = [];
 let retroInfo = {};
+let timeFilter;
+let resizeTimer;
+
+function stringToColor(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const hue = Math.abs(hash % 360);
+    const saturation = 65 + (Math.abs(hash) % 20);
+    const lightness = 55 + (Math.abs(hash >> 8) % 15);
+
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
+function getRetroColor(retroName) {
+    return stringToColor(retroName);
+}
+
+function showSkeletonLoaders() {
+    const statsCards = document.querySelectorAll('.stat-card .value');
+    statsCards.forEach(card => {
+        card.innerHTML = '<div class="skeleton skeleton-text"></div>';
+    });
+
+    const graphDiv = document.getElementById('online-graph');
+    graphDiv.innerHTML = '<div class="skeleton skeleton-graph"></div>';
+}
 
 async function loadOnlineStats() {
+    showSkeletonLoaders();
+
     try {
         const response = await fetch(onlineStatsUrl);
         const result = await response.json();
-        
+
         if (result.data && result.data.length > 0) {
             onlineData = result.data;
             retroInfo = result.retro_info || {};
-            updateStats();
-            createGraph();
+            await initializeData();
         } else {
             showError('No data available');
         }
@@ -20,12 +50,28 @@ async function loadOnlineStats() {
     }
 }
 
+async function initializeData() {
+    updateStats();
+
+    if (!timeFilter) {
+        timeFilter = new TimeFilter(onlineData, (filteredData) => {
+            createGraph(filteredData);
+        });
+        timeFilter.createFilterButtons('time-filter-container');
+    } else {
+        timeFilter.setData(onlineData);
+    }
+
+    await plotlyLoader.load();
+    createGraph();
+}
+
 function updateStats() {
     if (onlineData.length === 0) return;
-    
+
     const latest = onlineData[onlineData.length - 1];
     const retros = latest.retros || {};
-    
+
     const totalOnline = Object.values(retros).reduce((sum, count) => {
         if (typeof count === 'number') {
             return sum + count;
@@ -34,65 +80,65 @@ function updateStats() {
         }
         return sum;
     }, 0);
-    
+
     const retroCount = Object.keys(retros).length;
-    
+
     document.getElementById('total-online').textContent = totalOnline;
     document.getElementById('retro-count').textContent = retroCount;
-    
+
     let allTimePeak = 0;
     let allTimePeakDate = '';
-    
+
     onlineData.forEach(entry => {
         const retros = entry.retros || {};
         const total = Object.values(retros).reduce((sum, count) => {
             const val = typeof count === 'number' ? count : (count.avg || 0);
             return sum + val;
         }, 0);
-        
+
         if (total > allTimePeak) {
             allTimePeak = total;
             allTimePeakDate = entry.timestamp;
         }
     });
-    
+
     document.getElementById('all-time-peak').textContent = allTimePeak;
     document.getElementById('all-time-peak-date').textContent = formatDate(allTimePeakDate);
-    
+
     const now = new Date(latest.timestamp);
     const todayMidnight = new Date(now);
     todayMidnight.setHours(0, 0, 0, 0);
-    
+
     const todayData = onlineData.filter(entry => {
         const entryDate = new Date(entry.timestamp);
         return entryDate >= todayMidnight;
     });
-    
+
     let peak24h = 0;
     let peak24hTime = '';
     let sum24h = 0;
-    
+
     todayData.forEach(entry => {
         const retros = entry.retros || {};
         const total = Object.values(retros).reduce((sum, count) => {
             const val = typeof count === 'number' ? count : (count.avg || 0);
             return sum + val;
         }, 0);
-        
+
         sum24h += total;
-        
+
         if (total > peak24h) {
             peak24h = total;
             peak24hTime = entry.timestamp;
         }
     });
-    
+
     const avg24h = todayData.length > 0 ? Math.round(sum24h / todayData.length) : 0;
-    
+
     document.getElementById('peak-24h').textContent = peak24h;
     document.getElementById('peak-24h-time').textContent = formatTime(peak24hTime);
     document.getElementById('avg-24h').textContent = avg24h;
-    
+
     updateRetroStatsGrid(todayData);
 }
 
@@ -110,10 +156,10 @@ function formatTime(timestamp) {
 
 function updateRetroStatsGrid(todayData) {
     if (todayData.length === 0) return;
-    
+
     const latest = onlineData[onlineData.length - 1];
     const currentRetros = latest.retros || {};
-    
+
     const allTimePeaks = {};
     onlineData.forEach(entry => {
         const retros = entry.retros || {};
@@ -127,9 +173,9 @@ function updateRetroStatsGrid(todayData) {
             }
         });
     });
-    
+
     const retroStats = {};
-    
+
     todayData.forEach(entry => {
         const retros = entry.retros || {};
         Object.entries(retros).forEach(([name, value]) => {
@@ -140,23 +186,23 @@ function updateRetroStatsGrid(todayData) {
                     peakTime: ''
                 };
             }
-            
+
             const count = typeof value === 'number' ? value : value.avg || 0;
             retroStats[name].values.push(count);
-            
+
             if (count > retroStats[name].peak) {
                 retroStats[name].peak = count;
                 retroStats[name].peakTime = entry.timestamp;
             }
         });
     });
-    
+
     const retroStatsArray = Object.entries(retroStats).map(([name, stats]) => {
         const avg = stats.values.reduce((a, b) => a + b, 0) / stats.values.length;
         const currentValue = currentRetros[name];
         const currentCount = typeof currentValue === 'number' ? currentValue : (currentValue?.avg || 0);
         const allTimePeak = allTimePeaks[name] || { peak: 0, peakTime: '' };
-        
+
         return {
             name,
             current: currentCount,
@@ -167,16 +213,16 @@ function updateRetroStatsGrid(todayData) {
             allTimePeakTime: allTimePeak.peakTime
         };
     }).sort((a, b) => b.peak - a.peak);
-    
+
     const grid = document.getElementById('retro-stats-grid');
     let html = '';
-    
+
     retroStatsArray.slice(0, 12).forEach(retro => {
         const info = retroInfo[retro.name] || {};
         const website = `https://${retro.name}`;
         const viaRadio = info.via_radio === true;
         const radioIcon = viaRadio ? '<span class="radio-badge" title="Tracked via radio">📻</span>' : '';
-        
+
         html += `
             <div class="retro-stat-card">
                 <div class="retro-stat-header">
@@ -204,17 +250,18 @@ function updateRetroStatsGrid(todayData) {
             </div>
         `;
     });
-    
+
     grid.innerHTML = html;
 }
 
-function createGraph() {
+function createGraph(dataToPlot = null) {
     const traces = {};
-    
-    onlineData.forEach(entry => {
+    const filteredData = dataToPlot || timeFilter?.getFilteredData() || onlineData;
+
+    filteredData.forEach(entry => {
         const timestamp = entry.timestamp;
         const retros = entry.retros || {};
-        
+
         Object.entries(retros).forEach(([retroName, value]) => {
             if (!traces[retroName]) {
                 traces[retroName] = {
@@ -223,14 +270,20 @@ function createGraph() {
                     name: retroName,
                     mode: 'lines+markers',
                     type: 'scatter',
-                    line: { width: 2 },
-                    marker: { size: 5 },
+                    line: {
+                        width: 2,
+                        color: getRetroColor(retroName)
+                    },
+                    marker: {
+                        size: 5,
+                        color: getRetroColor(retroName)
+                    },
                     hovertemplate: '<b>%{fullData.name}</b><br>Players: %{y}<br>%{x}<extra></extra>'
                 };
             }
-            
+
             traces[retroName].x.push(timestamp);
-            
+
             if (typeof value === 'number') {
                 traces[retroName].y.push(value);
             } else if (typeof value === 'object' && value.avg) {
@@ -238,16 +291,16 @@ function createGraph() {
             }
         });
     });
-    
-    const data = Object.values(traces);
+
+    const plotData = Object.values(traces);
     const isMobile = window.innerWidth <= 768;
-    
+
     const layout = {
         title: {
             text: 'Online Players History',
-            font: { 
-                color: 'white', 
-                size: isMobile ? 16 : 20 
+            font: {
+                color: 'white',
+                size: isMobile ? 16 : 20
             }
         },
         xaxis: {
@@ -277,7 +330,7 @@ function createGraph() {
         legend: {
             orientation: 'h',
             y: isMobile ? -0.6 : -0.3,
-            font: { 
+            font: {
                 color: 'white',
                 size: isMobile ? 10 : 12
             },
@@ -297,14 +350,14 @@ function createGraph() {
             }
         ],
         height: isMobile ? 400 : 450,
-        margin: { 
-            t: isMobile ? 40 : 60, 
-            b: isMobile ? 60 : 80, 
-            l: isMobile ? 40 : 60, 
-            r: isMobile ? 10 : 40 
+        margin: {
+            t: isMobile ? 40 : 60,
+            b: isMobile ? 60 : 80,
+            l: isMobile ? 40 : 60,
+            r: isMobile ? 10 : 40
         }
     };
-    
+
     const config = {
         responsive: true,
         displayModeBar: !isMobile,
@@ -317,20 +370,26 @@ function createGraph() {
             width: 1200
         }
     };
-    
+
     const plotDiv = document.getElementById('online-graph');
     plotDiv.innerHTML = '';
-    Plotly.newPlot('online-graph', data, layout, config);
-    
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            if (onlineData.length > 0) {
-                createGraph();
-            }
-        }, 100);
-    });
+    Plotly.newPlot('online-graph', plotData, layout, config);
+
+    plotDiv.classList.add('graph-loaded');
+}
+
+function setupResizeHandler() {
+    window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize);
+}
+
+function handleResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        if (onlineData.length > 0 && timeFilter) {
+            createGraph(timeFilter.getFilteredData());
+        }
+    }, 100);
 }
 
 function showError(message) {
@@ -338,7 +397,8 @@ function showError(message) {
     plotDiv.innerHTML = `<div class="plot-placeholder">${message}</div>`;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    setupResizeHandler();
     loadOnlineStats();
-    setInterval(loadOnlineStats, 600000); // Refresh every 10 minutes
+    setInterval(loadOnlineStats, 300000);
 });

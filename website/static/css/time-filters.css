@@ -1,0 +1,47 @@
+.time-filters {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.time-filter-btn {
+    background: var(--background-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.time-filter-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.time-filter-btn.active {
+    background: var(--gradient-primary);
+    border-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.time-filter-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .time-filters {
+        gap: 0.375rem;
+    }
+    
+    .time-filter-btn {
+        padding: 0.375rem 1rem;
+        font-size: 0.8125rem;
+    }
+}

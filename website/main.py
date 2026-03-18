@@ -85,8 +85,18 @@ def retros():
 def online():
     online_api_url = f"{API_BASE}/online-stats"
     total_url = f"{API_BASE}/online-total"
-    count = requests.get(total_url).json().get('total_online', None)
-    return render_template('online.html', online_api_url=online_api_url, online_count=count)
+    
+    try:
+        response = requests.get(total_url, timeout=5)
+        count = response.json().get('total_online', None)
+    except:
+        count = None
+    
+    og_description = f'Live online player statistics'
+    if count:
+        og_description = f'{count} players online now across tracked retros'
+    
+    return render_template('online.html', online_api_url=online_api_url, og_description=og_description)
 
 
 @app.route('/about')

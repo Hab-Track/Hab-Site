@@ -6,12 +6,28 @@
     
     <meta property="og:title" content="Hab Track - Online Stats">
     <meta property="og:url" content="https://habtrack.vercel.app/online">
-    <meta property="og:description" content="Live online player statistics ({{ online_count | default('N/A') }} online)">
+    <meta property="og:description" content="{{ og_description }}">
     <meta property="og:image" content="https://hab-track.vercel.app/img/graphs.png">
+    <meta name="description" content="{{ og_description }}">
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Hab Track - Online Statistics",
+        "description": "{{ og_description }}",
+        "url": "https://habtrack.top/online",
+        "applicationCategory": "StatisticsApplication",
+        "operatingSystem": "All"
+    }
+    </script>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/online.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/skeleton.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/time-filters.css') }}">
 
-    <script src="https://cdn.plot.ly/plotly-3.4.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/lazy-plotly.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/time-filter.js') }}"></script>
 
     <script>
         var onlineStatsUrl = "{{ online_api_url }}";
@@ -62,7 +78,10 @@
         </div>
 
         <div class="graph-section">
-            <div id="online-graph" class="plot-placeholder">Loading graph...</div>
+            <div id="time-filter-container"></div>
+            <div id="online-graph" class="plot-placeholder">
+                <div class="skeleton skeleton-graph">Loading graph...</div>
+            </div>
         </div>
     </div>
 </body>

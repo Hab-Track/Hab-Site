@@ -23,6 +23,11 @@
       "name": "Search",
       "short_name": "Search",
       "url": "/search"
+    },
+    {
+      "name": "Online",
+      "short_name": "Online Tracker",
+      "url": "/online"
     }
   ]
 }

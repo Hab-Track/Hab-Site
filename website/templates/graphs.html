@@ -8,10 +8,26 @@
     <meta property="og:url" content="https://habtrack.vercel.app/graphs">
     <meta property="og:description" content="Graphs of stats for Hab Track">
     <meta property="og:image" content="https://hab-track.vercel.app/img/graphs.png">
+    <meta name="description" content="Interactive graphs showing Habbo and retro statistics over time">
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Hab Track - Statistics Graphs",
+        "description": "Interactive graphs showing Habbo and retro statistics including badges, furnis, clothes, and effects over time",
+        "url": "https://habtrack.top/graphs",
+        "applicationCategory": "DataVisualizationApplication",
+        "operatingSystem": "All"
+    }
+    </script>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/graphs.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/skeleton.css') }}">
 
-    <script src="https://cdn.plot.ly/plotly-3.4.0.min.js"></script>
+    <!-- Lazy load Plotly -->
+    <script src="{{ url_for('static', filename='js/cache-manager.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lazy-plotly.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
@@ -24,7 +40,9 @@
 <body>
     <div id="plots">
         {% for categorie in categories %}
-        <div id="{{ categorie }}" class="plot-placeholder">Loading graph...</div>
+        <div id="{{ categorie }}" class="plot-placeholder">
+            <div class="skeleton skeleton-graph">Loading graph...</div>
+        </div>
         {% endfor %}
     </div>
 </body>

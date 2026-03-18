@@ -9,6 +9,7 @@
     <meta property="og:image" content="https://hab-track.vercel.app/img/banner.png">
 
     <link rel="stylesheet" href="/static/css/retros.css">
+    <script src="{{ url_for('static', filename='js/cache-manager.js') }}"></script>
 </head>
 
 <body>
@@ -141,7 +142,6 @@
             <p>Can't find the retro you're looking for?</p>
             <p>Please let us know the retro name and we'll add it to our tracking list!</p>
             <a href="/discord" target="_blank" class="button">
-                <span>💬</span>
                 Contact us on Discord
             </a>
         </div>
@@ -149,6 +149,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const retroData = {
+                retro_info: {{ retro_info|tojson }},
+                retro_status: {{ retro_status|tojson }}
+            };
+            cache.set('retros_data', retroData, 12 * 60 * 60 * 1000);
+            
             const searchInput = document.getElementById('retro-search');
             const activeRetros = document.querySelectorAll('#active-retros .retro-card');
             const inactiveRetros = document.querySelectorAll('#inactive-retros .retro-card');

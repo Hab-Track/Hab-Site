@@ -353,8 +353,7 @@
 .no-results p {
     color: var(--text-secondary);
     font-size: 1rem;
-    margin-bottom: 0.5rem;
-    line-height: 1.6;
+    margin: 1px;
 }
 
 .no-results .button {

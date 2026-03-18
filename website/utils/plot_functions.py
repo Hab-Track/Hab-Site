@@ -1,5 +1,16 @@
 import plotly.graph_objs as go
 
+def string_to_color(s):
+    hash_val = 0
+    for char in s:
+        hash_val = ord(char) + ((hash_val << 5) - hash_val)
+    
+    hue = abs(hash_val % 360)
+    saturation = 65 + (abs(hash_val) % 20)
+    lightness = 55 + (abs(hash_val >> 8) % 15)
+    
+    return f'hsl({hue}, {saturation}%, {lightness}%)'
+
 def create_plot_for_category(data, category, show_active_only):
     fig = go.Figure()
     retros_data = {}
@@ -22,13 +33,15 @@ def create_plot_for_category(data, category, show_active_only):
         if show_active_only and last_date not in rd['dates']:
             continue
 
+        color = string_to_color(retro)
+        
         fig.add_trace(go.Scatter(
             x=rd['dates'],
             y=rd['values'],
             mode='lines+markers',
             name=retro,
-            marker=dict(size=8),
-            line=dict(shape="hv", width=2),
+            marker=dict(size=8, color=color),
+            line=dict(shape="hv", width=2, color=color),
             connectgaps=True,
             hovertemplate='<b>%{fullData.name}</b><br>Date: %{x}<br>Count: %{y}<extra></extra>'
         ))
