@@ -20,6 +20,13 @@ function getRetroColor(retroName) {
     return stringToColor(retroName);
 }
 
+function parseTimestamp(timestamp) {
+    if (timestamp && /\d{2}:\d{2}[+-Z]/.test(timestamp)) {
+        timestamp = timestamp.replace(/(\d{2}:\d{2})([+-Z])/, '$1:00$2');
+    }
+    return new Date(timestamp);
+}
+
 function showSkeletonLoaders() {
     const statsCards = document.querySelectorAll('.stat-card .value');
     statsCards.forEach(card => {
@@ -105,12 +112,12 @@ function updateStats() {
     document.getElementById('all-time-peak').textContent = allTimePeak;
     document.getElementById('all-time-peak-date').textContent = formatDate(allTimePeakDate);
 
-    const now = new Date(latest.timestamp);
+    const now = parseTimestamp(latest.timestamp);
     const todayMidnight = new Date(now);
     todayMidnight.setHours(0, 0, 0, 0);
 
     const todayData = onlineData.filter(entry => {
-        const entryDate = new Date(entry.timestamp);
+        const entryDate = parseTimestamp(entry.timestamp);
         return entryDate >= todayMidnight;
     });
 
@@ -144,13 +151,13 @@ function updateStats() {
 
 function formatDate(timestamp) {
     if (!timestamp) return '-';
-    const date = new Date(timestamp);
+    const date = parseTimestamp(timestamp);
     return date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 function formatTime(timestamp) {
     if (!timestamp) return '-';
-    const date = new Date(timestamp);
+    const date = parseTimestamp(timestamp);
     return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
 }
 
@@ -259,7 +266,7 @@ function createGraph(dataToPlot = null) {
     const filteredData = dataToPlot || timeFilter?.getFilteredData() || onlineData;
 
     for (const entry of filteredData) {
-        const timestamp = entry.timestamp;
+        const timestamp = parseTimestamp(entry.timestamp);
         const retros = entry.retros || {};
 
         for (const [retroName, value] of Object.entries(retros)) {
@@ -298,7 +305,8 @@ function createGraph(dataToPlot = null) {
             color: 'white',
             gridcolor: 'rgba(255, 255, 255, 0.1)',
             tickfont: { size: isMobile ? 10 : 14 },
-            tickangle: isMobile ? -45 : 0
+            tickangle: isMobile ? -45 : 0,
+            type: 'date'
         },
         yaxis: {
             color: 'white',
