@@ -37,8 +37,10 @@ function showSkeletonLoaders() {
     graphDiv.innerHTML = '<div class="skeleton skeleton-graph"></div>';
 }
 
-async function loadOnlineStats() {
-    showSkeletonLoaders();
+async function loadOnlineStats(showLoaders = true) {
+    if (showLoaders) {
+        showSkeletonLoaders();
+    }
 
     try {
         const response = await fetch(onlineStatsUrl);
@@ -402,6 +404,6 @@ function showError(message) {
 
 document.addEventListener('DOMContentLoaded', function () {
     setupResizeHandler();
-    loadOnlineStats();
-    setInterval(loadOnlineStats, 300000);
+    loadOnlineStats(true);
+    setInterval(() => loadOnlineStats(false), 300000);
 });
