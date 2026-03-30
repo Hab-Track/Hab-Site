@@ -1,7 +1,7 @@
 let onlineData = [];
 let retroInfo = {};
 let timeFilter;
-let resizeTimer;
+let resizeObserver;
 
 function stringToColor(str) {
     let hash = 0;
@@ -343,7 +343,7 @@ function createGraph(dataToPlot = null) {
         },
         legend: {
             orientation: 'h',
-            y: isMobile ? -0.4 : -0.2,
+            y: isMobile ? -0.3 : -0.15,
             font: {
                 color: 'white',
                 size: isMobile ? 10 : 12
@@ -354,7 +354,6 @@ function createGraph(dataToPlot = null) {
         height: isMobile ? 400 : 450,
         margin: {
             t: isMobile ? 40 : 60,
-            b: isMobile ? 60 : 80,
             l: isMobile ? 40 : 60,
             r: isMobile ? 10 : 40
         }
@@ -385,18 +384,17 @@ function createGraph(dataToPlot = null) {
 }
 
 function setupResizeHandler() {
-    window.addEventListener('resize', handleResize);
-}
-
-function handleResize() {
     const plotDiv = document.getElementById('online-graph');
-    if (plotDiv && plotDiv.classList.contains('graph-loaded')) {
-        const isMobile = window.innerWidth <= 768;
-        Plotly.relayout('online-graph', {
-            'legend.y': isMobile ? -0.4 : -0.2,
-            'legend.font.size': isMobile ? 10 : 12
-        });
-    }
+    if (!plotDiv) return;
+
+    resizeObserver = new ResizeObserver(() => {
+        if (plotDiv.classList.contains('graph-loaded')) {
+            plotDiv.classList.remove('graph-loaded');
+            createGraph();
+        }
+    });
+
+    resizeObserver.observe(plotDiv);
 }
 
 function showError(message) {
