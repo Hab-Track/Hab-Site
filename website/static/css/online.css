@@ -100,6 +100,30 @@
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 1.5rem;
+    position: relative;
+}
+
+.graph-hint {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+}
+
+#online-graph {
+    background: transparent !important;
+    width: 100%;
+    min-height: 450px;
+    position: relative;
+}
+
+#online-graph .plotly,
+#online-graph .plot-container,
+#online-graph .svg-container {
+    background: transparent !important;
+}
+
+#online-graph .main-svg {
+    background: transparent !important;
 }
 
 .retro-stats-section {
@@ -204,7 +228,7 @@
 
 .plot-placeholder {
     text-align: center;
-    padding: 1rem;
+    padding-top: 1rem;
     color: var(--text-muted);
     font-size: 1.125rem;
 }

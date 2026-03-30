@@ -278,10 +278,9 @@ function createGraph(dataToPlot = null) {
                     x: [],
                     y: [],
                     name: retroName,
-                    mode: 'lines+markers',
+                    mode: 'lines',
                     type: 'scatter',
                     line: { width: 2, color },
-                    marker: { size: 5, color },
                     hovertemplate: '<b>%{fullData.name}</b><br>Players: %{y}<br>%{x}<extra></extra>'
                 });
             }
@@ -294,6 +293,19 @@ function createGraph(dataToPlot = null) {
 
     const plotData = Array.from(traces.values());
     const isMobile = window.innerWidth <= 768;
+
+    let minTime = Infinity;
+    let maxTime = -Infinity;
+    
+    if (plotData.length > 0 && plotData[0].x.length > 0) {
+        minTime = plotData[0].x[0].getTime();
+        maxTime = plotData[0].x[plotData[0].x.length - 1].getTime();
+    }
+    
+    const timeRange = maxTime - minTime;
+    const padding = timeRange * 0.05;
+    const xMin = new Date(minTime - padding);
+    const xMax = new Date(maxTime + padding);
 
     const layout = {
         title: {
@@ -308,7 +320,8 @@ function createGraph(dataToPlot = null) {
             gridcolor: 'rgba(255, 255, 255, 0.1)',
             tickfont: { size: isMobile ? 10 : 14 },
             tickangle: isMobile ? -45 : 0,
-            type: 'date'
+            type: 'date',
+            range: [xMin, xMax]
         },
         yaxis: {
             color: 'white',
@@ -330,7 +343,7 @@ function createGraph(dataToPlot = null) {
         },
         legend: {
             orientation: 'h',
-            y: isMobile ? -0.6 : -0.3,
+            y: isMobile ? -0.4 : -0.2,
             font: {
                 color: 'white',
                 size: isMobile ? 10 : 12
@@ -338,18 +351,6 @@ function createGraph(dataToPlot = null) {
             bordercolor: 'rgba(255, 255, 255, 0.2)',
             borderwidth: 1
         },
-        annotations: [
-            {
-                x: 0.5,
-                y: isMobile ? -0.6 : -0.3,
-                xref: 'paper',
-                yref: 'paper',
-                yanchor: 'bottom',
-                text: 'Double click on a retro to isolate it',
-                showarrow: false,
-                font: { color: 'white', size: isMobile ? 10 : 12 }
-            }
-        ],
         height: isMobile ? 400 : 450,
         margin: {
             t: isMobile ? 40 : 60,
@@ -384,17 +385,18 @@ function createGraph(dataToPlot = null) {
 }
 
 function setupResizeHandler() {
-    window.removeEventListener('resize', handleResize);
     window.addEventListener('resize', handleResize);
 }
 
 function handleResize() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-        if (onlineData.length > 0 && timeFilter) {
-            createGraph(timeFilter.getFilteredData());
-        }
-    }, 100);
+    const plotDiv = document.getElementById('online-graph');
+    if (plotDiv && plotDiv.classList.contains('graph-loaded')) {
+        const isMobile = window.innerWidth <= 768;
+        Plotly.relayout('online-graph', {
+            'legend.y': isMobile ? -0.4 : -0.2,
+            'legend.font.size': isMobile ? 10 : 12
+        });
+    }
 }
 
 function showError(message) {
