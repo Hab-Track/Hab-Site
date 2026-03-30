@@ -4,25 +4,25 @@
 <head>
     {% include 'default.html' %}
     
-    <meta property="og:title" content="Hab Track - Graphs">
-    <meta property="og:url" content="https://habtrack.vercel.app/graphs">
-    <meta property="og:description" content="Graphs of stats for Hab Track">
+    <meta property="og:title" content="Hab Track - Assets stats">
+    <meta property="og:url" content="https://habtrack.vercel.app/stats">
+    <meta property="og:description" content="Assets stats for Hab Track">
     <meta property="og:image" content="https://hab-track.vercel.app/img/og_assets.png">
-    <meta name="description" content="Interactive graphs showing Habbo and retro statistics over time">
+    <meta name="description" content="Interactive graphs showing Habbo and retro assets statistics over time">
     
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "Hab Track - Statistics Graphs",
-        "description": "Interactive graphs showing Habbo and retro statistics including badges, furnis, clothes, and effects over time",
-        "url": "https://habtrack.top/graphs",
+        "name": "Hab Track - Assets stats",
+        "description": "Interactive graphs showing Habbo and retro assets statistics over time",
+        "url": "https://habtrack.top/stats",
         "applicationCategory": "DataVisualizationApplication",
         "operatingSystem": "All"
     }
     </script>
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/graphs.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/stats.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/skeleton.css') }}">
 
     <!-- Lazy load Plotly -->
@@ -31,7 +31,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-        var graphsDataUrl = "{{ url_for('graphs_data') }}";
+        var graphsDataUrl = "{{ url_for('assets_stats') }}";
     </script>
 
     <script src="{{ url_for('static', filename='js/load_graphs.js') }}"></script>

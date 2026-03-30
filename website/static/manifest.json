@@ -15,9 +15,9 @@
   ],
   "shortcuts": [
     {
-      "name": "Graphs",
-      "short_name": "Graphs",
-      "url": "/graphs"
+      "name": "Assets stats",
+      "short_name": "Stats",
+      "url": "/stats"
     },
     {
       "name": "Search",

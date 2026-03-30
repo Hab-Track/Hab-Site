@@ -38,17 +38,17 @@ def discord():
     return redirect(discord_server)
 
 
-@app.route('/graphs_data')
-def graphs_data():
+@app.route('/assets-stats')
+def assets_stats():
     show_active_only = request.args.get('show_active_only', 'false') == 'true'
     plots = cached_plots_active if show_active_only else cached_plots_all
 
     return jsonify({'categories': list(plots.keys()), 'plots': list(plots.values())})
 
 
-@app.route('/graphs')
-def graphs():
-    return render_template('graphs.html', categories=categories)
+@app.route('/stats')
+def stats():
+    return render_template('stats.html', categories=categories)
 
 
 @app.route('/search', methods=['GET'])

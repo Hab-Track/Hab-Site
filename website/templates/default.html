@@ -19,7 +19,7 @@
                 <img src="/img/logo.gif" alt="Hab Track Logo" class="site-logo">
                 <span class="site-title-gradient">Hab Track</span>
             </a>
-            {% if request.path == '/graphs' %}
+            {% if request.path == '/stats' %}
             <div class="info-button" id="info-button">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -43,8 +43,8 @@
             {% endif %}
         </div>
 
-        {% if request.path == '/graphs' %}
-        <form id="activeRetroForm" method="get" action="{{ url_for('graphs') }}" class="active-retro-form">
+        {% if request.path == '/stats' %}
+        <form id="activeRetroForm" method="get" action="{{ url_for('stats') }}" class="active-retro-form">
             <label class="toggle-label">
                 <span>Show only active retros</span>
                 <input type="checkbox" id="show_active_only" name="show_active_only" {% if show_active_only %}checked{%
