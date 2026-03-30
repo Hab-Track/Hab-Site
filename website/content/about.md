@@ -7,8 +7,10 @@ The system currently only detects text-based changes, so it will not detect modi
 ## Key Features
 
 - **[Discord Server](https://discord.gg/7SvKF6wpss):** Get updates and notifications containing all changes between texts and new images
-- **[Interactive Graphs](/graphs):** Visualize asset statistics over time
+- **[Assets stats](/stats):** Visualize asset statistics over time
 - **[Advanced Search](/search):** Find specific assets across all tracked retros
+- **[Player count](/online):** Visualize player count history for various retros
+- **[Retro list](/retros):** List all know retros and their status
 - **[API](/api/docs):** Public and free API for accessing all tracked data
 
 ## Project Components

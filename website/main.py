@@ -120,7 +120,7 @@ def index():
     today = datetime.utcnow().date().isoformat()
     
     yield 'home', {}, today, 'daily', 1.0
-    yield 'graphs', {}, today, 'daily', 0.9
+    yield 'stats', {}, today, 'daily', 0.9
     yield 'search', {}, today, 'daily', 0.8
     yield 'retros', {}, today, 'weekly', 0.7
     yield 'online', {}, today, 'hourly', 0.9
