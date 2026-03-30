@@ -42,6 +42,15 @@ class CacheManager {
             return null;
         }
     }
+
+    remove(key) {
+        try {
+            const cacheKey = this.CACHE_PREFIX + key;
+            localStorage.removeItem(cacheKey);
+        } catch (e) {
+            console.warn('Cache remove failed:', e);
+        }
+    }
 }
 
 const cache = new CacheManager();
