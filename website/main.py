@@ -94,7 +94,8 @@ def online():
     
     og_description = f'Live online player statistics'
     if count:
-        og_description = f'{count} players online now across tracked retros'
+        current_date = datetime.utcnow().strftime('%H:%M UTC')
+        og_description = f'{count} players online at {current_date} across all tracked retros'
     
     return render_template('online.html', online_api_url=online_api_url, og_description=og_description)
 
