@@ -226,7 +226,7 @@ function updateRetroStatsGrid(todayData) {
     const grid = document.getElementById('retro-stats-grid');
     let html = '';
 
-    retroStatsArray.slice(0, 12).forEach(retro => {
+    retroStatsArray.forEach(retro => {
         const info = retroInfo[retro.name] || {};
         const website = `https://${retro.name}`;
         const viaRadio = info.via_radio === true;
