@@ -1,3 +1,15 @@
+let worker = null;
+
+function initWorker() {
+    if (typeof Worker !== 'undefined' && !worker) {
+        try {
+            worker = new Worker('/static/js/graph-worker.js');
+        } catch (e) {
+            console.warn('Worker not available:', e);
+        }
+    }
+}
+
 function updateGraphs() {
     var showActiveOnly = document.getElementById('show_active_only').checked;
     var newUrl = new URL(window.location.href);
@@ -31,21 +43,37 @@ function loadGraphs(scrollToCategory = true) {
 }
 
 function renderGraphs(data, scrollToCategory) {
+    if (worker) {
+        worker.onmessage = function(e) {
+            if (e.data.type === 'parsed') {
+                renderParsedGraphs(e.data.data, scrollToCategory);
+            } else {
+                renderSync(data, scrollToCategory);
+            }
+        };
+        worker.postMessage({ type: 'parse', data });
+    } else {
+        renderSync(data, scrollToCategory);
+    }
+}
+
+function renderSync(data, scrollToCategory) {
+    const parsed = data.categories.map((category, index) => ({
+        category,
+        data: JSON.parse(data.plots[index])
+    }));
+    renderParsedGraphs(parsed, scrollToCategory);
+}
+
+function renderParsedGraphs(parsedGraphs, scrollToCategory) {
     plotlyLoader.load().then(() => {
-        data.categories.forEach(function(category, index) {
-            graphData = JSON.parse(data.plots[index]);
+        parsedGraphs.forEach(({ category, data: graphData }) => {
+            const plotDiv = document.getElementById(category);
+            if (!plotDiv) return;
             
-            var plotDiv = document.getElementById(category);
-            if (!plotDiv) {
-                console.error("Plot div not found for category:", category);
-                return;
-            }
-            
-            while (plotDiv.firstChild) {
-                plotDiv.removeChild(plotDiv.firstChild);
-            }
-            
+            plotDiv.innerHTML = '';
             plotDiv.classList.remove('plot-placeholder');
+
             Plotly.newPlot(category, graphData.data, graphData.layout, { responsive: true });
             
             plotDiv.addEventListener('click', function() {
@@ -58,7 +86,9 @@ function renderGraphs(data, scrollToCategory) {
             if (hash) {
                 const element = document.querySelector(hash);
                 if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
+                    setTimeout(() => {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
                 }
             }
         }
@@ -68,6 +98,8 @@ function renderGraphs(data, scrollToCategory) {
 }
 
 $(document).ready(function() {
+    initWorker();
+    
     var showActiveOnly = new URLSearchParams(window.location.search).get('show_active_only') === 'true';
     $('#show_active_only').prop('checked', showActiveOnly);
     loadGraphs();

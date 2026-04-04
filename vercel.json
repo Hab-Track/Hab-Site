@@ -8,8 +8,33 @@
     ],
     "routes": [
         {
+            "src": "/img/(.*)",
+            "headers": {
+                "Cache-Control": "public, max-age=2592000"
+            },
+            "dest": "main.py"
+        },
+        {
+            "src": "/assets-stats",
+            "headers": {
+                "Cache-Control": "public, max-age=43200"
+            },
+            "dest": "main.py"
+        },
+        {
             "src": "(.*)",
             "dest": "main.py"
         }
+    ],
+    "headers": [
+        {
+            "source": "/img/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=2592000"
+                }
+            ]
+        }
     ]
-  }
+}
