@@ -93,6 +93,7 @@ function updateStats() {
     const retroCount = Object.keys(retros).length;
 
     document.getElementById('total-online').textContent = totalOnline;
+    document.getElementById('total-online-time').textContent = formatTime(latest.timestamp);
     document.getElementById('retro-count').textContent = retroCount;
 
     let allTimePeak = 0;
