@@ -298,15 +298,22 @@ function createGraph(dataToPlot = null) {
     let minTime = Infinity;
     let maxTime = -Infinity;
     
-    if (plotData.length > 0 && plotData[0].x.length > 0) {
-        minTime = plotData[0].x[0].getTime();
-        maxTime = plotData[0].x[plotData[0].x.length - 1].getTime();
+    for (const trace of plotData) {
+        if (trace.x.length > 0) {
+            const traceMin = trace.x[0].getTime();
+            const traceMax = trace.x[trace.x.length - 1].getTime();
+            minTime = Math.min(minTime, traceMin);
+            maxTime = Math.max(maxTime, traceMax);
+        }
     }
     
-    const timeRange = maxTime - minTime;
-    const padding = timeRange * 0.05;
-    const xMin = new Date(minTime - padding);
-    const xMax = new Date(maxTime + padding);
+    let xMin, xMax;
+    if (minTime !== Infinity && maxTime !== -Infinity) {
+        const timeRange = maxTime - minTime;
+        const padding = timeRange * 0.05;
+        xMin = new Date(minTime - padding);
+        xMax = new Date(maxTime + padding);
+    }
 
     const layout = {
         title: {
@@ -322,7 +329,7 @@ function createGraph(dataToPlot = null) {
             tickfont: { size: isMobile ? 10 : 14 },
             tickangle: isMobile ? -45 : 0,
             type: 'date',
-            range: [xMin, xMax]
+            ...(xMin && xMax ? { range: [xMin, xMax] } : {})
         },
         yaxis: {
             color: 'white',
