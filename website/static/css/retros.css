@@ -191,6 +191,10 @@
     gap: 1rem;
 }
 
+.retro-header a {
+    grid-column: 2;
+}
+
 .retro-name {
     font-size: 1.25rem;
     font-weight: 600;
