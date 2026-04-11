@@ -4,9 +4,32 @@
 <head>
     {% include 'default.html' %}
     <meta property="og:title" content="Hab Track - Retros">
-    <meta property="og:url" content="https://habtrack.vercel.app/retros">
+    <meta property="og:url" content="https://habtrack.top/retros">
     <meta property="og:description" content="Browse all tracked Habbo retros">
-    <meta property="og:image" content="https://hab-track.vercel.app/img/banner.png">
+    <meta property="og:image" content="https://habtrack.top/img/banner.png">
+    <meta name="description" content="Directory of tracked Habbo retros.">
+    <title>Hab Track - Retro list</title>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Hab Track - Retro list",
+        "url": "https://habtrack.top/retros",
+        "description": "Directory of tracked Habbo retros",
+        "numberOfItems": {{ retro_info|length + retro_status|length }},
+        "itemListElement": [
+            {% for retro_name in retro_info.keys()|sort %}
+            {
+                "@type": "ListItem",
+                "position": {{ loop.index }},
+                "name": "{{ retro_name }}",
+                "url": "https://habtrack.top/retros/{{ retro_name|lower }}"
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+    </script>
 
     <link rel="stylesheet" href="/static/css/retros.css">
     <script src="{{ url_for('static', filename='js/cache-manager.js') }}"></script>
@@ -45,7 +68,9 @@
                     {% for retro_name, retro_data in retro_info.items()|sort %}
                     <div class="retro-card active" data-name="{{ retro_name.lower() }}">
                         <div class="retro-header">
-                            <h3 class="retro-name">{{ retro_name }}</h3>
+                            <a href="/retros/{{ retro_name|lower }}"">
+                                <h3 class="retro-name">{{ retro_name }}</h3>
+                            </a>
                             <div class="retro-status">
                                 <span class="status-badge active">Active</span>
                             </div>

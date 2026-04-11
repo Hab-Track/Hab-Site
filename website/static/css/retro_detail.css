@@ -1,0 +1,145 @@
+.retro-detail-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.retro-detail-header {
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.retro-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.retro-detail-title {
+    font-size: 2.5em;
+    margin: 0;
+    color: white;
+}
+
+.retro-detail-status {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.retro-detail-status.active {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+}
+
+.retro-detail-status.inactive {
+    background: rgba(244, 67, 54, 0.2);
+    color: #f44336;
+}
+
+.retro-stats-grid {
+    display: flex;
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.stat-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    flex: 1;
+}
+
+.stat-label {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9em;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    color: white;
+    font-size: 2em;
+    font-weight: 700;
+}
+
+.retro-links-section {
+    margin-top: 30px;
+}
+
+.retro-links-section h2 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.links-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.link-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.link-card:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .retro-detail-container {
+        padding: 0 15px;
+    }
+    
+    .retro-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .retro-detail-title {
+        font-size: 2em;
+    }
+    
+    .retro-stats-grid {
+        flex-direction: column;
+    }
+    
+    .link-card {
+        width: 100%;
+    }
+}
+

@@ -81,6 +81,57 @@ def retros():
     return render_template('retros.html', retro_info=retro_info, retro_status=retro_status)
 
 
+@app.route('/retros/<retro_name>')
+def retro_detail(retro_name):
+    retro_name_lower = retro_name.lower()
+    
+    retro_data = None
+    is_active = False
+    
+    for name, data in retro_info.items():
+        if name.lower() == retro_name_lower:
+            retro_data = data
+            is_active = True
+            actual_name = name
+            break
+    
+    if not retro_data:
+        for name, data in retro_status.items():
+            if name.lower() == retro_name_lower:
+                retro_data = data
+                actual_name = name
+                break
+    
+    if not retro_data:
+        return render_template('error.html', error="Retro not found"), 404
+    
+    online_count = None
+    if is_active:
+        try:
+            response = requests.get(f"{API_BASE}/online-stats", timeout=5)
+            online_data = response.json().get('data', [])
+            if online_data:
+                latest = online_data[-1]
+                retros_online = latest.get('retros', {})
+                for name, count in retros_online.items():
+                    if name.lower() == retro_name_lower:
+                        online_count = count if isinstance(count, int) else count.get('avg', 0)
+                        break
+        except:
+            pass
+    
+    og_description = f"Statistics and information for {actual_name}"
+    if online_count:
+        og_description = f"{actual_name} - {online_count} players online now"
+    
+    return render_template('retro_detail.html', 
+                         retro_name=actual_name,
+                         retro_data=retro_data,
+                         is_active=is_active,
+                         online_count=online_count,
+                         og_description=og_description)
+
+
 @app.route('/online')
 def online():
     online_api_url = f"{API_BASE}/online-stats"
@@ -125,6 +176,13 @@ def index():
     yield 'retros', {}, today, 'weekly', 0.7
     yield 'online', {}, today, 'hourly', 0.9
     yield 'about', {}, today, 'monthly', 0.5
+    
+    # Add individual retro pages
+    for retro_name in retro_info.keys():
+        yield 'retro_detail', {'retro_name': retro_name.lower()}, today, 'daily', 0.8
+    
+    for retro_name in retro_status.keys():
+        yield 'retro_detail', {'retro_name': retro_name.lower()}, today, 'weekly', 0.5
 
 
 @app.route("/robots.txt")

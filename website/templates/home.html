@@ -4,9 +4,21 @@
 <head>
     {% include 'default.html' %}
     <meta property="og:title" content="Hab Track - Home">
-    <meta property="og:url" content="https://habtrack.vercel.app/">
+    <meta property="og:url" content="https://habtrack.top/">
     <meta property="og:description" content="Track updates on Habbo & retros">
-    <meta property="og:image" content="https://hab-track.vercel.app/img/banner.png">
+    <meta property="og:image" content="https://habtrack.top/img/banner.png">
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Hab Track",
+        "url": "https://habtrack.top/",
+        "description": "Track live player counts, asset updates and statistics for Habbo and retros",
+        "applicationCategory": "StatisticsApplication",
+        "operatingSystem": "All"
+    }
+    </script>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
 </head>
