@@ -1,7 +1,7 @@
 class TimeFilter {
     constructor(data, onFilterChange) {
         this.allData = data;
-        this.currentFilter = '30d';
+        this.currentFilter = '7d';
         this.onFilterChange = onFilterChange;
     }
 
